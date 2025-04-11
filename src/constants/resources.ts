@@ -1,4 +1,4 @@
-import { UserState } from "@/app/context/UserContext";
+import { UserState } from "@/context/UserContext";
 
 type ResourceKey = keyof Pick<
   UserState,

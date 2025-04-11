@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css"; 
+import "./globals.css";
+import { Providers } from "./providers"; // см. ниже
 
 export const metadata: Metadata = {
   title: "Dominum",
@@ -14,9 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
-        <main>
-          {children}
-        </main>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

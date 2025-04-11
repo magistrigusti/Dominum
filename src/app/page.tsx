@@ -1,13 +1,10 @@
-import styles from "./LoginPage.module.css";
-import { TonConnectButton } from "@tonconnect/ui-react";
-import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
+'use client';
+
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserProvider } from '@/app/context/UserContext';
-
-
-
+import { TonConnectButton } from '@tonconnect/ui-react';
+import styles from "./page.module.css";
 
 export default function Home() {
   const wallet = useTonWallet();
@@ -20,37 +17,20 @@ export default function Home() {
   }, [wallet]);
 
   return (
-    <TonConnectUIProvider
-      manifestUrl="https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json"
-      uiPreferences={{
-        borderRadius: 's',
-        colorsSet: {
-          [THEME.DARK]: {
-            connectButton: { background: 'orange' },
-          },
-        },
-      }}
-    >
-      <UserProvider>
-        <div className={styles.login_bg_wrapper}>
-          <div className={styles.login_inner}>
-            <div>
-              <h4 className={styles.login_title}>Dominum Space</h4>
-              <img src="/img/contract_actral_island.png" alt="" />
+    <div className={styles.login_bg_wrapper}>
+      <div className={styles.login_inner}>
+        <h4 className={styles.login_title}>Dominum Space</h4>
+        <img src="/img/contract_actral_island.png" alt="" />
 
-              <p className={styles.login_text}>
-                You won't get through here unless
-                you use a crypto wallet as a key.
-              </p>
-            </div>
+        <p className={styles.login_text}>
+          You won't get through here unless
+          you use a crypto wallet as a key.
+        </p>
 
-            <div style={{ margin: "auto" }}>
-              <TonConnectButton />
-            </div>
-          </div>
+        <div style={{ margin: "auto" }}>
+          <TonConnectButton />
         </div>
-      </UserProvider>
-    </TonConnectUIProvider>
-
+      </div>
+    </div>
   );
 }
