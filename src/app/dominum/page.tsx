@@ -9,14 +9,14 @@ import { DOMFooter } from "../../components/DOMFooter/DOMFooter";
 
 export default function DominumPage() {      
   
-  return (
+  return (  
     <div className={styles.page_wrapper}>
       <DOMHeader />
 
       <div className={styles.icons_wrapper}>
         <ResourcesBar />
       </div>
-
+  
       <div className={styles.page_content}>
         <img src="/dominum/allod.png" alt="icon" />
       </div>

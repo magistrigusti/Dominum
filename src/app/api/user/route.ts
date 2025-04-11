@@ -1,47 +1,32 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// src/app/api/user/route.ts
+
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'PUT') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  const { address, ...data } = req.body;
-
-  if (!address) {
-    return res.status(400).json({ error: 'Address is required' });
-  }
-
+export async function POST(req: Request) {
   try {
+    const { address } = await req.json();
+
+    if (!address) {
+      return NextResponse.json({ error: 'Address is required' }, { status: 400 });
+    }
+
     await dbConnect();
 
-    const allowedFields = [
-      "name", "avatar", "food", "wood", "stone", "iron",
-      "gold", "doubloon", "pearl", "allodium",
-      "prestige", "levelPrestige", "prestigeProgress", "technologies"
-    ];
-
-    const updatePayload: any = {};
-    for (const key of allowedFields) {
-      if (data[key] !== undefined) {
-        updatePayload[key] = data[key];
-      }
-    }
-
-    const user = await UserModel.findOneAndUpdate(
-      { address },
-      updatePayload,
-      { new: true }
-    );
+    let user = await UserModel.findOne({ address });
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      user = await UserModel.create({
+        address,
+        avatar: '/icons/user-icon.png',
+      });
+      console.log('✅ Создан новый пользователь:', user.address);
     }
 
-    return res.status(200).json(user);
+    return NextResponse.json(user);
   } catch (err) {
-    console.error('[api/user/update] Ошибка:', err);
-    return res.status(500).json({ error: "Server error", details: err });
+    console.error('❌ [POST /api/user] Server error:', err);
+    return NextResponse.json({ error: 'Server error', details: String(err) }, { status: 500 });
   }
 }
