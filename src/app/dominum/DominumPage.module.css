@@ -32,6 +32,16 @@
   height: 100%;
 }
 
-.icons_food {
-  max-height: 50px;
+.map_container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
+
+.map_image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
