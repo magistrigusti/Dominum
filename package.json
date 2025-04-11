@@ -9,11 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ton-api/client": "^0.4.0",
+    "@ton/core": "^0.60.1",
+    "@ton/crypto": "^3.3.0",
+    "@tonconnect/ui-react": "^2.1.0",
+    "axios": "^1.8.4",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "next": "15.3.0"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^19",

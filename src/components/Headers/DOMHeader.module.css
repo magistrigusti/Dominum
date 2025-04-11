@@ -1,0 +1,29 @@
+
+.user_header_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* важное условие */
+  padding: 0 1rem; /* немного отступов по бокам */
+  color: white;
+}
+
+.user_link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+}
+
+.user_img {
+  cursor: pointer;   
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;     
+}
+
+.header_img_button {
+  width: 40px;
+}

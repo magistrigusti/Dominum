@@ -1,0 +1,16 @@
+.footer_container {
+  margin-top: 20px;
+}
+
+.footer_header_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.footer_link {
+  margin: 3px;
+}
+
+.footer_img_button {
+  width: 55px;
+}

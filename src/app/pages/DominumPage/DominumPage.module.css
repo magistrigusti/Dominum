@@ -1,0 +1,33 @@
+.page_wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: url("/dominum/backGround/dominum_bg_mine.jpg");
+}
+
+.icons_wrapper {
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.page_content {
+  flex-grow: 1; /* растягивает контент, чтобы футер ушёл вниз */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.resource_item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bg_img {
+  height: 100%;
+}
