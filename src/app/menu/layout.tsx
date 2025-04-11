@@ -1,8 +1,8 @@
 
 
-export default function MenuLayout({ children }: { children: React.ReactNode }) {
+export default function DominumLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="menu-wrapper">
+    <div className="dominum-wrapper">
       {children}
     </div>
   );

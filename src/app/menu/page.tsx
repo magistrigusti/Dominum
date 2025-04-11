@@ -3,11 +3,10 @@
 import { useRouter } from 'next/navigation';
 import styles from './MenuPage.module.css';
 import { DOMHeader } from '../../components/Headers/DOMHeader';
+import Link from 'next/link';
 
 export default function MenuPage() {
   const router = useRouter();
-
-  const goTo = (path: string) => () => router.push(path);
 
   return (
     <div className={styles.memu_containte}>
@@ -22,30 +21,18 @@ export default function MenuPage() {
       </h2>
 
       <div className={styles.icon_grid}>
-        <img
-          src="/icons/iconsDominum.png"
-          alt="Dominum"
-          className={styles.icon}
-          onClick={goTo("/dominum")}
-        />
-        <img
-          src="/icons/iconsMercatus.png"
-          alt="mercatus"
-          className={styles.icon}
-          onClick={goTo("/mercatus")}
-        />
-        <img
-          src="/icons/iconsMagisterium.png"
-          alt="Magisterium"
-          className={styles.icon}
-          onClick={goTo("/magisterium")}
-        />
-        <img
-          src="/icons/iconsPortale.png"
-          alt="Portal"
-          className={styles.icon}
-          onClick={goTo("/portal")}
-        />
+        <Link href="/dominum">
+          <img src="/icons/iconsDominum.png" alt="Dominum" className={styles.icon} />
+        </Link>
+        {/* <Link href="/mercatus">
+          <img src="/icons/iconsMercatus.png" alt="Mercatus" className={styles.icon} />
+        </Link>
+        <Link href="/magisterium">
+          <img src="/icons/iconsMagisterium.png" alt="Magisterium" className={styles.icon} />
+        </Link>
+        <Link href="/portal">
+          <img src="/icons/iconsPortale.png" alt="Portal" className={styles.icon} />
+        </Link> */}
       </div>
     </div>
   );

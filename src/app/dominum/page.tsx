@@ -1,12 +1,13 @@
+// app/dominum/page.tsx
+'use client';
+
 import { ResourcesBar } from "@/components/Resources/ResourcesBar";
-import { useUser } from "../context/UserContext";
 import styles from "./DominumPage.module.css";
 import { DOMHeader } from "../../components/Headers/DOMHeader";
 import { DOMFooter } from "../../components/DOMFooter/DOMFooter";
-import { FoodBonus } from "@/components/Resources/ResourcesBonus/FoodBonus";
 
-export const DominumPage = () => {
-  const { state } = useUser();
+
+export default function DominumPage() {      
   
   return (
     <div className={styles.page_wrapper}>
@@ -18,7 +19,6 @@ export const DominumPage = () => {
 
       <div className={styles.page_content}>
         <img src="/Dominum/ship-1.jpg" alt="icon" />
-        <FoodBonus /> {/* 👈 бонусная еда */}
       </div>
 
       <DOMFooter />
