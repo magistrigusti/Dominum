@@ -26,7 +26,7 @@ export const DOMFooter = () => {
         </Link>
 
         <Link className={styles.footer_link} href="/">
-          <img className={styles.footer_img_button} src="/button/mineButton.jpg" alt="" />
+          <img className={styles.footer_img_button} src="/button/backButton.jpg" alt="" />
         </Link>
       </div>
     </div>

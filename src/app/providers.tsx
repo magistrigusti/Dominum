@@ -1,8 +1,15 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
+import dynamic from 'next/dynamic';
 import { UserProvider } from '@/context/UserContext';
+import { UserLoader } from '@/components/UserLoader';
+
+// 📌 Оборачиваем UI-провайдер в dynamic
+const TonConnectUIProvider = dynamic(
+  () => import('@tonconnect/ui-react').then(mod => mod.TonConnectUIProvider),
+  { ssr: false }
+);
 
 export function Providers({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -14,23 +21,21 @@ export function Providers({ children }: { children: ReactNode }) {
   if (!mounted) return null;
 
   return (
-    <div>
-      <div >
-      <TonConnectUIProvider
+    <TonConnectUIProvider
       manifestUrl="https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json"
       uiPreferences={{
         borderRadius: 's',
         colorsSet: {
-          [THEME.DARK]: {
+          DARK: {
             connectButton: { background: 'orange' },
           },
         },
       }}
     >
-      <UserProvider>{children}</UserProvider>
-        </TonConnectUIProvider>
-      </div>
-    </div>
-    
+      <UserProvider>
+        <UserLoader /> {/* 🔥 вот здесь грузим пользователя */}
+        {children}
+      </UserProvider>
+    </TonConnectUIProvider>
   );
 }

@@ -3,8 +3,15 @@
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { TonConnectButton } from '@tonconnect/ui-react';
+import dynamic from "next/dynamic"; // ✅
+
 import styles from "./page.module.css";
+
+// ✅ оборачиваем кнопку, чтобы не ломала SSR
+const TonConnectButton = dynamic(
+  () => import("@tonconnect/ui-react").then((m) => m.TonConnectButton),
+  { ssr: false }
+);
 
 export default function Home() {
   const wallet = useTonWallet();

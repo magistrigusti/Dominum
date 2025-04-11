@@ -1,3 +1,5 @@
+// 📂 src/app/api/user.ts
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
@@ -14,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await dbConnect(); // Подключение к базе данных
+    await dbConnect();
 
     let user = await UserModel.findOne({ address });
 
@@ -22,16 +24,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       user = await UserModel.create({
         address,
         avatar: '/icons/user-icon.png',
-        prestige: '0',
+        // ❗ все остальные поля возьмутся из схемы через default
       });
-      console.log('Создан новый пользователь:', user);
+      console.log('✅ Создан новый пользователь:', user.address);
     } else {
-      console.log('Пользователь найден:', user);
+      console.log('ℹ️ Пользователь найден:', user.address);
     }
 
     return res.status(200).json(user);
   } catch (err) {
-    console.error('[api/user] Ошибка:', err);
+    console.error('[api/user] ❌ Ошибка:', err);
     return res.status(500).json({ error: 'Server error', details: err });
   }
 }

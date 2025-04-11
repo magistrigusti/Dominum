@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: true, unique: true},
   avatar: { type: String, required: true},
   name: { type: String, default: 'Capitan' },
-  prestige: { type: String, required: true},
+  prestige: { type: Number, default: 0},
   levelPrestige: { type: Number, default: 0},
   prestigeProgress: { type: Number, default: 0},
   technologies: { type: String, default: null},
