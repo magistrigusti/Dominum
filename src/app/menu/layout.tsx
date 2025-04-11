@@ -1,13 +1,9 @@
 
 
-export default function MenuPage({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function MenuLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
+    <div className="menu-wrapper">
+      {children}
+    </div>
+  );
 }
