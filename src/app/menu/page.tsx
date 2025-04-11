@@ -9,15 +9,13 @@ export default function MenuPage() {
   const router = useRouter();
 
   return (
-    <div className={styles.memu_containte}>
+    <div className={styles.menu_container}>
       <DOMHeader />
 
       <h2 className={styles.menu_title}>
         Welcome to the <br />
         crypto space <br /> 
         Dominum <br />
-        which is the entrance <br />
-        to the crypto meta universe Allodium
       </h2>
 
       <div className={styles.icon_grid}>

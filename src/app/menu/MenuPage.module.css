@@ -1,14 +1,22 @@
 .menu_container {
   width: 100%;
-  flex-grow: 1;    /* 👈 тянется на всё доступное пространство */
+  min-height: 100vh;
+  flex-grow: 1;
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url("/dominum/backGround/bg-login-2.png");
+  background: url("/dominum/backGround/bg-login-2.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
+.menu_title {
+  margin-top: 80px;
+  font-family: Helvetica, sans-serif;
+  color: rgba(241, 188, 13, 0.87);
+}
 
 .icon_grid {
   display: flex;
@@ -21,11 +29,6 @@
 .user_img {
   cursor: pointer;   
   width: 60%;       
-}
-
-.menu_title {
-  font-family: Helvetica, sans-serif;
-  color: rgba(11, 101, 175, 0.87);
 }
 
 .icon {
