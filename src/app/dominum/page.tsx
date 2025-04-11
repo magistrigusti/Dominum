@@ -18,7 +18,7 @@ export default function DominumPage() {
       </div>
 
       <div className={styles.page_content}>
-        <img src="/Dominum/ship-1.jpg" alt="icon" />
+        <img src="/dominum/allod.png" alt="icon" />
       </div>
 
       <DOMFooter />
