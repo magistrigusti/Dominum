@@ -1,12 +1,12 @@
 .menu_container {
   width: 100%;
-  max-width: 100%; /* 👈 чтобы не было ограничения в 480px */
   flex-grow: 1;    /* 👈 тянется на всё доступное пространство */
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: url("/dominum/backGround/bg-login-2.png");
 }
 
 
