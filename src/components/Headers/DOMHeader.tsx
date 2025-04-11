@@ -1,5 +1,6 @@
-
+'use client';
 import Link from "next/link";
+import { TonConnectButton} from "@tonconnect/ui-react";
 import styles from "./DOMHeader.module.css";
 
 export const DOMHeader = () => {
@@ -16,9 +17,7 @@ export const DOMHeader = () => {
           <p>Magistru</p>
         </Link>
 
-        <Link className={styles.user_link} href="/">
-          <img className={styles.header_img_button} src="/button/backButton.jpg" alt="" />
-        </Link>
+        <TonConnectButton />
       </div>
     </div>
   );

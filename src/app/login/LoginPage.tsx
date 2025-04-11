@@ -1,9 +1,11 @@
 'use client';
 import styles from "./LoginPage.module.css";
-import { TonConnectButton} from "@tonconnect/ui-react";
+import { TonConnectButton } from "@tonconnect/ui-react";
+import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { UserProvider } from '@/app/context/UserContext';
 
 export const LoginPage = () => {
   const wallet = useTonWallet();
@@ -16,7 +18,19 @@ export const LoginPage = () => {
   }, [wallet]);
 
   return (
-    <div className={styles.login_bg_wrapper}>
+    <TonConnectUIProvider
+      manifestUrl="https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json"
+      uiPreferences={{
+        borderRadius: 's',
+        colorsSet: {
+          [THEME.DARK]: {
+            connectButton: { background: 'orange' },
+          },
+        },
+      }}
+    >
+      <UserProvider>
+      <div className={styles.login_bg_wrapper}>
       <div className={styles.login_inner}>
         <div>
           <h4 className={styles.login_title}>Dominum Space</h4>
@@ -33,6 +47,8 @@ export const LoginPage = () => {
         </div>
       </div>
     </div>
+      </UserProvider>
+    </TonConnectUIProvider>
 
   );
 };
