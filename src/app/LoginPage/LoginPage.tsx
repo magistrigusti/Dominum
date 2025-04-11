@@ -1,9 +1,20 @@
-
-import { Footer } from "../../components/DOMFooter/Footer";
+'use client';
 import styles from "./LoginPage.module.css";
 import { TonConnectButton} from "@tonconnect/ui-react";
+import { useTonWallet } from '@tonconnect/ui-react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const LoginPage = () => {
+  const wallet = useTonWallet();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (wallet?.account?.address) {
+      router.push('/menu');
+    }
+  }, [wallet]);
+
   return (
     <div className={styles.login_bg_wrapper}>
       <div className={styles.login_inner}>
@@ -17,10 +28,9 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <Footer />
         <div style={{ margin: "auto" }}>
-        <TonConnectButton />
-      </div>
+          <TonConnectButton />
+        </div>
       </div>
     </div>
 
