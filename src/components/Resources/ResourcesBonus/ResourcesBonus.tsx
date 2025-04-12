@@ -13,7 +13,7 @@ interface ResourcesBonusProps {
   amount: number;
   icon: string;
   cooldownMs?: number;
-  mineDurationMs?: number; // ⏱️ сколько длится "добыча"
+  mineDurationMs?: number;
 }
 
 export const ResourcesBonus = ({
@@ -21,7 +21,7 @@ export const ResourcesBonus = ({
   amount,
   icon,
   cooldownMs = 1000 * 60 * 60 * 2,
-  mineDurationMs = 1000 * 30, // ⏱️ по умолчанию: 30 секунд
+  mineDurationMs = 1000 * 30,
 }: ResourcesBonusProps) => {
   const { state, dispatch } = useUser();
   const [available, setAvailable] = useState(false);
@@ -32,12 +32,16 @@ export const ResourcesBonus = ({
   const storageKey = `lastClaim_${resource}`;
   const miningKey = `mining_${resource}`;
 
-  // ⏱️ Проверка, можно ли показать иконку
   useEffect(() => {
-    const lastClaim = Number(localStorage.getItem(storageKey));
     const now = Date.now();
+    const lastClaim = Number(localStorage.getItem(storageKey));
+    const miningStart = Number(localStorage.getItem(miningKey));
 
-    if (!lastClaim || now - lastClaim >= cooldownMs) {
+    if (miningStart && now - miningStart < mineDurationMs) {
+      const remaining = Math.ceil((mineDurationMs - (now - miningStart)) / 1000);
+      setMining(true);
+      setTimeLeft(remaining);
+    } else if (!lastClaim || now - lastClaim >= cooldownMs) {
       setAvailable(true);
     }
 
@@ -49,25 +53,32 @@ export const ResourcesBonus = ({
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [storageKey, cooldownMs]);
+  }, [cooldownMs, mineDurationMs, storageKey, miningKey]);
 
-  // 📍 Устанавливаем случайную позицию
   useEffect(() => {
     if (available) {
-      const top = Math.floor(Math.random() * 50) + 10;
-      const left = Math.floor(Math.random() * 50) + 20;
-      setPosition({ top: `${top}%`, left: `${left}%` });
+      const savedPos = localStorage.getItem(`pos_${resource}`);
+      if (savedPos) {
+        const parsed = JSON.parse(savedPos);
+        setPosition(parsed);
+      } else {
+        const top = Math.floor(Math.random() * 50) + 5;
+        const left = Math.floor(Math.random() * 50) + 15;
+        const newPos = { top: `${top}%`, left: `${left}%` };
+        setPosition(newPos);
+        localStorage.setItem(`pos_${resource}`, JSON.stringify(newPos));
+      }
     }
-  }, [available]);
+  }, [available, resource]);
+  
 
-  // ⛏️ Обработка клика
   const handleClick = () => {
+    const startTime = Date.now();
+    localStorage.setItem(miningKey, String(startTime));
     setMining(true);
     setTimeLeft(mineDurationMs / 1000);
-    localStorage.setItem(miningKey, String(Date.now()));
   };
 
-  // ⏱️ Таймер обратного отсчета
   useEffect(() => {
     if (!mining) return;
 
@@ -85,7 +96,6 @@ export const ResourcesBonus = ({
     return () => clearInterval(timer);
   }, [mining]);
 
-  // ✅ Завершение добычи
   const finishMining = async () => {
     try {
       const res = await fetch("/api/user/update", {
@@ -101,6 +111,7 @@ export const ResourcesBonus = ({
         const updated = await res.json();
         dispatch({ type: "SET_USER", payload: updated });
         localStorage.setItem(storageKey, String(Date.now()));
+        localStorage.removeItem(miningKey);
         setAvailable(false);
         setMining(false);
       }
@@ -109,7 +120,7 @@ export const ResourcesBonus = ({
     }
   };
 
-  if (!available) return null;
+  if (!available && !mining) return null;
 
   return (
     <div
