@@ -1,10 +1,12 @@
+// ResouresBonus.tsx
 'use client';
 
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import styles from './ResourcesBonus.module.css';
 
-type ResourcesKey =
+// 🔑 Типы ресурсов
+export type ResourcesKey =
   | "food" | "wood" | "stone" | "iron"
   | "gold" | "doubloon" | "pearl" | "allodium";
 
@@ -17,8 +19,15 @@ interface ResourcesBonusProps {
 }
 
 interface BonusData {
-  miningStart: number;
-  position: { top: string; left: string };
+  miningStart?: number;
+  cooldownStart?: number;
+  position?: { top: string; left: string };
+}
+
+interface ExtendedUserState {
+  address: string;
+  [key: string]: any;
+  activeBonuses?: Record<string, BonusData>;
 }
 
 export const ResourcesBonus = ({
@@ -29,46 +38,51 @@ export const ResourcesBonus = ({
   mineDurationMs = 1000 * 30,
 }: ResourcesBonusProps) => {
   const { state, dispatch } = useUser();
-  const activeBonuses: Record<string, BonusData> = (state as any).activeBonuses || {};
+  const typedState = state as ExtendedUserState;
+  const activeBonuses: Record<string, BonusData> = typedState.activeBonuses || {};
   const userBonus: BonusData | undefined = activeBonuses[resource];
-  const [available, setAvailable] = useState(false);
-  const [mining, setMining] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
+
   const [position, setPosition] = useState<{ top: string; left: string }>({ top: "0%", left: "0%" });
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [mining, setMining] = useState(false);
+  const [available, setAvailable] = useState(false);
 
   useEffect(() => {
+    if (!typedState?.address || !typedState?.activeBonuses) return; // ⛔ Не загружен пользователь
+
     const now = Date.now();
 
-    if (userBonus && userBonus.miningStart) {
-      const elapsed = now - userBonus.miningStart;
-      if (elapsed < mineDurationMs) {
-        setMining(true);
-        setTimeLeft(Math.ceil((mineDurationMs - elapsed) / 1000));
-        setPosition(userBonus.position);
-        return;
-      }
+    if (userBonus?.miningStart && now - userBonus.miningStart < mineDurationMs) {
+      // ⛏️ Идёт добыча
+      const remaining = Math.ceil((mineDurationMs - (now - userBonus.miningStart)) / 1000);
+      setMining(true);
+      setTimeLeft(remaining);
+      setPosition(userBonus.position!);
+      return;
     }
 
-    if (!userBonus?.miningStart || now - userBonus.miningStart >= cooldownMs) {
-      setAvailable(true);
-      if (!userBonus?.position) {
-        const top = Math.floor(Math.random() * 50) + 5;
-        const left = Math.floor(Math.random() * 50) + 15;
-        const pos = { top: `${top}%`, left: `${left}%` };
-        setPosition(pos);
-      } else {
-        setPosition(userBonus.position);
-      }
+    if (userBonus?.cooldownStart && now - userBonus.cooldownStart < cooldownMs) {
+      // 🕒 Время ожидания перед новым появлением
+      return;
     }
-  }, [state, resource, cooldownMs, mineDurationMs]);
+
+    // ✅ Можно показывать новую иконку
+    setAvailable(true);
+    if (userBonus?.position) {
+      setPosition(userBonus.position);
+    } else {
+      const top = Math.floor(Math.random() * 50) + 5;
+      const left = Math.floor(Math.random() * 50) + 15;
+      const pos = { top: `${top}%`, left: `${left}%` };
+      setPosition(pos);
+    }
+  }, [typedState]);
 
   const handleClick = async () => {
     const miningStart = Date.now();
-    const newBonus = {
-      [resource]: {
-        miningStart,
-        position,
-      },
+    const newBonus: BonusData = {
+      miningStart,
+      position,
     };
 
     try {
@@ -76,10 +90,10 @@ export const ResourcesBonus = ({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          address: state.address,
+          address: typedState.address,
           activeBonuses: {
             ...activeBonuses,
-            ...newBonus,
+            [resource]: newBonus,
           },
         }),
       });
@@ -111,16 +125,22 @@ export const ResourcesBonus = ({
   }, [mining]);
 
   const finishMining = async () => {
+    const cooldownStart = Date.now();
+    const newBonus: BonusData = {
+      cooldownStart,
+      position,
+    };
+
     try {
       const res = await fetch("/api/user/update", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          address: state.address,
-          [resource]: state[resource] + amount,
+          address: typedState.address,
+          [resource]: typedState[resource] + amount,
           activeBonuses: {
             ...activeBonuses,
-            [resource]: undefined,
+            [resource]: newBonus,
           },
         }),
       });

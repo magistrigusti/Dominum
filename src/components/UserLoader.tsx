@@ -1,3 +1,4 @@
+// UserLoader.tsx
 'use client';
 
 import { useTonWallet } from '@tonconnect/ui-react';
