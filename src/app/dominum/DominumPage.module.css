@@ -43,8 +43,8 @@
 
   .ship_wrapper {
     position: absolute;
-    top: 25%;
-    left: 19%;
+    top: 15%;
+    left: 18%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
@@ -55,7 +55,6 @@
   }
   
   .map_image {
-    margin-top: 40px;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
@@ -71,20 +70,21 @@
     left: 0;
     right: 0;
     bottom: 0;
-
-    /* Исключаем зону корабля по высоте */
-    padding-top: 0;          /* Верхнюю зону можно оставить */
-    padding-bottom: 30%;     /* Внизу можно спрятать панель */
-    padding-left: 0;
-    padding-right: 0;
-
-    /* Важное: оставим только верхнюю треть и нижнюю четверть */
+  
+    /* Зона, куда ресурсы могут размещаться */
+    padding-top: 5%;          /* оставим немного места сверху */
+    padding-left: 35%;        /* ⬅️ исключаем область с кораблём слева */
+    padding-right: 5%;
+    padding-bottom: 25%;
+  
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+  
+    z-index: 2;
     pointer-events: none;
   }
+  
 
   .bonus_zone > div {
     pointer-events: auto;

@@ -30,10 +30,11 @@ export default function DominumPage() {
       </div>
 
       <div className={styles.map_container}>
+        <div>
+          <img className={styles.map_image} src="/dominum/allod-1.png" alt="Остров" />
+        </div>
         <div className={styles.bonus_zone}>
-          <div>
-            <img className={styles.map_image} src="/dominum/allod-1.png" alt="Остров" />
-          </div>
+
           <BonusResources />
         </div>
 
