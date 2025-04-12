@@ -30,6 +30,26 @@ const userSchema = new mongoose.Schema({
     }, { _id: false }),
     default: {},
   },
+
+  activeQuest: {
+    type: {
+      id: { type: String, required: true },
+      title: { type: String, required: true },
+      description: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ['active', 'complete'],
+        default: 'active',
+      },
+    },
+    default: null,
+  },
+  
+  questPanelOpen: {
+    type: Boolean,
+    default: false,
+  },
+  
 });
 
 export const UserModel = mongoose.models.User || mongoose.model("User", userSchema);

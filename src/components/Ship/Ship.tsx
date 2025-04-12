@@ -12,20 +12,28 @@ interface ShipProps {
 
 export const Ship: React.FC<ShipProps> = ({ onClick }) => {
   const [showBubble, setShowBubble] = useState(false);
-  const { state } = useUser();
+  const { state, dispatch } = useUser();
+
   const quest = state.activeQuest;
 
   const handleClick = () => {
-    if (!quest) {
+    if (quest) {
+      dispatch({ type: "TOGGLE_QUEST_PANEL", payload: true });
+    } else {
       setShowBubble(true);
-      if (onClick) onClick();
     }
+  };
+  
+  
+  const handleClose = () => {
+    alert("✅ Принят квест: Ремонт корабля"); // ← теперь работает!
+    setShowBubble(false);
   };
 
   return (
     <div className={styles.ship_wrapper} onClick={handleClick}>
       {!quest && showBubble && (
-        <SpeechBubble onClose={() => setShowBubble(false)} />
+        <SpeechBubble onClose={handleClose} />
       )}
       {quest && <QuestPanel />}
       <img

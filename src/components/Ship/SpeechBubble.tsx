@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import styles from './SpeechBubble.module.css';
+import { useUser } from "@/context/UserContext";
+
 
 interface SpeechBubbleProps {
   onClose: () => void;
@@ -8,14 +10,27 @@ interface SpeechBubbleProps {
 
 export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
+  const { state, dispatch } = useUser();
+
 
   const handleNext = () => {
     if (step === 1) {
       setStep(2);
     } else {
-      onClose();
+      dispatch({
+        type: "SET_ACTIVE_QUEST",
+        payload: {
+          id: "repair-ship",
+          title: "Ремонт корабля",
+          description: "Добудьте 1000 еды, 2000 дерева и 100 железа.",
+          status: "active",
+        },
+      });
+      dispatch({ type: "TOGGLE_QUEST_PANEL", payload: true });
+      
     }
   };
+  
 
   return (
     <div className={styles.bubble_wrapper}>
