@@ -53,7 +53,6 @@ export const ResourcesBonus = ({
     const now = Date.now();
 
     if (userBonus?.miningStart && now - userBonus.miningStart < mineDurationMs) {
-      // ⛏️ Идёт добыча
       const remaining = Math.ceil((mineDurationMs - (now - userBonus.miningStart)) / 1000);
       setMining(true);
       setTimeLeft(remaining);
@@ -62,11 +61,9 @@ export const ResourcesBonus = ({
     }
 
     if (userBonus?.cooldownStart && now - userBonus.cooldownStart < cooldownMs) {
-      // 🕒 Время ожидания перед новым появлением
       return;
     }
 
-    // ✅ Можно показывать новую иконку
     setAvailable(true);
     if (userBonus?.position) {
       setPosition(userBonus.position);
@@ -77,6 +74,19 @@ export const ResourcesBonus = ({
       setPosition(pos);
     }
   }, [typedState]);
+
+  const formatTime = (seconds: number) => {
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor((seconds % (3600 * 24)) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    const parts = [];
+    if (d > 0) parts.push(`${d}d`);
+    if (h > 0) parts.push(`${h}h`);
+    if (m > 0) parts.push(`${m}m`);
+    parts.push(`${s}s`);
+    return parts.join(" ");
+  };
 
   const handleClick = async () => {
     const miningStart = Date.now();
@@ -171,7 +181,7 @@ export const ResourcesBonus = ({
       />
       {mining && (
         <div className={styles.timer}>
-          ⏳ {timeLeft}s
+          ⏳ {formatTime(timeLeft)}
         </div>
       )}
     </div>
