@@ -27,6 +27,7 @@ export default function DominumPage() {
             amount={50}
             icon="/icons/resources/food.png"
             cooldownMs={1 * 60 * 60}
+            mineDurationMs={1000 * 60 * 60}
           />
 
           <ResourcesBonus
@@ -34,6 +35,7 @@ export default function DominumPage() {
             amount={10}
             icon="/icons/resources/gold.png"
             cooldownMs={1 * 60 * 60 * 4}
+            mineDurationMs={1000 * 60 * 60 * 4}
           />
 
           <ResourcesBonus
@@ -41,6 +43,7 @@ export default function DominumPage() {
             amount={30}
             icon="/icons/resources/wood.png"
             cooldownMs={1 * 60 * 60 * 2}
+            mineDurationMs={1000 * 60 * 60 * 2}
           />
 
         </div>
