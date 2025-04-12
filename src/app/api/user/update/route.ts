@@ -17,8 +17,10 @@ export async function PUT(req: Request) {
     const allowedFields = [
       "name", "avatar", "food", "wood", "stone", "iron",
       "gold", "doubloon", "pearl", "allodium",
-      "prestige", "levelPrestige", "prestigeProgress", "technologies"
+      "prestige", "levelPrestige", "prestigeProgress", "technologies",
+      "activeBonuses" 
     ];
+    
 
     const updatePayload: any = {};
     for (const key of allowedFields) {

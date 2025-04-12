@@ -16,6 +16,11 @@ interface ResourcesBonusProps {
   mineDurationMs?: number;
 }
 
+interface BonusData {
+  miningStart: number;
+  position: { top: string; left: string };
+}
+
 export const ResourcesBonus = ({
   resource,
   amount,
@@ -24,59 +29,68 @@ export const ResourcesBonus = ({
   mineDurationMs = 1000 * 30,
 }: ResourcesBonusProps) => {
   const { state, dispatch } = useUser();
+  const activeBonuses: Record<string, BonusData> = (state as any).activeBonuses || {};
+  const userBonus: BonusData | undefined = activeBonuses[resource];
   const [available, setAvailable] = useState(false);
   const [mining, setMining] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [position, setPosition] = useState<{top: string; left: string}>({ top: "0%", left: "0%" });
-
-  const storageKey = `lastClaim_${resource}`;
-  const miningKey = `mining_${resource}`;
+  const [position, setPosition] = useState<{ top: string; left: string }>({ top: "0%", left: "0%" });
 
   useEffect(() => {
     const now = Date.now();
-    const lastClaim = Number(localStorage.getItem(storageKey));
-    const miningStart = Number(localStorage.getItem(miningKey));
 
-    if (miningStart && now - miningStart < mineDurationMs) {
-      const remaining = Math.ceil((mineDurationMs - (now - miningStart)) / 1000);
-      setMining(true);
-      setTimeLeft(remaining);
-    } else if (!lastClaim || now - lastClaim >= cooldownMs) {
-      setAvailable(true);
+    if (userBonus && userBonus.miningStart) {
+      const elapsed = now - userBonus.miningStart;
+      if (elapsed < mineDurationMs) {
+        setMining(true);
+        setTimeLeft(Math.ceil((mineDurationMs - elapsed) / 1000));
+        setPosition(userBonus.position);
+        return;
+      }
     }
 
-    const interval = setInterval(() => {
-      const last = Number(localStorage.getItem(storageKey));
-      if (!last || Date.now() - last >= cooldownMs) {
-        setAvailable(true);
-      }
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [cooldownMs, mineDurationMs, storageKey, miningKey]);
-
-  useEffect(() => {
-    if (available) {
-      const savedPos = localStorage.getItem(`pos_${resource}`);
-      if (savedPos) {
-        const parsed = JSON.parse(savedPos);
-        setPosition(parsed);
-      } else {
+    if (!userBonus?.miningStart || now - userBonus.miningStart >= cooldownMs) {
+      setAvailable(true);
+      if (!userBonus?.position) {
         const top = Math.floor(Math.random() * 50) + 5;
         const left = Math.floor(Math.random() * 50) + 15;
-        const newPos = { top: `${top}%`, left: `${left}%` };
-        setPosition(newPos);
-        localStorage.setItem(`pos_${resource}`, JSON.stringify(newPos));
+        const pos = { top: `${top}%`, left: `${left}%` };
+        setPosition(pos);
+      } else {
+        setPosition(userBonus.position);
       }
     }
-  }, [available, resource]);
-  
+  }, [state, resource, cooldownMs, mineDurationMs]);
 
-  const handleClick = () => {
-    const startTime = Date.now();
-    localStorage.setItem(miningKey, String(startTime));
-    setMining(true);
-    setTimeLeft(mineDurationMs / 1000);
+  const handleClick = async () => {
+    const miningStart = Date.now();
+    const newBonus = {
+      [resource]: {
+        miningStart,
+        position,
+      },
+    };
+
+    try {
+      const res = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: state.address,
+          activeBonuses: {
+            ...activeBonuses,
+            ...newBonus,
+          },
+        }),
+      });
+
+      if (res.ok) {
+        setMining(true);
+        setTimeLeft(mineDurationMs / 1000);
+      }
+    } catch (err) {
+      console.error("❌ Ошибка при запуске добычи:", err);
+    }
   };
 
   useEffect(() => {
@@ -104,14 +118,16 @@ export const ResourcesBonus = ({
         body: JSON.stringify({
           address: state.address,
           [resource]: state[resource] + amount,
+          activeBonuses: {
+            ...activeBonuses,
+            [resource]: undefined,
+          },
         }),
       });
 
       if (res.ok) {
         const updated = await res.json();
         dispatch({ type: "SET_USER", payload: updated });
-        localStorage.setItem(storageKey, String(Date.now()));
-        localStorage.removeItem(miningKey);
         setAvailable(false);
         setMining(false);
       }
