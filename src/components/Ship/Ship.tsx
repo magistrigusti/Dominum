@@ -1,6 +1,7 @@
 // /components/Ship/Ship.tsx
 'use client';
-
+import { QuestPanel } from "@/components/QuestLog/QuestPanel";
+import { useUser } from "@/context/UserContext";
 import React, { useState } from 'react';
 import styles from './Ship.module.css';
 import { SpeechBubble } from './SpeechBubble';
@@ -11,9 +12,11 @@ interface ShipProps {
 
 export const Ship: React.FC<ShipProps> = ({ onClick }) => {
   const [showBubble, setShowBubble] = useState(false);
+  const { state } = useUser();
+  const quest = state.activeQuest;
 
   const handleClick = () => {
-    if (!showBubble) {
+    if (!quest) {
       setShowBubble(true);
       if (onClick) onClick();
     }
@@ -21,7 +24,10 @@ export const Ship: React.FC<ShipProps> = ({ onClick }) => {
 
   return (
     <div className={styles.ship_wrapper} onClick={handleClick}>
-      {showBubble && <SpeechBubble onClose={() => setShowBubble(false)} />}
+      {!quest && showBubble && (
+        <SpeechBubble onClose={() => setShowBubble(false)} />
+      )}
+      {quest && <QuestPanel />}
       <img
         className={styles.ship_image}
         src="/dominum/ship-start.png"
@@ -30,3 +36,4 @@ export const Ship: React.FC<ShipProps> = ({ onClick }) => {
     </div>
   );
 };
+

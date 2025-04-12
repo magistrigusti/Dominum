@@ -18,13 +18,31 @@ export interface UserState {
   doubloon: number;
   pearl: number;
   allodium: number;
+
+  // ➕ Новое поле:
+  activeQuest?: {
+    id: string;
+    title: string;
+    description: string;
+    status: "active" | "complete";
+  };
 }
+
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
 
 type UserAction =
   | { type: "SET_USER"; payload: UserState }
-  | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number };
+  | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
+  | {
+    type: "SET_ACTIVE_QUEST";
+    payload: {
+      id: string;
+      title: string;
+      description: string;
+      status: "active" | "complete";
+    };
+  };
 
 const initialState: UserState = {
   address: "",
@@ -41,12 +59,14 @@ const initialState: UserState = {
   doubloon: 0,
   pearl: 0,
   allodium: 0,
+  activeQuest: undefined, // ⬅️ добавили
 };
+
 
 function reducer(state: UserState, action: UserAction): UserState {
   switch (action.type) {
-    case "SET_USER":
-      return { ...state, ...action.payload };
+    case "SET_ACTIVE_QUEST":
+      return { ...state, activeQuest: action.payload };
     case "ADD_RESOURCE":
       return {
         ...state,
@@ -76,4 +96,3 @@ export const useUser = () => {
   if (!context) throw new Error("useUser must be inside <UserProvider>");
   return context;
 };
- 
