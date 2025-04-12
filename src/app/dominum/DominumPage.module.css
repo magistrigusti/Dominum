@@ -43,8 +43,8 @@
 
   .ship_wrapper {
     position: absolute;
-    top: 15%;
-    left: 18%;
+    top: 28%;
+    left: 20%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
