@@ -1,4 +1,4 @@
-// ✅ Новый компонент BonusResources.tsx
+// ✅ Новый компонент ResourcesArray.tsx
 'use client';
 
 import { ResourcesBonus } from '@/components/Resources/ResourcesBonus/ResourcesBonus';

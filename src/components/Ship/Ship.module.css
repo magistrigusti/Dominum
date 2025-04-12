@@ -1,20 +1,25 @@
+/* Ship.module.css */
 .ship_wrapper {
   position: absolute;
-  top: 30%;
+  top: 22%;
   left: 18%;
+  width: 150px;
+  height: 150px;
   transform: translateX(-50%);
   z-index: 5;
   cursor: pointer;
-  animation: float 4s ease-in-out infinite;
+  /* animation: float 4s ease-in-out infinite; */
+  pointer-events: auto;
 }
 
 .ship_image {
-  width: 150px;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
 @keyframes float {
   0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-1px); }
+  50% { transform: translateX(-50%) translateY(-8px); }
   100% { transform: translateX(-50%) translateY(0); }
 }

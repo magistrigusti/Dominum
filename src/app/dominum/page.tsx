@@ -30,18 +30,16 @@ export default function DominumPage() {
       </div>
 
       <div className={styles.map_container}>
-        <div>
+        <div className={styles.floating_island}>
           <img className={styles.map_image} src="/dominum/allod-1.png" alt="Остров" />
-        </div>
-        <div className={styles.bonus_zone}>
 
-          <BonusResources />
-        </div>
+          <div className={styles.bonus_zone}>
+            <BonusResources />
+          </div>
 
-        <Ship onClick={() => console.log("Корабль кликнут!")} />
+          <Ship onClick={() => console.log("🚢 Корабль кликнут")} />
+        </div>
       </div>
-
-
 
       <DOMFooter />
     </div>

@@ -59,10 +59,15 @@
     max-height: 100%;
     object-fit: contain;
     display: block;
-    justify-content: center ;
+    justify-content: center;
     align-items: center;
   }
-
+  
+  .floating_island {
+    position: relative;
+    animation: floatIsland 6s ease-in-out infinite;
+  }
+  
 
   .bonus_zone {
     position: absolute;
@@ -71,9 +76,8 @@
     right: 0;
     bottom: 0;
   
-    /* Зона, куда ресурсы могут размещаться */
-    padding-top: 5%;          /* оставим немного места сверху */
-    padding-left: 35%;        /* ⬅️ исключаем область с кораблём слева */
+    padding-top: 5%;
+    padding-left: 35%;  /* исключаем корабль */
     padding-right: 5%;
     padding-bottom: 25%;
   
@@ -85,10 +89,16 @@
     pointer-events: none;
   }
   
-
   .bonus_zone > div {
     pointer-events: auto;
   }
+
+  @keyframes floatIsland {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  
 
 
 
