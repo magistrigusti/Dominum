@@ -4,8 +4,7 @@
 import { useEffect } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useRouter } from 'next/navigation';
-
-import { ResourcesBonus } from "@/components/Resources/ResourcesBonus/ResourcesBonus";
+import { BonusResources } from "@/components/Resources/ResourcesBonus/ResourcesArray";
 import styles from "./DominumPage.module.css";
 import { DOMHeader } from "../../components/Headers/DOMHeader";
 import { DOMFooter } from "../../components/DOMFooter/DOMFooter";
@@ -31,46 +30,19 @@ export default function DominumPage() {
       </div>
 
       <div className={styles.map_container}>
-        <img src="/dominum/allod.png" alt="Остров" className={styles.map_image} />
+        <div className={styles.bonus_zone}>
+          <div>
+            <img className={styles.map_image} src="/dominum/allod-1.png" alt="Остров" />
+          </div>
+          <BonusResources />
+        </div>
 
-        <div className={styles.icons_food}>
-          <ResourcesBonus
-            resource="food"
-            amount={60}
-            icon="/icons/resources/food.png"
-            cooldownMs={1 * 60 * 60}
-            mineDurationMs={1000 * 60 * 60}
-          />
-          <ResourcesBonus
-            resource="wood"
-            amount={50}
-            icon="/icons/resources/wood.png"
-            cooldownMs={1 * 60 * 60 * 2}
-            mineDurationMs={1000 * 60 * 60 * 2}
-          />
-          <ResourcesBonus
-            resource="stone"
-            amount={40}
-            icon="/icons/resources/stone.png"
-            cooldownMs={1 * 60 * 60 * 3}
-            mineDurationMs={1000 * 60 * 60 * 3}
-          />
-          <ResourcesBonus
-            resource="iron"
-            amount={25}
-            icon="/icons/resources/iron.png"
-            cooldownMs={1 * 60 * 60 * 4}
-            mineDurationMs={1000 * 60 * 60 * 4}
-          />
-          <ResourcesBonus
-            resource="gold"
-            amount={10}
-            icon="/icons/resources/gold.png"
-            cooldownMs={1 * 60 * 60 * 6}
-            mineDurationMs={1000 * 60 * 60 * 6}
-          />
+        <div className={styles.ship_wrapper}>
+          <img className={styles.ship_image} src="/dominum/ship-start.png" alt="Корабль" />
         </div>
       </div>
+
+
 
       <DOMFooter />
     </div>

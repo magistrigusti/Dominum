@@ -1,48 +1,94 @@
-.page_wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: url("/dominum/backGround/dominum_bg_mine.jpg");
-}
+  /* DominumPage.module.css */
+  .page_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: url("/dominum/backGround/dominum_bg_mine.jpg");
+  }
 
-.icons_wrapper {
-  padding: 0.5rem 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
-}
+  .icons_wrapper {
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 
-.page_content {
-  flex-grow: 1; /* растягивает контент, чтобы футер ушёл вниз */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-}
+  .page_content {
+    flex-grow: 1; /* растягивает контент, чтобы футер ушёл вниз */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
 
-.resource_item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin: 4px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
+  .resource_item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 4px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
 
-.bg_img {
-  height: 100%;
-}
+  .bg_img {
+    height: 100%;
+  }
 
-.map_container {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: auto;
-}
+  .map_container {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center ;
+    align-items: center;
+  }
 
-.map_image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+  .ship_wrapper {
+    position: absolute;
+    top: 25%;
+    left: 19%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+  }
+  
+  .ship_image {
+    width: 150px;
+  }
+  
+  .map_image {
+    margin-top: 40px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    justify-content: center ;
+    align-items: center;
+  }
+
+
+  .bonus_zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* Исключаем зону корабля по высоте */
+    padding-top: 0;          /* Верхнюю зону можно оставить */
+    padding-bottom: 30%;     /* Внизу можно спрятать панель */
+    padding-left: 0;
+    padding-right: 0;
+
+    /* Важное: оставим только верхнюю треть и нижнюю четверть */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    pointer-events: none;
+  }
+
+  .bonus_zone > div {
+    pointer-events: auto;
+  }
+
 
 
