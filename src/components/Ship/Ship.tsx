@@ -13,8 +13,10 @@ export const Ship: React.FC<ShipProps> = ({ onClick }) => {
   const [showBubble, setShowBubble] = useState(false);
 
   const handleClick = () => {
-    setShowBubble(true);
-    if (onClick) onClick();
+    if (!showBubble) {
+      setShowBubble(true);
+      if (onClick) onClick();
+    }
   };
 
   return (

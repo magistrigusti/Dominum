@@ -1,10 +1,10 @@
 .bubble_wrapper {
   position: absolute;
-  top: -220px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  top: -240px;
+  left: 50px;
+  z-index: 999;
   animation: fadeIn 0.3s ease;
+  pointer-events: auto; /* важное! */
 }
 
 .bubble {
@@ -15,9 +15,11 @@
   padding: 1rem;
   font-family: 'Comic Sans MS', sans-serif;
   font-size: 0.95rem;
-  width: 300px;
+  width: 310px;
   box-shadow: 4px 4px 0 #000;
   position: relative;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 .bubble::after {
@@ -43,6 +45,8 @@
   cursor: pointer;
   width: 100%;
   transition: background 0.2s ease;
+  z-index: 1001;
+  pointer-events: auto;
 }
 
 .accept_btn:hover {
@@ -50,6 +54,6 @@
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; transform: translateX(-50%) scale(0.95); }
-  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
