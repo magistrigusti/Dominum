@@ -1,6 +1,6 @@
 // app/dominum/page.tsx
 'use client';
-
+import { Ship } from "@/components/Ship/Ship";
 import { useEffect } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useRouter } from 'next/navigation';
@@ -38,9 +38,7 @@ export default function DominumPage() {
           <BonusResources />
         </div>
 
-        <div className={styles.ship_wrapper}>
-          <img className={styles.ship_image} src="/dominum/ship-start.png" alt="Корабль" />
-        </div>
+        <Ship onClick={() => console.log("Корабль кликнут!")} />
       </div>
 
 

@@ -1,0 +1,20 @@
+.ship_wrapper {
+  position: absolute;
+  top: 30%;
+  left: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  cursor: pointer;
+  animation: float 4s ease-in-out infinite;
+}
+
+.ship_image {
+  width: 150px;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-1px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
