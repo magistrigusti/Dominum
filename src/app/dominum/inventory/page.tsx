@@ -40,7 +40,7 @@ export default function InventoryPage() {
                 alt={item.id}
               />
 
-              <div className={styles.amount}>
+              <div className={styles.item_count}>
                 {item.amount}
               </div>
             </div>

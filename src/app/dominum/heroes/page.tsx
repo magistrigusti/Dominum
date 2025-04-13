@@ -45,7 +45,6 @@ const [selectedHero, setSelectedHero] = useState<Hero>(dummyHeroes[0]);
           selectedHero={selectedHero}
           onSelect={setSelectedHero}
         />
-
       </div>
 
       <DOMFooter />
