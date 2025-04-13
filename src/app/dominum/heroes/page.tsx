@@ -1,5 +1,5 @@
 'use client';
-
+import { Hero } from '@/components/Heroes/types';
 import { useState } from 'react';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
@@ -12,7 +12,7 @@ const dummyHeroes = [
     id: '1',
     name: 'Добытчик',
     image: '/dominum/heroes/hero-workin-grey.png',
-    quality: 'обычный',
+    quality: 'обычный' as const,
     level: 1,
     exp: 10,
     expToNext: 100,
@@ -21,15 +21,17 @@ const dummyHeroes = [
     id: '2',
     name: 'Добытчик',
     image: '/dominum/heroes/hero-workin-grey-2.png',
-    quality: 'обычный',
+    quality: 'обычный' as const,
     level: 2,
     exp: 30,
     expToNext: 120,
   },
 ];
 
+
 export default function HeroesPage() {
-  const [selectedHero, setSelectedHero] = useState(dummyHeroes[0]);
+const [selectedHero, setSelectedHero] = useState<Hero>(dummyHeroes[0]);
+
 
   return (
     <div className={styles.page_wrapper}>

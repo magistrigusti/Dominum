@@ -1,4 +1,12 @@
-.scroll {
-  width: 100px;
+.selector_row {
   display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 1rem 0.5rem;
+  justify-content: center;
+}
+
+.selector_row::-webkit-scrollbar {
+  height: 6px;
 }
