@@ -40,17 +40,6 @@ const [selectedHero, setSelectedHero] = useState<Hero>(dummyHeroes[0]);
       <div className={styles.hero_main_container}>
         <HeroViewer hero={selectedHero} />
 
-        {/* Пол под героем */}
-        <div style={{
-          width: '120px',
-          height: '16px',
-          background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.25), rgba(0,0,0,0))',
-          margin: '0 auto -30px auto',
-          borderRadius: '50%',
-          filter: 'blur(4px)',
-          transform: 'scale(1.3)'
-        }} />
-
         <HeroSelector
           heroes={dummyHeroes}
           selectedHero={selectedHero}

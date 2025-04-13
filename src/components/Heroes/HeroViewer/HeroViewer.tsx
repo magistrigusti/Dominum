@@ -7,16 +7,16 @@ import { Hero } from '../types';
 export const HeroViewer = ({ hero }: { hero: Hero }) => {
   return (
     <div className={styles.viewer}>
-      <h2 className={styles.hero_name}>{hero.name}</h2>
-      
-      <div className={styles.level_badge}>🎖<br />{hero.level}</div>
 
       <div>
+        <h2 className={styles.hero_name}>{hero.name}</h2>
+        <div className={styles.level_badge}>🎖<br />{hero.level}</div>
+
         <img className={styles.hero_image}
           src={hero.image}
           alt={hero.name}
         />
-        
+
       </div>
 
 
