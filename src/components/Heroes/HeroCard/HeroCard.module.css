@@ -1,0 +1,27 @@
+.card {
+  width: 80px;
+  height: 80px;
+  margin: 0 6px;
+  border: 2px solid #444;
+  border-radius: 10px;
+  padding: 4px;
+  background: radial-gradient(circle, #1e1e2f, #0f0f1a);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card_img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.card_name {
+  font-size: 0.65rem;
+  color: white;
+  margin-top: 4px;
+  text-align: center;
+}

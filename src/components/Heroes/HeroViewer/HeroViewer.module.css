@@ -1,3 +1,22 @@
-.viewer {
+.level_frame {
+  border: 3px solid gold;
+  background: #1a1a1a;
+  color: gold;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.exp_bar {
+  height: px;
+  width: 60%;
+  background: #444;
+  border-radius: 6px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.exp_fill {
   height: 100%;
+  background: linear-gradient(to right, #00c3ff, #0074ff);
 }
