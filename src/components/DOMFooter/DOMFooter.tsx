@@ -5,7 +5,7 @@ export const DOMFooter = () => {
   return (
     <div className={styles.footer_container}>
       <div className={styles.footer_header_wrapper}>
-        <Link className={styles.footer_link} href="/">
+        <Link className={styles.footer_link} href="/dominum/lord">
           <img className={styles.footer_img_button} src="/button/lordButton.jpg" alt="" />
         </Link>
 
