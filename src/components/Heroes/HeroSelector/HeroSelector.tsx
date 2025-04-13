@@ -2,19 +2,24 @@
 
 import styles from './HeroSelector.module.css';
 import { HeroCard } from '../HeroCard/HeroCard';
-import { Hero } from '../types';
+import { Hero } from '../types'; // или актуальный путь
 
-export const HeroSelector = ({
-  heroes,
-  onSelect,
-}: {
+interface HeroSelectorProps {
   heroes: Hero[];
+  selectedHero: Hero;
   onSelect: (hero: Hero) => void;
-}) => {
+}
+
+export const HeroSelector = ({ heroes, selectedHero, onSelect }: HeroSelectorProps) => {
   return (
-    <div className={styles.scroll}>
-      {heroes.map(hero => (
-        <HeroCard key={hero.id} hero={hero} onClick={() => onSelect(hero)} />
+    <div className="selector_wrapper">
+      {heroes.map((hero) => (
+        <HeroCard
+          key={hero.id}
+          hero={hero}
+          isSelected={hero.id === selectedHero.id}
+          onClick={() => onSelect(hero)}
+        />
       ))}
     </div>
   );

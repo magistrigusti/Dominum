@@ -1,11 +1,21 @@
-.level_frame {
-  border: 3px solid gold;
-  background: #1a1a1a;
-  color: gold;
+.level_badge {
+  position: absolute;
+  top: 12%;
+  right: 18%;
+  width: 40px;
+  height: 40px;
+  background: gold;
+  color: black;
   font-weight: bold;
-  border-radius: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   text-align: center;
 }
+
 
 .exp_bar {
   height: px;

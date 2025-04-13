@@ -9,7 +9,7 @@ export const HeroViewer = ({ hero }: { hero: Hero }) => {
     <div className={styles.viewer}>
       <h2 className={styles.hero_name}>{hero.name}</h2>
       
-      <div className={styles.level_frame}>🎖  {hero.level}</div>
+      <div className={styles.level_badge}>🎖<br />{hero.level}</div>
 
       <div>
         <img className={styles.hero_image}
