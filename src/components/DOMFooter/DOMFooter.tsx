@@ -9,7 +9,7 @@ export const DOMFooter = () => {
           <img className={styles.footer_img_button} src="/button/lordButton.jpg" alt="" />
         </Link>
 
-        <Link className={styles.footer_link} href="/">
+        <Link className={styles.footer_link} href="/dominum/heroes">
           <img className={styles.footer_img_button} src="/button/herosButton.jpg" alt="" />
         </Link>
 
@@ -21,7 +21,7 @@ export const DOMFooter = () => {
           <img className={styles.footer_img_button} src="/button/cityButton.jpg" alt="" />
         </Link>
 
-        <Link className={styles.footer_link} href="/">
+        <Link className={styles.footer_link} href="/dominum">
           <img className={styles.footer_img_button} src="/button/allodsButton.jpg" alt="" />
         </Link>
 
