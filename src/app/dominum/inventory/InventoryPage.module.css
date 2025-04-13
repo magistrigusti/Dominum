@@ -1,0 +1,51 @@
+.inventory_wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.bag_wrapper {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid {
+  position: absolute;
+  top: 22%;
+  left: 18%;
+  width: 64%;
+  height: 64%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.item_cell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.1);
+}
+
+.item_icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.item_count {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+}
+

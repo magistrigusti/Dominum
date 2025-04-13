@@ -1,11 +1,13 @@
 .selector_row {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* ← это главное */
   overflow-x: auto;
   gap: 12px;
-  padding: 1rem 0.5rem;
+  padding: 0.5rem;
   justify-content: center;
+  scrollbar-width: thin;
 }
+
 
 .selector_row::-webkit-scrollbar {
   height: 6px;

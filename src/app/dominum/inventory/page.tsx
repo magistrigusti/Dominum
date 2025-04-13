@@ -28,14 +28,14 @@ export default function InventoryPage() {
   }, []);
 
   return (
-    <div className={styles.page_wrapper}>
+    <div className={styles.inventory_wrapper}>
       <DOMHeader />
-
-      <div className={styles.inventory_wrapper}>
-        <div className={styles.grid_wrapper}>
+      <div className={styles.bag_wrapper}>
+        <img src="/dominum/inventory.png" alt="Inventory" className={styles.bag_background} />
+        <div className={styles.grid}>
           {items.map((item) => (
             <div className={styles.item_cell} key={item.id}>
-              <img className={styles.item_icon} 
+              <img className={styles.item_icon}
                 src={item.icon}
                 alt={item.id}
               />
@@ -47,6 +47,9 @@ export default function InventoryPage() {
           ))}
         </div>
       </div>
+      <DOMFooter />
     </div>
+
   )
 }
+

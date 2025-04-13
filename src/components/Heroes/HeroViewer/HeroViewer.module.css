@@ -1,5 +1,9 @@
-.viewer {
-  max-height: 100%;
+.hero_image_wrapper {
+  max-height: 320px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .level_badge {
