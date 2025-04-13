@@ -16,7 +16,6 @@ export const HeroViewer = ({ hero }: { hero: Hero }) => {
           src={hero.image}
           alt={hero.name}
         />
-
         
       </div>
 

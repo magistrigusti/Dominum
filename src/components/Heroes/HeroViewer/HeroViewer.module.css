@@ -16,9 +16,12 @@
   text-align: center;
 }
 
+.hero_image {
+  height: 499px;
+}
 
 .exp_bar {
-  height: px;
+  height: 10px;
   width: 60%;
   background: #444;
   border-radius: 6px;
