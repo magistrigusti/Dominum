@@ -17,12 +17,13 @@ export const HeroViewer = ({ hero }: { hero: Hero }) => {
           alt={hero.name}
         />
 
+        <div className={styles.exp_bar}>
+          <div className={styles.exp_fill} style={{ width: `${(hero.exp / hero.expToNext) * 100}%` }} />
+        </div>
       </div>
 
 
-      <div className={styles.exp_bar}>
-        <div className={styles.exp_fill} style={{ width: `${(hero.exp / hero.expToNext) * 100}%` }} />
-      </div>
+      
     </div>
   );
 };
