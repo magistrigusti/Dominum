@@ -1,5 +1,8 @@
 .footer_container {
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer_header_wrapper {
@@ -8,7 +11,7 @@
 }
 
 .footer_link {
-  margin: 3px;
+  margin: 4px;
 }
 
 .footer_img_button {

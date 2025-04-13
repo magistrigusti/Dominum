@@ -181,7 +181,7 @@ export const ResourcesBonus = ({
       />
       {mining && (
         <div className={styles.timer}>
-          ⏳ {formatTime(timeLeft)}
+          ⏳{formatTime(timeLeft)}
         </div>
       )}
     </div>
