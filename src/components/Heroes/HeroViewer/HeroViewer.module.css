@@ -20,6 +20,13 @@
   text-align: center;
 }
 
+.hero_image {
+  width: 100%;
+  max-height: 420px; /* раньше стояло 100% или слишком много */
+  object-fit: contain;
+  margin: 0 auto;
+}
+
 .exp_bar {
   height: 10px;
   width: 60%;

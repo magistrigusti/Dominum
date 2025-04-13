@@ -21,4 +21,32 @@ const dummyInventory: InventoryItem[] = [
 
 export default function InventoryPage() {
   const { state } = useUser();
+  const [items, setItems] = useState<InventoryItem[]>([]);
+
+  useEffect(() => {
+    setItems(dummyInventory);
+  }, []);
+
+  return (
+    <div className={styles.page_wrapper}>
+      <DOMHeader />
+
+      <div className={styles.inventory_wrapper}>
+        <div className={styles.grid_wrapper}>
+          {items.map((item) => (
+            <div className={styles.item_cell} key={item.id}>
+              <img className={styles.item_icon} 
+                src={item.icon}
+                alt={item.id}
+              />
+
+              <div className={styles.amount}>
+                {item.amount}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
