@@ -20,16 +20,21 @@ export interface UserState {
   allodium: number;
   questPanelOpen?: boolean;
 
-
-  // ➕ Новое поле:
   activeQuest?: {
     id: string;
     title: string;
     description: string;
     status: "active" | "complete";
   };
-}
 
+  pendingRewards: {
+    food: number;
+    wood: number;
+    stone: number;
+    iron: number;
+    gold: number;
+  };
+}
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
 
@@ -63,7 +68,15 @@ const initialState: UserState = {
   doubloon: 0,
   pearl: 0,
   allodium: 0,
-  activeQuest: undefined, // ⬅️ добавили
+  activeQuest: undefined, 
+  pendingRewards: {
+    food: 0,
+    wood: 0,
+    stone: 0,
+    iron: 0,
+    gold: 0,
+  },
+  
 };
 
 

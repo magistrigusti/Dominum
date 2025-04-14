@@ -1,30 +1,35 @@
+// ap/api/user/claim-rewards.ts
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import UserModel from '@/models/UserModel';
+import { UserModel } from '@/models/UserModel';
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
-
+export async function POST(req: NextRequest) {
   await dbConnect();
+  const { address, resource } = await req.json();
 
-  const { address, resource } = req.body;
-  if (!address || !resource) return res.status(400).json({error: "Invalid data"});
+  if (!address || !resource) {
+    return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
+  }
 
   const user = await UserModel.findOne({ address });
-  if (!user) return res.status(404).json({error: "User not found"});
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
   const pending = user.pendingRewards?.[resource] ?? 0;
-  if (pending <= 0) return res.status(401).json({error: "Nothing to claim"});
+  if (pending <= 0) {
+    return NextResponse.json({ error: 'Nothing to claim' }, { status: 401 });
+  }
 
   user[resource] += pending;
   user.pendingRewards[resource] = 0;
   await user.save();
 
-  return res.json({
+  return NextResponse.json({
     success: true,
     resources: {
       food: user.food,
       wood: user.wood,
-      stone: user.iron,
+      stone: user.stone,
+      iron: user.iron,
       gold: user.gold,
     },
     pendingRewards: user.pendingRewards,

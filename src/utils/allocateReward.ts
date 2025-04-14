@@ -1,5 +1,5 @@
 import dbConnect from '@/lib/dbConnect';
-import UserModel from '@/models/UserModels';
+import { UserModel } from '@/models/UserModel';
 
 export async function allocateResources() {
   await dbConnect();

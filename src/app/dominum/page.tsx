@@ -4,7 +4,7 @@ import { Ship } from "@/components/Ship/Ship";
 import { useEffect } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useRouter } from 'next/navigation';
-import { BonusResources } from "@/components/Resources/ResourcesBonus/ResourcesArray";
+import { BonusResources } from "@/components/Resources/ResourceClaimIcon/ResourcesArray";
 import styles from "./DominumPage.module.css";
 import { DOMHeader } from "../../components/Headers/DOMHeader";
 import { DOMFooter } from "../../components/DOMFooter/DOMFooter";
