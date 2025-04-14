@@ -34,6 +34,14 @@ export interface UserState {
     iron: number;
     gold: number;
   };
+
+  heroes: {
+    id: string;
+    name: string;
+    rarity: 'common' | 'rare' | 'epic' | 'legendary';
+    class: string;
+  }[];
+  
 }
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
@@ -76,7 +84,8 @@ const initialState: UserState = {
     iron: 0,
     gold: 0,
   },
-  
+  heroes: [],
+
 };
 
 

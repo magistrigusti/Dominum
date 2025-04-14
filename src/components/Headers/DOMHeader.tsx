@@ -18,6 +18,10 @@ export const DOMHeader = () => {
         </Link>
 
         <TonConnectButton />
+
+        <Link className={styles.header_link} href="/">
+          <img className={styles.header_img_button} src="/button/backButton.jpg" alt="" />
+        </Link>
       </div>
     </div>
   );

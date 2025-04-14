@@ -21,12 +21,12 @@ export const DOMFooter = () => {
           <img className={styles.footer_img_button} src="/button/cityButton.jpg" alt="" />
         </Link>
 
-        <Link className={styles.footer_link} href="/dominum">
+        <Link className={styles.footer_link} href="/dominum/allods">
           <img className={styles.footer_img_button} src="/button/allodsButton.jpg" alt="" />
         </Link>
 
-        <Link className={styles.footer_link} href="/">
-          <img className={styles.footer_img_button} src="/button/backButton.jpg" alt="" />
+        <Link className={styles.footer_link} href="/dominum">
+          <img className={styles.footer_img_button} src="/button/mineButton.jpg" alt="" />
         </Link>
       </div>
     </div>

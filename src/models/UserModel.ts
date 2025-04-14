@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: true, unique: true },
   avatar: { type: String, required: true },
   name: { type: String, default: 'Capitan' },
-  prestige: { type: Number, default: 0 },
+  prestige: { type: Number, default: 100 },
   levelPrestige: { type: Number, default: 0 },
   prestigeProgress: { type: Number, default: 0 },
   technologies: { type: String, default: null },
@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   doubloon: { type: Number, default: 25 },
   pearl: { type: Number, default: 0 },
   allodium: { type: Number, default: 0 },
+
 
   // 🆕 Бонусы (временно активные ресурсы)
   activeBonuses: {
