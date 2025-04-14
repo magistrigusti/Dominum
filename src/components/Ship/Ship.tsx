@@ -1,6 +1,6 @@
 // /components/Ship/Ship.tsx
 'use client';
-import { QuestPanel } from "@/components/QuestLog/QuestPanel";
+import { QuestPanel } from "@/components/Quests/QuestLog/QuestPanel";
 import { useUser } from "@/context/UserContext";
 import React, { useState } from 'react';
 import styles from './Ship.module.css';

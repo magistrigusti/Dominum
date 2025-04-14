@@ -14,11 +14,11 @@ export async function allocateResources() {
 
   for (const user of users) {
     user.pendingRewards = {
-      food: 50,
-      wood: 30,
-      stone: 20,
-      iron: 10,
-      gold: 5,
+      food: 100,
+      wood: 50,
+      stone: 40,
+      iron: 25,
+      gold: 10,
     };
 
     await user.save();

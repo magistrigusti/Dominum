@@ -6,9 +6,10 @@ import { useTonWallet } from '@tonconnect/ui-react';
 import { useRouter } from 'next/navigation';
 import { BonusResources } from "@/components/Resources/ResourceClaimIcon/ResourcesArray";
 import styles from "./DominumPage.module.css";
-import { DOMHeader } from "../../components/Headers/DOMHeader";
-import { DOMFooter } from "../../components/DOMFooter/DOMFooter";
+import { DOMHeader } from "@/components/Headers/DOMHeader";
+import { DOMFooter } from "@/components/DOMFooter/DOMFooter";
 import { ResourcesBar } from "@/components/Resources/ResourcesBar";
+import { QuestButton } from "@/components/Quests/QuestButton/QuestButton";
 
 export default function DominumPage() {
   const wallet = useTonWallet();
@@ -28,6 +29,8 @@ export default function DominumPage() {
       <div className={styles.icons_wrapper}>
         <ResourcesBar />
       </div>
+
+      <QuestButton />
 
       <div className={styles.map_container}>
         <div className={styles.floating_island}>
