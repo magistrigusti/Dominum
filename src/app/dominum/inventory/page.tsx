@@ -30,26 +30,27 @@ export default function InventoryPage() {
   return (
     <div className={styles.inventory_wrapper}>
       <DOMHeader />
-      <div className={styles.bag_wrapper}>
-        <img src="/dominum/inventory.png" alt="Inventory" className={styles.bag_background} />
-        <div className={styles.grid}>
-          {items.map((item) => (
-            <div className={styles.item_cell} key={item.id}>
-              <img className={styles.item_icon}
-                src={item.icon}
-                alt={item.id}
-              />
 
-              <div className={styles.item_count}>
-                {item.amount}
+      <div className={styles.bag_wrapper}>
+        <div className={styles.bag_visual}>
+          <div className={styles.grid}>
+            {items.map((item) => (
+              <div className={styles.item_cell} key={item.id}>
+                <img className={styles.item_icon}
+                  src={item.icon}
+                  alt={item.id}
+                />
+                <div className={styles.item_count}>
+                  {item.amount}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-      <DOMFooter />
-    </div>
 
-  )
+      <DOMFooter /> 
+    </div>
+  );
 }
 

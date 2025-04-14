@@ -1,14 +1,18 @@
-.footer_container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
+.footer_wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: #0c0115;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer_header_wrapper {
   display: flex;
+  justify-content: center;
   align-items: center;
+  padding: 8px;
 }
 
 .footer_link {
