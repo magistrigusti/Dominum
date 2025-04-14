@@ -1,5 +1,5 @@
 'use client';
-
+        
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function Home() {
 
   useEffect(() => {
     if (wallet?.account?.address) {
-      router.push('/menu');
+      router.push('/');
     }
   }, [wallet]);
 
