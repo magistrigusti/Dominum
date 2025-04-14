@@ -1,5 +1,6 @@
 'use client';
 import { useUser } from "@/context/UserContext";
+import { CompliteQuestButton } from '../CompliteQuestButton/CompliteQuestButton';
 import styles from './QuestPanel.module.css';
 
 export const QuestPanel = () => {
@@ -20,6 +21,8 @@ export const QuestPanel = () => {
         <strong>{quest.title}</strong>
         <p>{quest.description}</p>
         <button className={styles.close_btn} onClick={handleClose}>✖</button>
+
+        <CompliteQuestButton />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const dummyHeroes = [
     image: '/dominum/heroes/hero-workin-grey.png',
     quality: 'обычный' as const,
     level: 1,
-    exp: 10,
+    exp: 0,
     expToNext: 100,
   },
   {
@@ -22,8 +22,8 @@ const dummyHeroes = [
     name: 'Добытчик',
     image: '/dominum/heroes/hero-workin-grey-2.png',
     quality: 'обычный' as const,
-    level: 2,
-    exp: 30,
+    level: 1,
+    exp: 0,
     expToNext: 120,
   },
 ];
