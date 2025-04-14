@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  pendingRewards: {
+    food: { type: Number, default: 0 },
+    wood: { type: Number, default: 0 },
+    stone: { type: Number, default: 0 },
+    iron: { type: Number, default: 0 },
+    gold: { type: Number, default: 0 },
+  },
+  
   
 });
 
