@@ -31,7 +31,9 @@ export default function DominumPage() {
 
       <div className={styles.map_container}>
         <div className={styles.floating_island}>
-          <img className={styles.map_image} src="/dominum/allod-1.png" alt="Остров" />
+          <img className={styles.map_image} 
+            src="/dominum/allod-1.png" alt="Остров" 
+          />
 
           <div className={styles.bonus_zone}>
             <BonusResources />

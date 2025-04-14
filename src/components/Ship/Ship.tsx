@@ -38,7 +38,7 @@ export const Ship: React.FC<ShipProps> = ({ onClick }) => {
       {quest && <QuestPanel />}
       <img
         className={styles.ship_image}
-        src="/dominum/ship-start.png"
+        src="/dominum/ships/ship-start.png"
         alt="Корабль"
       />
     </div>
