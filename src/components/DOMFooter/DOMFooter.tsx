@@ -17,7 +17,7 @@ export const DOMFooter = () => {
           <img className={styles.footer_img_button} src="/button/inventoriButton.jpg" alt="" />
         </Link>
 
-        <Link className={styles.footer_link} href="/">
+        <Link className={styles.footer_link} href="/dominum/city">
           <img className={styles.footer_img_button} src="/button/cityButton.jpg" alt="" />
         </Link>
 
