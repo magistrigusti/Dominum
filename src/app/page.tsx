@@ -19,7 +19,9 @@ export default function Home() {
 
   useEffect(() => {
     if (wallet?.account?.address) {
-      router.push('/');
+      router.push('/menu');
+    } else {
+      router.push('/')
     }
   }, [wallet]);
 
