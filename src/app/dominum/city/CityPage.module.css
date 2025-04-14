@@ -1,10 +1,46 @@
-.city_wrapper {
-  width: 100vw;
+.page_wrapper {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 
-  overflow: hidden;
 }
 
+.main_content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* изображение острова — без обрезки, ровно вписывается */
 .city_image {
-  pointer-events: none;            /* чтобы не мешало иконкам */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* ⬅️ теперь заполнит всю область, без отступов */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* иконки */
+.icon_wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.icon {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon:hover {
+  transform: scale(1.1);
 }
