@@ -19,6 +19,7 @@ export interface UserState {
   pearl: number;
   allodium: number;
   questPanelOpen?: boolean;
+  questShipRepaired?: boolean;
 
   activeQuest?: {
     id: string;
@@ -77,6 +78,8 @@ const initialState: UserState = {
   pearl: 0,
   allodium: 0,
   activeQuest: undefined, 
+  questShipRepaired: false,
+
   pendingRewards: {
     food: 0,
     wood: 0,

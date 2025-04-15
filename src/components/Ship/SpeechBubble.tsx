@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styles from './SpeechBubble.module.css';
 import { useUser } from "@/context/UserContext";
+import { CompleteQuestButton } from '@/components/Quests/CompleteQuestButton/CompleteQuestButton';
 
 
 interface SpeechBubbleProps {
@@ -49,10 +50,10 @@ export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ onClose }) => {
             2. Отремонтируйте корабль.<br /><br />
             <strong>Награда:</strong><br />
             🧝 Герой обычного качества<br />
-            🌟 100 очков престижа
+            🌟 550 очков престижа
           </p>
         )}
-
+        <CompleteQuestButton />
         <button className={styles.accept_btn} onClick={handleNext}>
           Принять
         </button>

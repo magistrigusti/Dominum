@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   doubloon: { type: Number, default: 25 },
   pearl: { type: Number, default: 0 },
   allodium: { type: Number, default: 0 },
+  questShipRepaired: { type: Boolean, default: false },
 
 
   // 🆕 Бонусы (временно активные ресурсы)

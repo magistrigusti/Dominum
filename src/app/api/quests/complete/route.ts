@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const user = await UserModel.findOne({ address });
   if (!user) return NextResponse.json({error: "User not fond"}, {status: 404});
 
-  if (user.wood < 10 || user.stone < 10 || user.gold < 5) {
+  if (user.food < 1000 || user.wood < 2000 || user.iron < 100) {
     return NextResponse.json({error: "Not enough responces"}, {status: 403});
   }
 
@@ -39,5 +39,7 @@ export async function POST(req: Request) {
     prestige: user.prestige,
     prestigeProgress: user.prestigeProgress,
     heroes: user.heroes,
+    questShipRepaired: true,
   });
+  
 }
