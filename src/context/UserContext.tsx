@@ -34,6 +34,18 @@ export interface UserState {
     rarity: 'common' | 'rare' | 'epic' | 'legendary';
     class: string;
   }[];
+
+  activeMining?: {
+    resource: string;
+    heroId: string;
+    startedAt: string;
+    duration: number;
+    position: {
+      x: number;
+      y: number;
+    };
+    remaining: number;
+  }
   
 }
 
@@ -72,6 +84,7 @@ const initialState: UserState = {
   activeQuest: undefined, 
   questShipRepaired: false,
   heroes: [],
+  activeMining: undefined,
 
 };
 

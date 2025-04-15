@@ -19,18 +19,16 @@ const userSchema = new mongoose.Schema({
   allodium: { type: Number, default: 0 },
   questShipRepaired: { type: Boolean, default: false },
 
-
-  // 🆕 Бонусы (временно активные ресурсы)
-  activeBonuses: {
-    type: Map,
-    of: new mongoose.Schema({
-      miningStart: { type: Number, required: true }, // Date.now()
-      position: {
-        top: { type: String, required: true },
-        left: { type: String, required: true },
-      }
-    }, { _id: false }),
-    default: {},
+  activeMining: {
+    type: {
+      resource: {type: String, enum: ['food', 'wood', 'stone', 'iron', 'gold']},
+      heroId: {type: String},
+      startedAt: {type: Date},
+      duration: {type: Number},
+      position: {type: {x: Number, y: Number}},
+      remaining: {type: Number},
+    },
+    default: null,
   },
 
   activeQuest: {
