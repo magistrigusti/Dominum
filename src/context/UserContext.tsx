@@ -28,14 +28,6 @@ export interface UserState {
     status: "active" | "complete";
   };
 
-  pendingRewards: {
-    food: number;
-    wood: number;
-    stone: number;
-    iron: number;
-    gold: number;
-  };
-
   heroes: {
     id: string;
     name: string;
@@ -79,14 +71,6 @@ const initialState: UserState = {
   allodium: 0,
   activeQuest: undefined, 
   questShipRepaired: false,
-
-  pendingRewards: {
-    food: 0,
-    wood: 0,
-    stone: 0,
-    iron: 0,
-    gold: 0,
-  },
   heroes: [],
 
 };

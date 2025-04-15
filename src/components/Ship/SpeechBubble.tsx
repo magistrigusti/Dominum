@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import styles from './SpeechBubble.module.css';
 import { useUser } from "@/context/UserContext";
-import { CompleteQuestButton } from '@/components/Quests/CompleteQuestButton/CompleteQuestButton';
+import { CompleteQuestButton } from '@/components/Quests/CompliteQuestButton/CompleteQuestButton';
 
 
 interface SpeechBubbleProps {

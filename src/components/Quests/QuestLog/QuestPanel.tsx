@@ -1,6 +1,6 @@
 'use client';
 import { useUser } from "@/context/UserContext";
-import { CompleteQuestButton } from '../CompleteQuestButton/CompleteQuestButton';
+import { CompleteQuestButton } from '../CompliteQuestButton/CompleteQuestButton';
 import styles from './QuestPanel.module.css';
 
 export const QuestPanel = () => {
