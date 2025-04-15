@@ -1,0 +1,50 @@
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal_content {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 340px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.resource_icon {
+  width: 64px;
+  height: 64px;
+  margin: 12px auto;
+}
+
+.collect_btn {
+  margin-top: 1rem;
+  background: #00cc66;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.close_btn {
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid #999;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #ccc;
+  cursor: pointer;
+}
