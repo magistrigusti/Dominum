@@ -1,7 +1,7 @@
 // app/dominum/page.tsx
 'use client';
 import { Ship } from "@/components/Ship/Ship";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
 import { useRouter } from 'next/navigation';
 import styles from "./DominumPage.module.css";
@@ -10,8 +10,11 @@ import { DOMFooter } from "@/components/DOMFooter/DOMFooter";
 import { ResourcesBar } from "@/components/Resources/ResourcesBar";
 import { QuestButton } from "@/components/Quests/QuestButton/QuestButton";
 import { useUser } from '@/context/UserContext';
+import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 
 export default function DominumPage() {
+  const [showModal, setShowModal] = useState(false);
+  const [showSelectHero, setShowSelectHero] = useState(false);
   const wallet = useTonWallet();
   const router = useRouter();
   const { state } = useUser();
@@ -34,23 +37,50 @@ export default function DominumPage() {
       <QuestButton />
 
       <div className={styles.map_container}>
+        <button
+          style={{
+            position: 'absolute',
+            top: '70px',
+            left: '12px',
+            zIndex: 1000,
+            padding: '10px 14px',
+            background: '#00aa66',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+          }}
+          onClick={() => setShowModal(true)}
+        >
+          💎 Открыть добычу
+        </button>
+
         <div className={styles.floating_island}>
-          <img className={styles.map_image}
-            src="/dominum/allod-2-1.png" alt="Остров"
-          />
+          <img className={styles.map_image} src="/dominum/allod-2-1.png" alt="Остров" />
 
-          <Ship
-            onClick={() => console.log("🚢 Корабль кликнут")}
-            src={state.questShipRepaired
-              ? "/dominum/ships/ship-fixed.png"
-              : "/dominum/ships/ship-start.png"}
-            position={state.questShipRepaired
-              ? { top: '90%', left: '50%' }
-              : { top: '22%', left: '18%' }}
-          />
+          {/* Модалка ресурса */}
+          {showModal && (
+            <ResourceNodeModal
+              resource="wood"
+              total={200}
+              remaining={150}
+              onCollect={() => {
+                setShowModal(false);
+                setShowSelectHero(true);
+              }}
+              onClose={() => setShowModal(false)}
+            />
+          )}
 
+          <div className={styles.bonus_zone}>
+            {/* если бонусы ещё остались — временно */}
+          </div>
+
+          <Ship onClick={() => console.log("🚢 Корабль кликнут")} />
         </div>
       </div>
+
 
       <DOMFooter />
     </div>

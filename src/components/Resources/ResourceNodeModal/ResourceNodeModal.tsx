@@ -15,7 +15,8 @@ export const ResourceNodeModal = ({ resource, total, remaining, onCollect, onClo
   return (
     <div className={styles.modal_overlay}>
       <div className={styles.modal_content}>
-        <h3>Добыча ресурса: {resource.toUpperCase()}</h3>
+        <h3>Добыча ресурса: {resource?.toUpperCase() ?? '...'}</h3>
+
 
         <img src={`/icons/resources/${resource}.png`} alt={resource} className={styles.resource_icon} />
 
