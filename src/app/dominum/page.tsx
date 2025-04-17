@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import styles from "./DominumPage.module.css";
 import { DOMHeader } from "@/components/Headers/DOMHeader";
 import { DOMFooter } from "@/components/DOMFooter/DOMFooter";
-import { ResourcesBar } from "@/components/Resources/ResourcesBar";
+import { ResourcesBar } from "@/components/Resources/ResourcesBar/ResourcesBar";
 import { QuestButton } from "@/components/Quests/QuestButton/QuestButton";
 import { useUser } from '@/context/UserContext';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
@@ -33,28 +33,10 @@ export default function DominumPage() {
       <div className={styles.icons_wrapper}>
         <ResourcesBar />
       </div>
-
+      
       <QuestButton />
 
       <div className={styles.map_container}>
-        <button
-          style={{
-            position: 'absolute',
-            top: '70px',
-            left: '12px',
-            zIndex: 1000,
-            padding: '10px 14px',
-            background: '#00aa66',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-          }}
-          onClick={() => setShowModal(true)}
-        >
-          💎 Открыть добычу
-        </button>
 
         <div className={styles.floating_island}>
           <img className={styles.map_image} src="/dominum/allod-2-1.png" alt="Остров" />

@@ -1,0 +1,23 @@
+.point {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+  animation: pulse 3s infinite ease-in-out;
+}
+
+.point img {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframe pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
