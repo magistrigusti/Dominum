@@ -1,5 +1,6 @@
 // app/dominum/page.tsx
 'use client';
+import Link from 'next/link';
 import { Ship } from "@/components/Ship/Ship";
 import { useEffect, useState } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
@@ -10,7 +11,6 @@ import { DOMFooter } from "@/components/DOMFooter/DOMFooter";
 import { ResourcesBar } from "@/components/Resources/ResourcesBar/ResourcesBar";
 import { QuestButton } from "@/components/Quests/QuestButton/QuestButton";
 import { useUser } from '@/context/UserContext';
-import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 
 export default function DominumPage() {
   const [showModal, setShowModal] = useState(false);
@@ -33,31 +33,20 @@ export default function DominumPage() {
       <div className={styles.icons_wrapper}>
         <ResourcesBar />
       </div>
-      
+
       <QuestButton />
 
       <div className={styles.map_container}>
 
         <div className={styles.floating_island}>
-          <img className={styles.map_image} src="/dominum/allod-2-1.png" alt="Остров" />
-
-          {/* Модалка ресурса */}
-          {showModal && (
-            <ResourceNodeModal
-              resource="wood"
-              total={200}
-              remaining={150}
-              onCollect={() => {
-                setShowModal(false);
-                setShowSelectHero(true);
-              }}
-              onClose={() => setShowModal(false)}
+          <Link href="/dominum/allods">
+            <img
+              className={styles.map_image}
+              src="/dominum/allods/start-island.png"
+              alt="Остров"
+              style={{ cursor: 'pointer' }}
             />
-          )}
-
-          <div className={styles.bonus_zone}>
-            {/* если бонусы ещё остались — временно */}
-          </div>
+          </Link>
 
           <Ship onClick={() => console.log("🚢 Корабль кликнут")} />
         </div>

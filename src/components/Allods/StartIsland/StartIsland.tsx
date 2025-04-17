@@ -4,13 +4,13 @@
 import { RESOURCE_NODES } from '@/config/resourceNodes';
 import { RESOURCE_LEVEL } from '@/config/resourceLevel';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
-import styles from './FloatingIsland.module.css';
+import styles from './StartIsland.module.css';
 
 export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => void}) => {
   return (
     <div className={styles.container}>
       <img className={styles.map_image} 
-        src="/dominum/allod-2-1.png"
+        src="/dominum/allods/start-island-map.jpg"
         alt="start island"
       />
 

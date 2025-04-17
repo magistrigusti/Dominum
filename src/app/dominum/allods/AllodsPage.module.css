@@ -1,0 +1,13 @@
+.allods_wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.map_scroll_area {
+  flex: 1;
+  overflow: scroll;
+  position: relative;
+  background: #1a1a1a;
+}

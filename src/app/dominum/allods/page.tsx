@@ -4,16 +4,17 @@
 import styles from './AllodsPage.module.css';
 import { DOMHeader } from '@/components/Headers/DOMHeader';
 import { DOMFooter } from '@/components/DOMFooter/DOMFooter';
+import { StartIsland } from '@/components/Allods/StartIsland/StartIsland';
 
 export default function AllodsPage() {
   return (
     <div className={styles.allods_wrapper}>
       <DOMHeader />
 
-      <div>
-        <div>
-          
-        </div>
+      <div className={styles.map_scroll_area}>
+        <StartIsland onOpenNode={(nodeId) => {
+          console.log("Открыть точку с ID:", nodeId);
+        }} />
       </div>
 
       <DOMFooter />
