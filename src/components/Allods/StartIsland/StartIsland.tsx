@@ -8,20 +8,18 @@ import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { useMemo, useState } from 'react';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 
-const RESOURCE_TYPES: ResourceType[] = RESOURCE_CONFIG
-  .filter(r => ['food', 'wood', 'stone', 'iron', 'gold'].includes(r.key))
-  .map(r => r.key as ResourceType);
+const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 
 export const StartIsland = () => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
 
   const points = useMemo(() =>
     generateResourceNodes(5, {
-      width: 500,
-      height: 500,
+      width: 550,
+      height: 450,
       offsetX: 120,
       offsetY: 250,
-    }, RESOURCE_TYPES), []
+    }, RESOURCE_TYPES.slice()), [] // ← 🛠️ фикс
   );
 
   return (
