@@ -1,4 +1,27 @@
 /* // 📄 src/components/Heroes/ModalHeroesGo/ModalHeroesGo.module.css */
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* тень */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal_content {
+  width: 90%;
+  max-width: 600px;
+  background: #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+
 .button {
   padding: 10px 20px;
   background-color: #747d75;
@@ -14,4 +37,36 @@
 .button:disabled {
   background-color: gray;
   cursor: not-allowed;
+}
+
+/* 📄 ModalHerosGo.module.css */
+.hero_list {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.controls {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.army_slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.capacity_info {
+  font-size: 12px;
+  color: #888;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
 }
