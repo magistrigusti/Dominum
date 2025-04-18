@@ -1,6 +1,4 @@
 // 📄 components/Resources/ResourcePoint.tsx
-'use clent';
-
 import styles from './ResourcePoint.module.css';
 
 interface Props {
@@ -10,13 +8,18 @@ interface Props {
   onClick: () => void;
 }
 
-export const ResourcePoint = ({icon, x, y, onClick}: Props) => {
+export const ResourcePoint = ({ icon, x, y, onClick }: Props) => {
   return (
-    <div className={styles.point} 
-      style={{top: `${y}px`, left: `${x}px`}}
+    <img
+      src={icon}
+      className={styles.resource_point}
+      alt="resource"
+      style={{
+        left: `${x}px`,
+        top: `${y}px`,
+        position: 'absolute',
+      }}
       onClick={onClick}
-    >
-      <img src={icon} alt="reource" />
-    </div>
-  )
-}
+    />
+  );
+};

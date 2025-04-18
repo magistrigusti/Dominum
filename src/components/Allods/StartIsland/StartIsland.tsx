@@ -14,7 +14,7 @@ export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => vo
         <div className={styles.map_image}>
           <div>
             {RESOURCE_NODES.map((node) => (
-              <ResourcePoint
+              <ResourcePoint 
                 key={node.id}
                 icon={`/icons/resources/${node.resource}.png`}
                 onClick={() => onOpenNode(node.id)}
