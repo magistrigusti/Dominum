@@ -8,10 +8,9 @@ import { IslandMapController } from '@/components/Map/IslandMapController';
 
 export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => void }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.map_wrapper}>
       <IslandMapController>
-        <img
-          className={styles.map_image}
+        <img className={styles.map_image}
           src="/dominum/allods/start-island-map.jpg"
           alt="Island Map"
         />

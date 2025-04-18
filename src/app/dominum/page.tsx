@@ -37,7 +37,6 @@ export default function DominumPage() {
       <QuestButton />
 
       <div className={styles.map_container}>
-
         <div className={styles.floating_island}>
           <Link href="/dominum/allods">
             <img
