@@ -1,11 +1,10 @@
-.point {
+.resource_point {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
-  animation: pulse 3s infinite ease-in-out;
 }
 
 .point img {
