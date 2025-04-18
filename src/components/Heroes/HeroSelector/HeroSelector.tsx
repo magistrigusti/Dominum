@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import styles from './HeroSelector.module.css';
-import { Hero } from '../../../types/heroes';
+import { Hero } from '@/types/heroes';
 import { HeroCard } from '../HeroCard/HeroCard';
 
 interface HeroSelectorProps {

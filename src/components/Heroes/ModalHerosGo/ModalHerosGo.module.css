@@ -24,6 +24,17 @@
   box-sizing: border-box;
 }
 
+.viewer_wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.hero_selector_small {
+  transform: scale(0.9);
+}
+
+
 .button {
   padding: 10px 20px;
   background-color: #747d75;
@@ -41,7 +52,29 @@
   cursor: not-allowed;
 }
 
-/* 📄 ModalHerosGo.module.css */
+.selected_hero_preview {
+  margin-bottom: 10px;
+  background: #f3f3f3;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selected_hero_card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview_img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
 .hero_list {
   display: flex;
   overflow-x: auto;

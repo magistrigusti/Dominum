@@ -1,8 +1,7 @@
 'use client';
 
 import styles from './HeroViewer.module.css';
-import { useState } from 'react';
-import { Hero } from '../../../types/heroes';
+import { Hero } from '@/types/heroes';
 
 export const HeroViewer = ({ hero }: { hero: Hero }) => {
   return (
