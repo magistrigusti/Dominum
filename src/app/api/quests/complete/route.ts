@@ -6,16 +6,18 @@ export async function POST(req: Request) {
   const { address, questId } = await req.json();
 
   if (!address || questId !== 'repair_ship') {
-    return NextResponse.json({error: 'Invalid request'}), {status: 400};
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 
   await dbConnect();
 
   const user = await UserModel.findOne({ address });
-  if (!user) return NextResponse.json({error: "User not fond"}, {status: 404});
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
 
   if (user.food < 1000 || user.wood < 2000 || user.iron < 100) {
-    return NextResponse.json({error: "Not enough responces"}, {status: 403});
+    return NextResponse.json({ error: 'Not enough resources' }, { status: 403 });
   }
 
   user.food -= 2000;
@@ -27,9 +29,9 @@ export async function POST(req: Request) {
 
   user.heroes.push({
     id: `hero-${Date.now()}`,
-    name: "Лоцман",
-    rarity: "common",
-    class: "engineer",
+    name: 'Лоцман',
+    rarity: 'common',
+    class: 'engineer',
   });
 
   await user.save();
@@ -41,5 +43,4 @@ export async function POST(req: Request) {
     heroes: user.heroes,
     questShipRepaired: true,
   });
-  
 }
