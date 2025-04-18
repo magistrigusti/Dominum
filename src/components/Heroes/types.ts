@@ -2,7 +2,7 @@ export interface Hero {
   id: string;
   name: string;
   image: string;
-  quality: 'обычный' | 'редкий' | 'эпический';
+  quality: 'normal' | 'good' | 'rare' | 'epic' | 'legendary';
   level: number;
   exp: number;
   expToNext: number;
