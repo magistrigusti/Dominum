@@ -15,9 +15,9 @@ export const ResourcePoint = ({ icon, x, y, onClick }: Props) => {
       className={styles.resource_point}
       alt="resource"
       style={{
+        position: 'absolute',
         left: `${x}px`,
         top: `${y}px`,
-        position: 'absolute',
       }}
       onClick={onClick}
     />

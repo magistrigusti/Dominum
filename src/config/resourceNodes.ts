@@ -27,4 +27,16 @@ export const RESOURCE_NODES: ResourceNode[] = [
     level: 1,
     position: {x: 100, y: 100},
   },
+  {
+    id: 'node_iron_1',
+    resource: 'iron',
+    level: 1,
+    position: {x: 100, y: 100},
+  },
+  {
+    id: 'node_gold_1',
+    resource: 'gold',
+    level: 1,
+    position: {x: 100, y: 100},
+  },
 ];
