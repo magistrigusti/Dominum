@@ -1,3 +1,4 @@
+// @/types/heroes.ts
 export interface Hero {
   id: string;
   name: string;
