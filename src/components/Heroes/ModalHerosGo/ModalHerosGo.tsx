@@ -26,6 +26,10 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
     <div className={styles.modal_overlay}>
       <div className={styles.modal_content}>
         <h2>Отправить Войско</h2>
+        <div>
+          <h4>блок выбора героев</h4>
+          <div>выброный герой</div>
+        </div>
 
         {/* 🔼 ГЕРОИ */}
         <div className={styles.hero_list}>
@@ -60,8 +64,8 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
           )}
 
           <div className={styles.actions}>
-            <button onClick={onClose}>Назад</button>
-            <button
+            <button className={styles.button} onClick={onClose}>Назад</button>
+            <button className={styles.button}
               onClick={() => {
                 if (selectedHero) onConfirm(selectedHero, armyCount);
               }}
