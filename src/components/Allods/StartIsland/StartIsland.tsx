@@ -10,10 +10,12 @@ export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => vo
   return (
     <div className={styles.map_wrapper}>
       <IslandMapController>
-        <img className={styles.map_image}
-          src="/dominum/allods/start-island-map.jpg"
-          alt="Island Map"
-        />
+        <div>
+          <img className={styles.map_image}
+            src="/dominum/allods/start-island-map.jpg"
+            alt="Island Map"
+          />
+        </div>
 
         {/* {RESOURCE_NODES.map((node) => (
           <ResourcePoint

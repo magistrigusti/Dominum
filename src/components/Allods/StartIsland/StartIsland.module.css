@@ -1,1 +1,15 @@
 /* 📄 src/components/Allods/StartIsland/StartIsland.module.css */
+.map_wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.map_image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
