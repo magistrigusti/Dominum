@@ -5,6 +5,7 @@ import styles from './StartIsland.module.css';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController';
 import { useMemo } from 'react';
+import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 
@@ -13,12 +14,12 @@ export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => vo
     const placed: { x: number; y: number }[] = [];
     const result = [];
 
-    const areaWidth = 300;
-    const areaHeight = 300;
+    const areaWidth = 500;
+    const areaHeight = 500;
     const offsetX = 120;
     const offsetY = 250;
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       let x: number, y: number;
       let tries = 0;
       do {

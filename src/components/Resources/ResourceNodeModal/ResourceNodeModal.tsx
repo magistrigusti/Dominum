@@ -4,7 +4,7 @@
 import styles from './ResourceNodeModal.module.css';
 
 interface Props {
-  resource: 'wood' | 'stone' | 'iron' | 'gold';
+  resource: 'food' | 'wood' | 'stone' | 'iron' | 'gold';
   total: number;
   remaining: number;
   onCollect: () => void;
