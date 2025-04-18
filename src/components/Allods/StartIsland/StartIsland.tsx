@@ -10,7 +10,13 @@ import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/Reso
 
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 
-export const StartIsland = () => {
+// 🔧 1. Добавляем интерфейс
+interface StartIslandProps {
+  onOpenNode?: (nodeId: string) => void;
+}
+
+// 🔧 2. Принимаем проп
+export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
 
   const points = useMemo(() =>
@@ -19,7 +25,7 @@ export const StartIsland = () => {
       height: 450,
       offsetX: 120,
       offsetY: 250,
-    }, RESOURCE_TYPES.slice()), [] // ← 🛠️ фикс
+    }, RESOURCE_TYPES.slice()), []
   );
 
   return (
@@ -32,7 +38,10 @@ export const StartIsland = () => {
               icon={node.icon}
               x={node.x}
               y={node.y}
-              onClick={() => setActiveNode(node.id)}
+              onClick={() => {
+                setActiveNode(node.id);
+                onOpenNode?.(node.id); // 🔥 теперь работает
+              }}
             />
           ))}
 
@@ -50,3 +59,4 @@ export const StartIsland = () => {
     </div>
   );
 };
+
