@@ -1,16 +1,13 @@
 /* 📄 src/components/Allods/StartIsland/StartIsland.module.css */
 .map_wrapper {
-  display: flex;
-  flex-direction: column;
   height: 100vh;
-  background: url("/dominum/allods/start-island-map.jpg");
+  width: 100wh;
+  background: url("/dominum/backGround/dominum_bg_mine.jpg");
 }
 
 .map_image {
-  width: 100%;
+  width: 100wh;
   height: 100%;
-  object-fit: contain;
-  display: block;
-  justify-content: center;
-  align-items: center;
+
+  background: url("/dominum/allods/start-allod.png");
 }

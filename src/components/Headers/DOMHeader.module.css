@@ -6,6 +6,8 @@
   width: 100%; /* важное условие */
   padding: 0 1rem; /* немного отступов по бокам */
   color: white;
+  background: transparent;
+
 }
 
 .user_link {

@@ -54,6 +54,50 @@ export const IslandMapController = ({ children }: Props) => {
     };
   }, [dragging]);
 
+  useEffect(() => {
+    const element = mapRef.current;
+    if (!element) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        startRef.current = {x: touch.clientX, y: touch.clientY};
+        setDragging(true);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!dragging || !startRef.current || e.touches.length !== 1) return;
+
+      const touch = e.touches[0];
+      const dx = touch.clientX - startRef.current.x;
+      const dy = touch.clientY - startRef.current.y;
+
+      setPosition(prev => ({
+        x: prev.x + dx,
+        y: prev.y + dy,
+      }));
+
+      startRef.current = {x: touch.clientX, y: touch.clientY};
+    };
+
+    const handleTouchEnd = () => {
+      setDragging(false);
+      startRef.current = null;
+    };
+
+    element.addEventListener('touchstart', handleTouchStart, {passive: false});
+    element.addEventListener('touchmove', handleTouchMove, {passive: false});
+    element.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener('touchmove', handleTouchMove);
+      element.removeEventListener('touchend', handleTouchEnd);
+    }
+    
+  }, [dragging]);
+
   return (
     <div
       className={styles.viewport}

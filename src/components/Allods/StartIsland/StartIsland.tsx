@@ -8,10 +8,11 @@ import { IslandMapController } from '@/components/Map/IslandMapController';
 
 export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => void }) => {
   return (
-    <IslandMapController>
-      <div className={styles.map_wrapper}>  
 
-        {/* {RESOURCE_NODES.map((node) => (
+    <div className={styles.map_wrapper}>
+      <IslandMapController>
+        <div className={styles.map_image}>
+          {/* {RESOURCE_NODES.map((node) => (
           <ResourcePoint
             key={node.id}
             icon={`/icons/resources/${node.resource}.png`}
@@ -20,7 +21,9 @@ export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => vo
             y={node.position.y}
           />
         ))} */}
-      </div>
-    </IslandMapController>
+        </div>
+      </IslandMapController>
+    </div>
+
   );
 };

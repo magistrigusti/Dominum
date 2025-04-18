@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   z-index: 999;
-  background: #0c0115;
+  background: transparent;
   border-top: 1px solid rgba(255,255,255,0.1);
 }
 

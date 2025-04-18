@@ -4,7 +4,9 @@
   overflow: hidden;
   position: relative;
   cursor: grab;
+  touch-action: none; /* Важно для отключения жестов браузера */
 }
+
 
 .inner {
   width: 1000px;
