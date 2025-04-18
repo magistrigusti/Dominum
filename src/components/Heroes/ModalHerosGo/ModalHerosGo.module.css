@@ -5,22 +5,24 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* тень */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  padding: 16px; /* 👈 чтобы на мобилках было место */
+  box-sizing: border-box; /* 👈 это важно! */
 }
 
 .modal_content {
-  width: 90%;
+  width: 100%;
   max-width: 600px;
   background: #ccc;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
 }
-
 
 .button {
   padding: 10px 20px;

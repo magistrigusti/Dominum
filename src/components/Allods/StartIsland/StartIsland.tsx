@@ -96,22 +96,20 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
               onClose={() => setActiveNode(null)}
             />
           )}
-
-          {/* модалка героев */}
-          {isHeroModalOpen && (
-            <ModalHerosGo
-              onClose={() => setHeroModalOpen(false)}
-              onConfirm={(heroId, armyCount) => {
-                console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
-                setHeroModalOpen(false);
-                setSelectedNodeId(null);
-                // 📡 здесь будет отправка на сервер
-              }}
-              heroes={mockHeroes}
-            />
-          )}
         </div>
       </IslandMapController>
+
+      {isHeroModalOpen && (
+        <ModalHerosGo
+          onClose={() => setHeroModalOpen(false)}
+          onConfirm={(heroId, armyCount) => {
+            console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
+            setHeroModalOpen(false);
+            setSelectedNodeId(null);
+          }}
+          heroes={mockHeroes}
+        />
+      )}
     </div>
   );
 };
