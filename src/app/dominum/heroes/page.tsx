@@ -1,5 +1,5 @@
 'use client';
-import { Hero } from '@/components/Heroes/types';
+import { Hero } from '@/types/heroes';
 import { useState } from 'react';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';

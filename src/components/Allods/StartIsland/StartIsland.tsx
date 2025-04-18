@@ -7,6 +7,7 @@ import { IslandMapController } from '@/components/Map/IslandMapController';
 import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { useMemo, useState } from 'react';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
+import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 

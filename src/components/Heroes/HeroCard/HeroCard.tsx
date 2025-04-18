@@ -1,5 +1,5 @@
 import styles from './HeroCard.module.css';
-import { Hero } from '../types';
+import { Hero } from '../../../types/heroes';
 
 interface HeroCardProps {
   hero: Hero;
