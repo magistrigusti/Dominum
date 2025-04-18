@@ -2,8 +2,8 @@
 'use client';
 
 import styles from './StartIsland.module.css';
-// import { RESOURCE_NODES } from '@/config/resourceNodes';
-// import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
+import { RESOURCE_NODES } from '@/config/resourceNodes';
+import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController';
 
 export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => void }) => {
@@ -12,15 +12,17 @@ export const StartIsland = ({ onOpenNode }: { onOpenNode: (nodeId: string) => vo
     <div className={styles.map_wrapper}>
       <IslandMapController>
         <div className={styles.map_image}>
-          {/* {RESOURCE_NODES.map((node) => (
-          <ResourcePoint
-            key={node.id}
-            icon={`/icons/resources/${node.resource}.png`}
-            onClick={() => onOpenNode(node.id)}
-            x={node.position.x}
-            y={node.position.y}
-          />
-        ))} */}
+          <div>
+            {RESOURCE_NODES.map((node) => (
+              <ResourcePoint
+                key={node.id}
+                icon={`/icons/resources/${node.resource}.png`}
+                onClick={() => onOpenNode(node.id)}
+                x={node.position.x}
+                y={node.position.y}
+              />
+            ))}
+          </div>
         </div>
       </IslandMapController>
     </div>
