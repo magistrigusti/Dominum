@@ -14,6 +14,9 @@ export const IslandMapController = ({ children }: Props) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const startRef = useRef<{ x: number; y: number } | null>(null);
+  const pinchStartDistanceRef = useRef<number | null>(null);
+  const pinchStartScaleRef = useRef<number>(1);
+
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -67,24 +70,43 @@ export const IslandMapController = ({ children }: Props) => {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!dragging || !startRef.current || e.touches.length !== 1) return;
-
-      const touch = e.touches[0];
-      const dx = touch.clientX - startRef.current.x;
-      const dy = touch.clientY - startRef.current.y;
-
-      setPosition(prev => ({
-        x: prev.x + dx,
-        y: prev.y + dy,
-      }));
-
-      startRef.current = {x: touch.clientX, y: touch.clientY};
-    };
+      if (e.touches.length === 1 && dragging && startRef.current) {
+        // перемещение по одному пальцу
+        const touch = e.touches[0];
+        const dx = touch.clientX - startRef.current.x;
+        const dy = touch.clientY - startRef.current.y;
+    
+        setPosition((prev) => ({
+          x: prev.x + dx,
+          y: prev.y + dy,
+        }));
+    
+        startRef.current = { x: touch.clientX, y: touch.clientY };
+      }
+    
+      // ➕ вот это — обработка pinch-to-zoom:
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+    
+        if (pinchStartDistanceRef.current === null) {
+          pinchStartDistanceRef.current = distance;
+          pinchStartScaleRef.current = scale;
+        } else {
+          const scaleFactor = distance / pinchStartDistanceRef.current;
+          const newScale = Math.min(2, Math.max(0.8, pinchStartScaleRef.current * scaleFactor));
+          setScale(newScale);
+        }
+      }
+    };    
 
     const handleTouchEnd = () => {
       setDragging(false);
       startRef.current = null;
+      pinchStartDistanceRef.current = null;
     };
+    
 
     element.addEventListener('touchstart', handleTouchStart, {passive: false});
     element.addEventListener('touchmove', handleTouchMove, {passive: false});
