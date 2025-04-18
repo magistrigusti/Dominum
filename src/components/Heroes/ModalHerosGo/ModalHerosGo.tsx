@@ -8,12 +8,46 @@ import { calculateHeroCapacity } from '@/utils/calculateHeroCapacity';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
 
+const dummyHeroes = [
+  {
+    id: '1',
+    name: 'Добытчик',
+    image: '/dominum/heroes/hero-workin-grey.png',
+    quality: 'normal' as const,
+    level: 1,
+    exp: 0,
+    expToNext: 100,
+  },
+  {
+    id: '2',
+    name: 'Добытчик',
+    image: '/dominum/heroes/hero-workin-grey-2.png',
+    quality: 'normal' as const,
+    level: 1,
+    exp: 0,
+    expToNext: 120,
+  },
+];
+
 // 🔧 Хук защиты от SSR ошибок
 const useHasMounted = () => {
   const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => setHasMounted(true), []);
   return hasMounted;
 };
+
+interface HeroSelectorProps {
+  heroes: Hero[];
+  selectedHero: Hero;
+  onSelect: (hero: Hero) => void;
+}
+
+interface HeroCardProps {
+  hero: Hero;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
 
 interface Props {
   onClose: () => void;
@@ -41,15 +75,12 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
     <div className={styles.modal_overlay}>
       <div className={styles.modal_content}>
         <h2>Отправить Войско</h2>
-
-        <div className={styles.viewer_wrapper}>
-          <HeroViewer hero={selectedHero} />
-        </div>
+        <HeroViewer hero={selectedHero} className={styles.modal_hero_scale} />
 
         <HeroSelector
-          heroes={heroes}
+          heroes={dummyHeroes}
           selectedHero={selectedHero}
-          onSelect={(hero) => setSelectedHero(hero)}
+          onSelect={setSelectedHero}
         />
 
         {/* 🔽 ВОЙСКО */}

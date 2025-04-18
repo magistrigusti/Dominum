@@ -19,7 +19,7 @@
   max-width: 600px;
   background: #ccc;
   border-radius: 8px;
-  padding: 20px;
+  padding: 0px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
 }
@@ -32,6 +32,11 @@
 
 .hero_selector_small {
   transform: scale(0.9);
+}
+
+.modal_hero_scale {
+  height: 350px;
+  transform: scale(0.5);
 }
 
 
