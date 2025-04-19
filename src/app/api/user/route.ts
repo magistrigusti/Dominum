@@ -24,7 +24,29 @@ export async function POST(req: Request) {
       console.log('✅ Создан новый пользователь:', user.address);
     }
 
-    return NextResponse.json(user);
+    return NextResponse.json({
+      address: user.address,
+      avatar: user.avatar,
+      name: user.name,
+      prestige: user.prestige,
+      levelPrestige: user.levelPrestige,
+      prestigeProgress: user.prestigeProgress,
+      technologies: user.technologies,
+      food: user.food,
+      wood: user.wood,
+      stone: user.stone,
+      iron: user.iron,
+      gold: user.gold,
+      doubloon: user.doubloon,
+      pearl: user.pearl,
+      allodium: user.allodium,
+      questShipRepaired: user.questShipRepaired,
+      questPanelOpen: user.questPanelOpen,
+      activeMining: user.activeMining,
+      activeQuest: user.activeQuest,
+      heroes: user.heroes || [],
+    });
+    
     
   } catch (err) {
     console.error('❌ [POST /api/user] Server error:', err);

@@ -19,25 +19,25 @@ const useHasMounted = () => {
 interface Props {
   onClose: () => void;
   onConfirm: (heroId: string, armyCount: number) => void;
-
 }
 
 export const ModalHerosGo = ({ onClose, onConfirm }: Props) => {
   const hasMounted = useHasMounted();
+  const { state } = useUser();
+  const playerHeroes = state.heroes || [];
+
   const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
   const [armyCount, setArmyCount] = useState<number>(0);
 
-  const { state } = useUser();
-  const playerHeroes = state.heroes;
-
-  // Инициализируем выбранного героя первым из списка
+  // 🧠 Инициализация выбранного героя
   useEffect(() => {
     if (playerHeroes.length > 0 && !selectedHero) {
       setSelectedHero(playerHeroes[0]);
     }
-  }, [playerHeroes, selectedHero]);
+  }, [playerHeroes.length]);
 
-  if (!hasMounted || !selectedHero) return null;
+  // 🛑 Не рендерим до полной инициализации
+  if (!hasMounted || playerHeroes.length === 0 || !selectedHero) return null;
 
   const maxCapacity = calculateHeroCapacity(selectedHero.level, selectedHero.quality);
 
@@ -45,6 +45,7 @@ export const ModalHerosGo = ({ onClose, onConfirm }: Props) => {
     <div className={styles.modal_overlay}>
       <div className={styles.modal_content}>
         <h2>Отправить Войско</h2>
+
         <HeroViewer hero={selectedHero} className={styles.modal_hero_scale} />
 
         <HeroSelector
@@ -53,7 +54,6 @@ export const ModalHerosGo = ({ onClose, onConfirm }: Props) => {
           onSelect={setSelectedHero}
         />
 
-        {/* 🔽 ВОЙСКО */}
         <div className={styles.controls}>
           <div className={styles.army_slider}>
             <label>Войска: </label>

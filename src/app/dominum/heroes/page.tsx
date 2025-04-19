@@ -16,39 +16,41 @@ const useHasMounted = () => {
   return hasMounted;
 };
 
-
 export default function HeroesPage() {
   const { state } = useUser();
   const heroes = state.heroes || [];
-  const [selectedHero, setSelectedHero] = useState<Hero | null>(heroes[0] || null);
-
   const hasMounted = useHasMounted();
+
+  const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
 
   useEffect(() => {
     if (!selectedHero && heroes.length > 0) {
       setSelectedHero(heroes[0]);
     }
-  }, [heroes]);
+  }, [heroes.length]);
 
-  if (!hasMounted) return null;
+  console.log('[HeroesPage]', {
+    hasMounted,
+    heroes,
+    selectedHero,
+    state,
+  });
+  
+
+  if (!hasMounted || heroes.length === 0 || !selectedHero) return null;
 
   return (
     <div className={styles.page_wrapper}>
       <DOMHeader />
       <div className={styles.hero_main_container}>
-        {selectedHero && (
-          <>
-            <HeroViewer hero={selectedHero} />
-            <HeroSelector
-              heroes={heroes}
-              selectedHero={selectedHero}
-              onSelect={setSelectedHero}
-            />
-          </>
-        )}
+        <HeroViewer hero={selectedHero} />
+        <HeroSelector
+          heroes={heroes}
+          selectedHero={selectedHero}
+          onSelect={setSelectedHero}
+        />
       </div>
       <DOMFooter />
     </div>
   );
 }
-
