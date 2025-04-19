@@ -1,4 +1,4 @@
-// 📁 src/app/api/mining/start/route.ts
+// 📁 src/app/api/resource/init/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import {UserModel} from '@/models/UserModel';

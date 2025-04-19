@@ -96,7 +96,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           {points.map((node) => (
             <ResourcePoint
               key={node.id}
-              avatar={node.icon}
+              avatar={node.avatar}
               x={node.x}
               y={node.y}
               onClick={() => {

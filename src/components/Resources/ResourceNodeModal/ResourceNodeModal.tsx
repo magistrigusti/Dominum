@@ -18,7 +18,7 @@ export const ResourceNodeModal = ({ resource, total, remaining, onCollect, onClo
         <h3>Добыча ресурса: {resource?.toUpperCase() ?? '...'}</h3>
 
 
-        <img src={`/icons/resources/${resource}.png`} alt={resource} className={styles.resource_icon} />
+        <img src={`/icons/resources/${resource}-1.png`} alt={resource} className={styles.resource_icon} />
 
         <p>Всего на точке: {total}</p>
         <p>Осталось: {remaining}</p>
