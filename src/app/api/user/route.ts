@@ -1,10 +1,9 @@
 // src/app/api/user/route.ts
-
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
 import { updateResourceNodesIfNeeded } from '@/utils/updateResourceNodes';
-
+import { RESOURCE_CONFIG } from '@/constants/resources';
 
 export async function POST(req: Request) {
   try {
@@ -28,7 +27,17 @@ export async function POST(req: Request) {
       console.log('✅ Создан новый пользователь:', user.address);
     }
 
+    // 🛠 Генерация точек, если надо
     updateResourceNodesIfNeeded(user);
+
+    // 🖼 Добавляем avatar к каждой точке
+    if (user.resourceNodes) {
+      for (const node of user.resourceNodes) {
+        const meta = RESOURCE_CONFIG.find(r => r.key === node.resource);
+        node.avatar = meta?.avatar || '/icons/resources/default.png';
+      }
+    }
+
     await user.save();
 
     return NextResponse.json({
@@ -52,9 +61,9 @@ export async function POST(req: Request) {
       activeMining: user.activeMining,
       activeQuest: user.activeQuest,
       heroes: user.heroes || [],
+      resourceNodes: user.resourceNodes || [],
     });
-    
-    
+
   } catch (err) {
     console.error('❌ [POST /api/user] Server error:', err);
     return NextResponse.json({ error: 'Server error', details: String(err) }, { status: 500 });
