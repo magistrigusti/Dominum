@@ -84,7 +84,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             setHeroModalOpen(false);
             setSelectedNodeId(null);
           }}
-          heroes={playerHeroes}
+
         />
       )}
     </div>

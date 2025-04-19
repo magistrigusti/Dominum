@@ -16,35 +16,26 @@ const useHasMounted = () => {
   return hasMounted;
 };
 
-interface HeroSelectorProps {
-  heroes: Hero[];
-  selectedHero: Hero;
-  onSelect: (hero: Hero) => void;
-}
-
-interface HeroCardProps {
-  hero: Hero;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
 interface Props {
   onClose: () => void;
   onConfirm: (heroId: string, armyCount: number) => void;
-  heroes: Hero[];
+
 }
 
-export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
+export const ModalHerosGo = ({ onClose, onConfirm }: Props) => {
   const hasMounted = useHasMounted();
   const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
   const [armyCount, setArmyCount] = useState<number>(0);
 
+  const { state } = useUser();
+  const playerHeroes = state.heroes;
+
   // Инициализируем выбранного героя первым из списка
   useEffect(() => {
-    if (heroes.length > 0 && !selectedHero) {
-      setSelectedHero(heroes[0]);
+    if (playerHeroes.length > 0 && !selectedHero) {
+      setSelectedHero(playerHeroes[0]);
     }
-  }, [heroes, selectedHero]);
+  }, [playerHeroes, selectedHero]);
 
   if (!hasMounted || !selectedHero) return null;
 

@@ -1,3 +1,4 @@
+// app/dominum/heroes/page.tsx
 'use client';
 import { Hero } from '@/types/heroes';
 import { useState } from 'react';
