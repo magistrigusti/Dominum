@@ -51,6 +51,20 @@ const userSchema = new mongoose.Schema({
       },
     ]
   },
+  resourceNodes: {
+    type: [{
+      id: { type: String, required: true },
+      resource: { type: String, required: true },
+      level: { type: Number, require: true },
+      position: {
+        x: Number,
+        y: Number
+      },
+      remaining: Number,
+      lastRestoedAt: String
+    }],
+    default: []
+  },
   activeMining: {
     type: {
       resource: { type: String, enum: ['food', 'wood', 'stone', 'iron', 'gold'] },

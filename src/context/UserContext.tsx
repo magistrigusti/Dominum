@@ -39,6 +39,15 @@ export interface UserState {
     expToNext: number;
   }[];
 
+  resourceNodes?: {
+    id: string;
+    resource: string;
+    level: number
+    position: { x: number; y: number };
+    remaining: number;
+    lastRestoredAt?: string;
+  }[];
+
   activeMining?: {
     resource: string;
     heroId: string;
