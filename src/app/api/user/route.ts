@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       user = await UserModel.create({
         address,
         avatar: '/icons/user-icon.png',
+        heroes: [],
       });
       console.log('✅ Создан новый пользователь:', user.address);
     }
