@@ -19,12 +19,14 @@ const useHasMounted = () => {
 interface Props {
   onClose: () => void;
   onConfirm: (heroId: string, armyCount: number) => void;
+  heroes: Hero[];
 }
 
-export const ModalHerosGo = ({ onClose, onConfirm }: Props) => {
+export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
   const hasMounted = useHasMounted();
-  const { state } = useUser();
-  const playerHeroes = state.heroes || [];
+  // const { state } = useUser();
+  // const playerHeroes = state.heroes || [];
+  const playerHeroes = heroes || [];
 
   const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
   const [armyCount, setArmyCount] = useState<number>(0);

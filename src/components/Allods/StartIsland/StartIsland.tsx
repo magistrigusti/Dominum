@@ -13,7 +13,6 @@ import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 import { useUser } from '@/context/UserContext';
 import type { Mission } from '@/components/Map/HeroesBar/HeroesBar';
 
-
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 
 // 🔧 интерфейс пропсов
@@ -45,6 +44,48 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     setHeroModalOpen(true);
     setSelectedNodeId(activeNode);
     setActiveNode(null); // закрываем окно ресурса
+  };
+
+  // 💡 фильтрация свободных героев
+  const availableHeroes = playerHeroes.filter(
+    hero => !activeMissions.some(m => m.heroId === hero.id)
+  );
+
+  const handleConfirm = async (heroId: string, armyCount: number) => {
+    const node = points.find(p => p.id === selectedNodeId);
+    if (!node) return;
+
+    const mission: Mission = {
+      heroId,
+      hero: playerHeroes.find(h => h.id === heroId)!,
+      armyCount,
+      nodeId: selectedNodeId!,
+      resource: node.resource,
+      duration: 60,
+      startTime: Date.now(),
+    };
+
+    setActiveMissions(prev => [...prev, mission]);
+
+    // 📡 отправляем на сервер, чтобы герой ушёл в активную миссию
+    await fetch('/api/user/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        address: state.address,
+        activeMining: {
+          resource: mission.resource,
+          heroId: mission.heroId,
+          startedAt: new Date(),
+          duration: mission.duration,
+          position: points.find(p => p.id === mission.nodeId),
+          remaining: 100,
+        }
+      })
+    });
+
+    setHeroModalOpen(false);
+    setSelectedNodeId(null);
   };
 
   return (
@@ -80,26 +121,9 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
       {isHeroModalOpen && (
         <ModalHerosGo
+          heroes={availableHeroes}
           onClose={() => setHeroModalOpen(false)}
-          onConfirm={(heroId, armyCount) => {
-            const node = points.find(p => p.id === selectedNodeId);
-            setActiveMissions(prev => [...prev, {
-              id: `${heroId}-${Date.now()}`, 
-              heroId,
-              hero: playerHeroes.find(h => h.id === heroId),
-              armyCount,
-              nodeId: selectedNodeId,
-              resource: node.resource,
-              duration: 60,
-              startTime: Date.now(),
-            }])
-            
-          
-            console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
-            setHeroModalOpen(false);
-            setSelectedNodeId(null);
-          }}
-
+          onConfirm={handleConfirm}
         />
       )}
 
