@@ -10,7 +10,12 @@ import { DOMHeader } from '@/components/Headers/DOMHeader';
 import { DOMFooter } from '@/components/DOMFooter/DOMFooter';
 import styles from './HeroesPage.module.css';
 
-const
+const useHasMounted = () => {
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => setHasMounted(true), []);
+  return hasMounted;
+};
+
 
 export default function HeroesPage() {
   const { state } = useUser();
