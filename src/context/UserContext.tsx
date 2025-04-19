@@ -31,8 +31,11 @@ export interface UserState {
   heroes: {
     id: string;
     name: string;
-    rarity: 'common' | 'rare' | 'epic' | 'legendary';
-    class: string;
+    image: string;
+    quality: 'normal' | 'good' | 'rare' | 'epic' | 'legendary';
+    level: number;
+    exp: number;
+    expToNext: number;
   }[];
 
   activeMining?: {
@@ -46,7 +49,7 @@ export interface UserState {
     };
     remaining: number;
   }
-  
+
 }
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
@@ -55,14 +58,14 @@ type UserAction =
   | { type: "SET_USER"; payload: UserState }
   | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
   | {
-      type: "SET_ACTIVE_QUEST";
-      payload: {
+    type: "SET_ACTIVE_QUEST";
+    payload: {
       id: string;
       title: string;
       description: string;
       status: "active" | "complete";
-      };
-    }
+    };
+  }
   | { type: "TOGGLE_QUEST_PANEL"; payload: boolean }
 
 
@@ -81,7 +84,7 @@ const initialState: UserState = {
   doubloon: 0,
   pearl: 0,
   allodium: 0,
-  activeQuest: undefined, 
+  activeQuest: undefined,
   questShipRepaired: false,
   heroes: [],
   activeMining: undefined,

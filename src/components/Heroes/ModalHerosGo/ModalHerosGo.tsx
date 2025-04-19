@@ -8,26 +8,6 @@ import { calculateHeroCapacity } from '@/utils/calculateHeroCapacity';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
 
-const dummyHeroes = [
-  {
-    id: '1',
-    name: 'Добытчик',
-    image: '/dominum/heroes/hero-workin-grey.png',
-    quality: 'normal' as const,
-    level: 1,
-    exp: 0,
-    expToNext: 100,
-  },
-  {
-    id: '2',
-    name: 'Добытчик',
-    image: '/dominum/heroes/hero-workin-grey-2.png',
-    quality: 'normal' as const,
-    level: 1,
-    exp: 0,
-    expToNext: 120,
-  },
-];
 
 // 🔧 Хук защиты от SSR ошибок
 const useHasMounted = () => {
@@ -78,7 +58,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
         <HeroViewer hero={selectedHero} className={styles.modal_hero_scale} />
 
         <HeroSelector
-          heroes={dummyHeroes}
+          heroes={playerHeroes}
           selectedHero={selectedHero}
           onSelect={setSelectedHero}
         />

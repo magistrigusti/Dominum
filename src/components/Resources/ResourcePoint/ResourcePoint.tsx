@@ -2,16 +2,16 @@
 import styles from './ResourcePoint.module.css';
 
 interface Props {
-  icon: string;
+  avatar: string;
   x: number;
   y: number;
   onClick: () => void;
 }
 
-export const ResourcePoint = ({ icon, x, y, onClick }: Props) => {
+export const ResourcePoint = ({ avatar, x, y, onClick }: Props) => {
   return (
     <img
-      src={icon}
+      src={avatar}
       className={styles.resource_point}
       alt="resource"
       style={{

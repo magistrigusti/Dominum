@@ -14,11 +14,11 @@ export type ResourceConfig = {
 
 // ✅ фиксируем массив как readonly
 export const RESOURCE_CONFIG = [
-  { key: "food", label: "Еда", icon: "/icons/resources/food.png" },
-  { key: "wood", label: "Дерево", icon: "/icons/resources/wood.png" },
-  { key: "stone", label: "Камень", icon: "/icons/resources/stone.png" },
-  { key: "iron", label: "Железо", icon: "/icons/resources/iron.png" },
-  { key: "gold", label: "Золото", icon: "/icons/resources/gold.png" },
+  { key: "food", label: "Еда", icon: "/icons/resources/food.png", avatar: "/icons/resources/food.png", },
+  { key: "wood", label: "Дерево", icon: "/icons/resources/wood.png", avatar: "/icons/resources/food.png", },
+  { key: "stone", label: "Камень", icon: "/icons/resources/stone.png", avatar: "/icons/resources/food.png", },
+  { key: "iron", label: "Железо", icon: "/icons/resources/iron.png", avatar: "/icons/resources/food.png", },
+  { key: "gold", label: "Золото", icon: "/icons/resources/gold.png", avatar: "/icons/resources/food.png", },
   { key: "doubloon", label: "Дублоны", icon: "/icons/resources/doubloon.png" },
   { key: "pearl", label: "Жемчуг", icon: "/icons/resources/pearl.png" },
   { key: "allodium", label: "Allodium", icon: "/icons/resources/allodium.png" },

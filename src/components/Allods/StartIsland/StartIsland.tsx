@@ -10,7 +10,8 @@ import { IslandMapController } from '@/components/Map/IslandMapController/Island
 import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
-import { Hero } from '@/types/heroes'; // ✅ фикс ошибки с типом
+import { useUser } from '@/context/UserContext';
+
 
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
 
@@ -19,35 +20,13 @@ interface StartIslandProps {
   onOpenNode?: (nodeId: string) => void;
 }
 
-// 🔧 мок героев (пока нет сервера)
-const mockHeroes: Hero[] = [
-  {
-    id: 'hero-1',
-    name: 'Линди',
-    level: 3,
-    quality: 'rare',
-    // armyPower: 2500,
-    image: '/images/heroes/oygen.png',
-    exp: 0,
-    expToNext: 1000,
-  },
-  {
-    id: 'hero-2',
-    name: 'Ойген',
-    level: 4,
-    quality: 'epic',
-    // armyPower: 3100,
-    image: '/images/heroes/oygen.png',
-    exp: 0,
-    expToNext: 1000,
-  },
-];
-
 // 🧠 основной компонент острова
 export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const [activeNode, setActiveNode] = useState<string | null>(null); // открытая точка
   const [isHeroModalOpen, setHeroModalOpen] = useState(false); // модалка героев
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null); // id точки для героев
+  const { state } = useUser();
+  const playerHeroes = state.heroes || [];
 
   // 🎲 генерация точек
   const points = useMemo(() =>
@@ -74,7 +53,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           {points.map((node) => (
             <ResourcePoint
               key={node.id}
-              icon={node.icon}
+              avatar={node.icon}
               x={node.x}
               y={node.y}
               onClick={() => {
@@ -105,7 +84,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             setHeroModalOpen(false);
             setSelectedNodeId(null);
           }}
-          heroes={mockHeroes}
+          heroes={playerHeroes}
         />
       )}
     </div>
