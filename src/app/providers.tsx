@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { UserProvider } from '@/context/UserContext';
-import { UserLoader } from '@/components/UserLoader';
+import  UserLoader  from '@/components/UserLoader';
 
 // 📌 Оборачиваем UI-провайдер в dynamic
 const TonConnectUIProvider = dynamic(

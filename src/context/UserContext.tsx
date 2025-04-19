@@ -60,7 +60,7 @@ type UserAction =
   | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
   | {
     type: "SET_ACTIVE_QUEST";
-    payload: {
+      payload: {
       id: string;
       title: string;
       description: string;
@@ -68,6 +68,7 @@ type UserAction =
     };
   }
   | { type: "TOGGLE_QUEST_PANEL"; payload: boolean }
+  | { type: "SET_HEROES"; payload: Hero[] }; 
 
 
 const initialState: UserState = {
@@ -99,7 +100,7 @@ function reducer(state: UserState, action: UserAction): UserState {
       return { ...state, ...action.payload };
 
     case 'SET_HEROES':
-      return { ...state, heroes: action.payload };
+        return { ...state, heroes: action.payload };
 
     case "ADD_RESOURCE":
       return {

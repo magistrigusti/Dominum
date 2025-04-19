@@ -1,44 +1,61 @@
-// UserLoader.tsx
-'use client';
-
-import { useTonWallet } from '@tonconnect/ui-react';
-import { useUser } from '@/context/UserContext';
+// src/components/UserLoader.tsx
 import { useEffect } from 'react';
+import { useUser } from '@/context/UserContext';
+import { getUserHeroes, createHero } from '@/utils/apiClient';
+import type { Hero } from '@/types/heroes'; 
 
-export const UserLoader = () => {
-  const wallet = useTonWallet();
-  const { dispatch } = useUser();
+const UserLoader = () => {
+  const { state: userState, dispatch } = useUser();
 
   useEffect(() => {
-    if (!wallet?.account?.address) return;
+    const loadUserHeroes = async () => {
+      if (!userState.address) return;
 
-    const loadUser = async () => {
       try {
-        const res = await fetch('/api/user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address: wallet.account.address }),
-        });
+        const heroes = await getUserHeroes(userState.address);
 
-        if (!res.ok) throw new Error('Failed to load user');
+        // 🎯 Если героев нет — создаём двух стартовых
+        if (heroes.length === 0) {
+          const startHeroes = [
+            {
+              userAddress: userState.address,
+              name: 'Обычный Герой 1',
+              image: '/dominum/heroes/hero-workin-grey.png',
+              quality: 'normal' as 'normal',
+              level: 1,
+              exp: 0,
+              expToNext: 100,
+            },
+            {
+              userAddress: userState.address,
+              name: 'Обычный Герой 2',
+              image: '/dominum/heroes/hero-workin-grey-2.png',
+              quality: 'normal' as 'normal',
+              level: 1,
+              exp: 0,
+              expToNext: 100,
+            },
+          ];
+          
 
-        const data = await res.json();
-        dispatch({ type: 'SET_USER', payload: data });
+          for (const hero of startHeroes) {
+            await createHero(hero);
+          }
+
+          const updated = await getUserHeroes(userState.address);
+          dispatch({ type: 'SET_HEROES', payload: updated });
+        } else {
+          dispatch({ type: 'SET_HEROES', payload: heroes });
+        }
       } catch (err) {
-        console.error('❌ Ошибка при загрузке пользователя:', err);
+        console.error('Ошибка при загрузке героев:', err);
       }
     };
 
-    loadUser();
-  }, [wallet?.account?.address]);
-
-  useEffect(() => {
-    if (userState.address) {
-      getUserHeroes(userState.address).then((heroes) => {
-        dispatch({type: 'SET_HEROES', payload: heroes})
-      });
-    }
+    loadUserHeroes();
   }, [userState.address]);
 
-  return null;
+  return null; // или какой-то лоадер
 };
+
+export default UserLoader;
