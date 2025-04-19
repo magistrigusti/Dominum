@@ -3,50 +3,39 @@
 
 import { useMemo, useState } from 'react';
 import styles from './StartIsland.module.css';
-import { RESOURCE_CONFIG, type ResourceType } from '@/constants/resources';
+import { RESOURCE_CONFIG } from '@/constants/resources';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController/IslandMapController';
 import { HeroesBar } from '@/components/Map/HeroesBar/HeroesBar';
-import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 import { useUser } from '@/context/UserContext';
 import type { Mission } from '@/components/Map/HeroesBar/HeroesBar';
 
-const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
+const getFallbackAvatar = (resource: string): string => {
+  return RESOURCE_CONFIG.find(r => r.key === resource)?.avatar || '/icons/resources/default.png';
+};
 
-// 🔧 интерфейс пропсов
 interface StartIslandProps {
   onOpenNode?: (nodeId: string) => void;
 }
 
-// 🧠 основной компонент острова
 export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const [activeMissions, setActiveMissions] = useState<Mission[]>([]);
-  const [activeNode, setActiveNode] = useState<string | null>(null); // открытая точка
-  const [isHeroModalOpen, setHeroModalOpen] = useState(false); // модалка героев
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null); // id точки для героев
+  const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [isHeroModalOpen, setHeroModalOpen] = useState(false);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
   const { state } = useUser();
   const playerHeroes = state.heroes || [];
+  const points = state.resourceNodes || [];
 
-  // 🎲 генерация точек
-  const points = useMemo(() =>
-    generateResourceNodes(5, {
-      width: 550,
-      height: 450,
-      offsetX: 120,
-      offsetY: 250,
-    }, RESOURCE_TYPES.slice()), []
-  );
-
-  // 💡 клик "Собрать" → открываем модалку героев
   const handleCollectClick = () => {
     setHeroModalOpen(true);
     setSelectedNodeId(activeNode);
-    setActiveNode(null); // закрываем окно ресурса
+    setActiveNode(null);
   };
 
-  // 💡 фильтрация свободных героев
   const availableHeroes = playerHeroes.filter(
     hero => !activeMissions.some(m => m.heroId === hero.id)
   );
@@ -67,7 +56,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
     setActiveMissions(prev => [...prev, mission]);
 
-    // 📡 отправляем на сервер, чтобы герой ушёл в активную миссию
     await fetch('/api/user/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -78,10 +66,10 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           heroId: mission.heroId,
           startedAt: new Date(),
           duration: mission.duration,
-          position: points.find(p => p.id === mission.nodeId),
+          position: node.position,
           remaining: 100,
-        }
-      })
+        },
+      }),
     });
 
     setHeroModalOpen(false);
@@ -92,13 +80,12 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     <div className={styles.map_wrapper}>
       <IslandMapController>
         <div className={styles.map_image}>
-          {/* иконки на карте */}
           {points.map((node) => (
             <ResourcePoint
               key={node.id}
-              avatar={node.avatar}
-              x={node.x}
-              y={node.y}
+              avatar={node.avatar || getFallbackAvatar(node.resource)}
+              x={node.position.x}
+              y={node.position.y}
               onClick={() => {
                 setActiveNode(node.id);
                 onOpenNode?.(node.id);
@@ -106,16 +93,16 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             />
           ))}
 
-          {/* модалка ресурса */}
           {activeNode && (
             <ResourceNodeModal
-              resource={points.find(p => p.id === activeNode)!.resource}
+              resource={points.find(p => p.id === activeNode)!.resource as 'food' | 'wood' | 'stone' | 'iron' | 'gold'}
               total={100}
               remaining={60}
               onCollect={handleCollectClick}
               onClose={() => setActiveNode(null)}
             />
           )}
+
         </div>
       </IslandMapController>
 

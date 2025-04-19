@@ -33,7 +33,8 @@ export function updateResourceNodesIfNeeded(user: any) {
 
   for (const resource of ['food', 'wood', 'stone', 'iron', 'gold']) {
     const typedResource = resource as keyof typeof RESOURCE_LEVEL;
-    const node = user.recourceNodes.find((n: any) => n.resource === resource);
+    const node = user.resourceNodes.find((n: any) => n.resource === resource);
+
     const avatar = RESOURCE_CONFIG.find(r => r.key === resource)?.avatar || "";
 
     if (!node) {

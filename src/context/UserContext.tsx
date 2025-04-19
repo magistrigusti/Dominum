@@ -46,6 +46,7 @@ export interface UserState {
     position: { x: number; y: number };
     remaining: number;
     lastRestoredAt?: string;
+    avatar?: string;
   }[];
 
   activeMining?: {
@@ -99,7 +100,7 @@ const initialState: UserState = {
   questShipRepaired: false,
   heroes: [],
   activeMining: undefined,
-
+  
 };
 
 

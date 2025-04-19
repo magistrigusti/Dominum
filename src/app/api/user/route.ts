@@ -3,6 +3,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
+import { updateResourceNodesIfNeeded } from '@/utils/updateResourceNodes';
+
 
 export async function POST(req: Request) {
   try {
@@ -21,9 +23,13 @@ export async function POST(req: Request) {
         address,
         avatar: '/icons/user-icon.png',
         heroes: [],
+        resourceNodes: [],
       });
       console.log('✅ Создан новый пользователь:', user.address);
     }
+
+    updateResourceNodesIfNeeded(user);
+    await user.save();
 
     return NextResponse.json({
       address: user.address,
