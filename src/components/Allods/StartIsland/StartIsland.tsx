@@ -6,13 +6,15 @@ import styles from './StartIsland.module.css';
 import { RESOURCE_CONFIG, type ResourceType } from '@/constants/resources';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController/IslandMapController';
-import { HeroesBar, type Mission } from '@/components/Map/HeroesBar/HeroesBar';
+import { HeroesBar } from '@/components/Map/HeroesBar/HeroesBar';
 import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 import { useUser } from '@/context/UserContext';
 
+
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
+
 // 🔧 интерфейс пропсов
 interface StartIslandProps {
   onOpenNode?: (nodeId: string) => void;
@@ -20,7 +22,7 @@ interface StartIslandProps {
 
 // 🧠 основной компонент острова
 export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
-  const [activeMissions, setActiveMissions] = useState<Mission[]>([]);
+  const [activeMissions, setActiveMissions] = useState([]);
   const [activeNode, setActiveNode] = useState<string | null>(null); // открытая точка
   const [isHeroModalOpen, setHeroModalOpen] = useState(false); // модалка героев
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null); // id точки для героев
@@ -39,14 +41,10 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
   // 💡 клик "Собрать" → открываем модалку героев
   const handleCollectClick = () => {
-    const currentNode = activeNode; // ✅ сохраняем
-    if (!currentNode) return;
-    console.log('🔥 открываем модалку героя'); 
     setHeroModalOpen(true);
-    setSelectedNodeId(currentNode); // ✅ используем сохранённое значение
-    setActiveNode(null);
-    setHeroModalOpen(true);
-  };  
+    setSelectedNodeId(activeNode);
+    setActiveNode(null); // закрываем окно ресурса
+  };
 
   return (
     <div className={styles.map_wrapper}>
@@ -74,7 +72,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
               remaining={60}
               onCollect={handleCollectClick}
               onClose={() => setActiveNode(null)}
-              
             />
           )}
         </div>
@@ -82,26 +79,25 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
       {isHeroModalOpen && (
         <ModalHerosGo
-        heroes={playerHeroes} // 👈 передаём сюда список героев
-        onClose={() => setHeroModalOpen(false)}
-        onConfirm={(heroId, armyCount) => {
-          const node = points.find(p => p.id === selectedNodeId);
-          setActiveMissions(prev => [...prev, {
-            heroId,
-            hero: playerHeroes.find(h => h.id === heroId)!,
-            armyCount,
-            nodeId: selectedNodeId!,
-            resource: node!.resource,
-            duration: 60,
-            startTime: Date.now(),
-          }]);
-      
-          console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
-          setHeroModalOpen(false);
-          setSelectedNodeId(null);
-        }}
-      />
-      
+          onClose={() => setHeroModalOpen(false)}
+          onConfirm={(heroId, armyCount) => {
+            const node = points.find(p => p.id === selectedNodeId);
+            setActiveMissions(prev => [...prev, {
+              heroId,
+              hero: playerHeroes.find(h => h.id === heroId),
+              armyCount,
+              nodeId: selectedNodeId,
+              resource: node.resource,
+              duration: 60,
+              startTime: Date.now(),
+            }])
+
+            console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
+            setHeroModalOpen(false);
+            setSelectedNodeId(null);
+          }}
+
+        />
       )}
 
       <HeroesBar missions={activeMissions} />
