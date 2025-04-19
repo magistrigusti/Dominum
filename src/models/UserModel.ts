@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     default: () => [
       {
         id: '1',
-        name: 'Добытчик',
+        name: 'Frenk',
         image: '/dominum/heroes/hero-workin-grey.png',
         quality: 'normal',
         level: 1,
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
       },
       {
         id: '2',
-        name: 'Добытчик',
+        name: 'Mary',
         image: '/dominum/heroes/hero-workin-grey-2.png',
         quality: 'normal',
         level: 1,

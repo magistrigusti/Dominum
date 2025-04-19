@@ -11,6 +11,7 @@ import { generateResourceNodes } from '@/utils/generateResourceNodes';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 import { useUser } from '@/context/UserContext';
+import type { Mission } from '@/components/Map/HeroesBar/HeroesBar';
 
 
 const RESOURCE_TYPES = ['food', 'wood', 'stone', 'iron', 'gold'] as const;
@@ -22,7 +23,7 @@ interface StartIslandProps {
 
 // 🧠 основной компонент острова
 export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
-  const [activeMissions, setActiveMissions] = useState([]);
+  const [activeMissions, setActiveMissions] = useState<Mission[]>([]);
   const [activeNode, setActiveNode] = useState<string | null>(null); // открытая точка
   const [isHeroModalOpen, setHeroModalOpen] = useState(false); // модалка героев
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null); // id точки для героев
@@ -83,6 +84,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           onConfirm={(heroId, armyCount) => {
             const node = points.find(p => p.id === selectedNodeId);
             setActiveMissions(prev => [...prev, {
+              id: `${heroId}-${Date.now()}`, 
               heroId,
               hero: playerHeroes.find(h => h.id === heroId),
               armyCount,
@@ -91,7 +93,8 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
               duration: 60,
               startTime: Date.now(),
             }])
-
+            
+          
             console.log(`Герой ${heroId} отправлен на ${selectedNodeId} с войском: ${armyCount}`);
             setHeroModalOpen(false);
             setSelectedNodeId(null);
