@@ -1,6 +1,7 @@
-// UserContextsx
+// 📄 src/context/UserContext.tsx
 'use client';
 import React, { createContext, useContext, useReducer } from "react";
+import type { Hero } from '@/types/heroes';
 
 export interface UserState {
   address: string;
@@ -96,6 +97,9 @@ function reducer(state: UserState, action: UserAction): UserState {
   switch (action.type) {
     case "SET_USER":
       return { ...state, ...action.payload };
+
+    case 'SET_HEROES':
+      return { ...state, heroes: action.payload };
 
     case "ADD_RESOURCE":
       return {

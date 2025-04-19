@@ -32,5 +32,13 @@ export const UserLoader = () => {
     loadUser();
   }, [wallet?.account?.address]);
 
+  useEffect(() => {
+    if (userState.address) {
+      getUserHeroes(userState.address).then((heroes) => {
+        dispatch({type: 'SET_HEROES', payload: heroes})
+      });
+    }
+  }, [userState.address]);
+
   return null;
 };

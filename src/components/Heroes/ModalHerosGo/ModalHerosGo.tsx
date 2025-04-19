@@ -7,7 +7,7 @@ import { Hero } from '@/types/heroes';
 import { calculateHeroCapacity } from '@/utils/calculateHeroCapacity';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
-
+import { useUser } from '@/context/UserContext';
 
 // 🔧 Хук защиты от SSR ошибок
 const useHasMounted = () => {
@@ -27,7 +27,6 @@ interface HeroCardProps {
   isSelected: boolean;
   onClick: () => void;
 }
-
 
 interface Props {
   onClose: () => void;
