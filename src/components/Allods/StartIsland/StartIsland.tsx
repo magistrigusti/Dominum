@@ -34,15 +34,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
   const mapRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const container = mapRef.current;
-    if (container) {
-      const scrollX = (container.scrollWidth - container.clientWidth) / 2;
-      const scrollY = (container.scrollHeight - container.clientHeight) / 2;
-      container.scrollTo({ left: scrollX, top: scrollY });
-    }
-  }, []);
-
   const handleCollectClick = () => {
     setHeroModalOpen(true);
     setSelectedNodeId(activeNode);

@@ -120,6 +120,23 @@ export const IslandMapController = ({ children }: Props) => {
     
   }, [dragging]);
 
+  useEffect(() => {
+    const element = mapRef.current;
+    if (!element) return;
+
+    const viewportWidth = element.clientWidth;
+    const viewportHeight = element.clientHeight;
+
+    const islandWidth = 1000;
+    const islandHeight = 1000;
+
+    const initialX = (viewportWidth - islandWidth) / 2;
+    const initialY = (viewportHeight - islandHeight) / 2;
+
+    setPosition({ x: initialX, y: initialY });
+    setScale(0.7);
+  }, []);
+
   return (
     <div
       className={styles.viewport}

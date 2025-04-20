@@ -15,20 +15,20 @@
 }
 
 .modal_content {
-  background: #1a1a1a;
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 90%;
   background: #ccc;
   border-radius: 8px;
   padding: 16px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  color: black;
+  width: 100%;
+  max-width: 420px; /* добавлено! */
   box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* 💡 добавим на всякий */
 }
 
 .resource_icon {
@@ -65,5 +65,13 @@
   .resource_icon {
     width: 56px;
     height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal_content {
+    width: 100%;
+    max-width: 90vw;
+    margin: 0 auto;
   }
 }
