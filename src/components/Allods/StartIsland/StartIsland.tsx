@@ -1,6 +1,6 @@
 // 📄 components/Islands/StartIsland/StartIsland.tsx
 'use client';
-
+import { RESOURCE_LEVEL } from '@/config/resourceLevel';
 import { useMemo, useState } from 'react';
 import styles from './StartIsland.module.css';
 import { RESOURCE_CONFIG } from '@/constants/resources';
@@ -93,16 +93,18 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             />
           ))}
 
-          {activeNode && (
-            <ResourceNodeModal
-              resource={points.find(p => p.id === activeNode)!.resource as 'food' | 'wood' | 'stone' | 'iron' | 'gold'}
-              total={100}
-              remaining={60}
-              onCollect={handleCollectClick}
-              onClose={() => setActiveNode(null)}
-            />
-          )}
-
+          {activeNode && (() => {
+            const node = points.find(p => p.id === activeNode)!;
+            return (
+              <ResourceNodeModal
+                resource={node.resource as 'food' | 'wood' | 'stone' | 'iron' | 'gold'}
+                total={RESOURCE_LEVEL[node.resource as keyof typeof RESOURCE_LEVEL][node.level].totalAmount}
+                remaining={node.remaining}
+                onCollect={handleCollectClick}
+                onClose={() => setActiveNode(null)}
+              />
+            );
+          })()}
         </div>
       </IslandMapController>
 
