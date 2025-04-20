@@ -3,7 +3,6 @@
 export type ArmyUnitType = 'peasant' | 'sailor' | 'axeman' | 'spearman' | 'archer' | 'cavalry' ;
 
 export interface ArmyStats {
-  name: string;
   attack: number;
   defense: number;
   armor: number;
