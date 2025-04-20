@@ -6,6 +6,14 @@
   margin-bottom: 12px;
 }
 
+.capacity_line {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
+  margin-bottom: 8px;
+}
+
 .unit_row {
   display: flex;
   align-items: center;
@@ -13,7 +21,6 @@
   gap: 12px;
   background: #eee;
   border-radius: 6px;
-
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -69,6 +76,10 @@
   font-weight: 500;
 }
 
+.unit_slider {
+  width: 100%;
+  margin-top: 4px;
+}
 .slider_container {
   padding: 5px;
   background-color: #1a1a1a;
