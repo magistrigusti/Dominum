@@ -1,4 +1,3 @@
-
 // 📄 components/Islands/StartIsland/StartIsland.tsx
 'use client';
 
@@ -28,7 +27,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const [isHeroModalOpen, setHeroModalOpen] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
-  const { state } = useUser();
+  const { state, dispatch } = useUser();
   const playerHeroes = state.heroes || [];
   const points = state.resourceNodes || [];
 
@@ -44,12 +43,14 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     hero => !activeMissions.some(m => m.heroId === hero.id)
   );
 
-  const handleConfirm = async (heroId: string, army: Record<ArmyUnitType, number>) => {
+  const handleConfirm = async (
+    heroId: string,
+    army: Record<ArmyUnitType, number>
+  ) => {
     const node = points.find(p => p.id === selectedNodeId);
     if (!node) return;
 
     const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
-
     const mission: Mission = {
       heroId,
       hero: playerHeroes.find(h => h.id === heroId)!,
@@ -60,29 +61,38 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       startTime: Date.now(),
     };
 
-    setActiveMissions(prev => [...prev, mission]);
+    try {
+      const filteredArmy = Object.fromEntries(
+        Object.entries(army).filter(([, count]) => count > 0)
+      ) as Record<ArmyUnitType, number>;
 
-    await fetch('/api/user/update', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        address: state.address,
-        activeMining: {
-          resource: node.resource,
-          heroId,
-          startedAt: new Date(),
-          duration: 60,
-          position: node.position,
-          remaining: node.remaining,
-        },
-        army,
-        heroId,
-        heroArmy: army,
-      }),
-    });
+      const response = await fetch('/api/user/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          address: state.address,
+          activeMining: {
+            resource: node.resource,
+            heroId,
+            startedAt: new Date(),
+            duration: 60,
+            position: node.position,
+            remaining: node.remaining,
+          },
+          nodeId: selectedNodeId,
+          army: filteredArmy,
+        }),
+      });
 
-    setHeroModalOpen(false);
-    setSelectedNodeId(null);
+      const updatedUser = await response.json();
+      dispatch({ type: 'SET_USER', payload: updatedUser });
+
+      setActiveMissions(prev => [...prev, mission]);
+      setHeroModalOpen(false);
+      setSelectedNodeId(null);
+    } catch (error) {
+      console.error('Ошибка отправки героя:', error);
+    }
   };
 
   return (
@@ -103,6 +113,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           ))}
         </div>
       </IslandMapController>
+
       {activeNode && (() => {
         const node = points.find(p => p.id === activeNode)!;
         return (
@@ -116,13 +127,16 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
         );
       })()}
 
-      {isHeroModalOpen && (
+      {isHeroModalOpen && selectedNodeId && (
         <ModalHerosGo
-        heroes={availableHeroes}
-        onClose={() => setHeroModalOpen(false)}
-        selectedResourceNodeId={selectedNodeId!}
-      />
-      
+          heroes={availableHeroes}
+          selectedResourceNodeId={selectedNodeId}
+          onClose={() => {
+            setHeroModalOpen(false);
+            setSelectedNodeId(null);
+          }}
+          onConfirm={handleConfirm}
+        />
       )}
 
       <HeroesBar missions={activeMissions} />

@@ -1,4 +1,4 @@
-// 📄 components/Heroes/ModalHeroesGo/ModalHeroesGo.tsx
+// 📄 components/Heroes/ModalHerosGo/ModalHerosGo.tsx
 'use client';
 import { ArmyTable } from '@/components/Heroes/ArmyTable/ArmyTable';
 import styles from './ModalHerosGo.module.css';
@@ -7,7 +7,6 @@ import { Hero } from '@/types/heroes';
 import { calculateHeroCapacity } from '@/utils/calculateHeroCapacity';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
-import { useUser } from '@/context/UserContext';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
 
 type HeroWithTroops = Hero & {
@@ -18,11 +17,18 @@ interface Props {
   onClose: () => void;
   heroes: HeroWithTroops[];
   selectedResourceNodeId: string;
+  onConfirm: (
+    heroId: string,
+    army: Record<ArmyUnitType, number>
+  ) => void;
 }
 
-export const ModalHerosGo = ({ onClose, heroes, selectedResourceNodeId }: Props) => {
-
-  const { state, dispatch } = useUser();
+export const ModalHerosGo = ({
+  onClose,
+  heroes,
+  selectedResourceNodeId,
+  onConfirm,
+}: Props) => {
   const [selectedHero, setSelectedHero] = useState<HeroWithTroops | null>(null);
   const [army, setArmy] = useState<Record<ArmyUnitType, number>>({
     peasant: 0, sailor: 0, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
@@ -40,7 +46,7 @@ export const ModalHerosGo = ({ onClose, heroes, selectedResourceNodeId }: Props)
 
   const currentCapacity = Object.entries(army).reduce((sum, [unit, count]) => {
     const unitType = unit as ArmyUnitType;
-    const unitLevel = state.army?.[unitType]?.level || 1;
+    const unitLevel = selectedHero.troops?.[unitType]?.level || 1;
     const capacityPerUnit = ARMY_STATS[unitType][unitLevel]?.capacity || 0;
     return sum + count * capacityPerUnit;
   }, 0);
@@ -49,32 +55,10 @@ export const ModalHerosGo = ({ onClose, heroes, selectedResourceNodeId }: Props)
     setArmy(updated);
   };
 
-  const handleSend = async () => {
-    const filteredArmy = Object.fromEntries(
-      Object.entries(army).filter(([, count]) => count > 0)
-    ) as Record<ArmyUnitType, number>;
-  
-    try {
-      const response = await fetch("/api/user/update", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address: state.address,
-          action: "start_mining",
-          heroId: selectedHero.id,
-          nodeId: selectedResourceNodeId, // <-- отсюда
-          army: filteredArmy,
-        }),
-      });
-  
-      const updatedUser = await response.json();
-      dispatch({ type: "SET_USER", payload: updatedUser });
-      onClose();
-    } catch (error) {
-      console.error("Ошибка отправки героя:", error);
-    }
+  const handleSend = () => {
+    if (!selectedHero) return;
+    onConfirm(selectedHero.id, army);
   };
-  
 
   return (
     <div className={styles.modal_overlay}>
