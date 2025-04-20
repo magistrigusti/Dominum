@@ -11,15 +11,19 @@ import { useUser } from '@/context/UserContext';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
 import { ARMY_CONFIG } from '@/config/armyConfig';
 
+type HeroWithTroops = Hero & {
+  troops?: Record<ArmyUnitType, { count: number; level: number }>;
+};
+
 interface Props {
   onClose: () => void;
   onConfirm: (heroId: string, army: Record<ArmyUnitType, number>) => void;
-  heroes: Hero[];
+  heroes: HeroWithTroops[];
 }
 
-export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
+export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
   const { state } = useUser();
-  const [selectedHero, setSelectedHero] = useState<Hero | null>(null);
+  const [selectedHero, setSelectedHero] = useState<HeroWithTroops | null>(null);
   const [army, setArmy] = useState<Record<ArmyUnitType, number>>({
     peasant: 0, sailor: 0, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
   });
@@ -58,9 +62,10 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
         <h2>Отправить Войско</h2>
 
         <HeroViewer className={styles.modla_hero_scale} hero={selectedHero} />
-        <HeroSelector heroes={heroes} 
-          selectedHero={selectedHero} 
-          onSelect={setSelectedHero} 
+        <HeroSelector
+          heroes={heroes}
+          selectedHero={selectedHero}
+          onSelect={setSelectedHero}
         />
 
         <div className={styles.army_table}>
@@ -73,7 +78,6 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
               <div key={unit} className={styles.unit_row}>
                 <div className={styles.unit_img}>
                   <img src={config.icon} alt={config.label} className={styles.unit_icon} />
-                  
                 </div>
 
                 <div className={styles.unit_info}>
@@ -90,7 +94,6 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
                   onChange={e => handleUnitChange(unitType, parseInt(e.target.value) || 0)}
                   className={styles.unit_slider}
                 />
-                
               </div>
             );
           })}
@@ -102,7 +105,13 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
 
         <div className={styles.actions}>
           <button className={styles.button} onClick={onClose}>Назад</button>
-          <button className={styles.button} onClick={handleConfirm} disabled={currentCapacity <= 0 || currentCapacity > maxCapacity}>Отправить</button>
+          <button
+            className={styles.button}
+            onClick={handleConfirm}
+            disabled={currentCapacity <= 0 || currentCapacity > maxCapacity}
+          >
+            Отправить
+          </button>
         </div>
       </div>
     </div>

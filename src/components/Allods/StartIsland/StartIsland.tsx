@@ -99,8 +99,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
               }}
             />
           ))}
-
-
         </div>
       </IslandMapController>
       {activeNode && (() => {

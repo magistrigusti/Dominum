@@ -9,6 +9,14 @@ const HeroSchema = new mongoose.Schema({
   level: { type: Number, required: true },
   exp: { type: Number, required: true },
   expToNext: { type: Number, required: true},
+  troops: {
+    type: Map,
+    of: new mongoose.Schema({
+      count: { type: Number, default: 0 },
+      level: { type: Number, default: 1 },
+    }),
+    default: {},
+  }
 });
 
 const ArmyUnitSchema = new mongoose.Schema({
