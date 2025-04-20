@@ -100,20 +100,21 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             />
           ))}
 
-          {activeNode && (() => {
-            const node = points.find(p => p.id === activeNode)!;
-            return (
-              <ResourceNodeModal
-                resource={node.resource as 'food' | 'wood' | 'stone' | 'iron' | 'gold'}
-                total={RESOURCE_LEVEL[node.resource as keyof typeof RESOURCE_LEVEL][node.level].totalAmount}
-                remaining={node.remaining}
-                onCollect={handleCollectClick}
-                onClose={() => setActiveNode(null)}
-              />
-            );
-          })()}
+
         </div>
       </IslandMapController>
+      {activeNode && (() => {
+        const node = points.find(p => p.id === activeNode)!;
+        return (
+          <ResourceNodeModal
+            resource={node.resource as 'food' | 'wood' | 'stone' | 'iron' | 'gold'}
+            total={RESOURCE_LEVEL[node.resource as keyof typeof RESOURCE_LEVEL][node.level].totalAmount}
+            remaining={node.remaining}
+            onCollect={handleCollectClick}
+            onClose={() => setActiveNode(null)}
+          />
+        );
+      })()}
 
       {isHeroModalOpen && (
         <ModalHerosGo
