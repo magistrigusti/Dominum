@@ -1,11 +1,10 @@
 // ✅ src/app/api/user/update/route.ts (App Router version)
-
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
 
 export async function PUT(req: Request) {
-  const { address, ...data } = await req.json();
+  const { address, army, ...data } = await req.json();
 
   if (!address) {
     return NextResponse.json({ error: 'Address is required' }, { status: 400 });
@@ -19,21 +18,39 @@ export async function PUT(req: Request) {
       "gold", "doubloon", "pearl", "allodium",
       "prestige", "levelPrestige", "prestigeProgress", "technologies",
       "activeBonuses", "activeQuest", "questPanelOpen", "heroes", 
-      "army" 
+      "army", "activeMining"
     ];
-    
-    
 
-    const updatePayload: any = {};
+    const setFields: any = {};
     for (const key of allowedFields) {
       if (data[key] !== undefined) {
-        updatePayload[key] = data[key];
+        setFields[key] = data[key];
       }
+    }
+
+    const incFields: any = {};
+
+    // ✅ уменьшаем количество войск, если отправлены
+    if (army && typeof army === 'object') {
+      for (const unit in army) {
+        const count = army[unit];
+        if (typeof count === 'number') {
+          incFields[`army.${unit}.count`] = -count;
+        }
+      }
+    }
+
+    const updateQuery: any = {};
+    if (Object.keys(setFields).length > 0) {
+      updateQuery.$set = setFields;
+    }
+    if (Object.keys(incFields).length > 0) {
+      updateQuery.$inc = incFields;
     }
 
     const user = await UserModel.findOneAndUpdate(
       { address },
-      updatePayload,
+      updateQuery,
       { new: true }
     );
 
@@ -47,3 +64,4 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: 'Server error', details: err }, { status: 500 });
   }
 }
+
