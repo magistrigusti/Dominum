@@ -1,6 +1,6 @@
 // 📄 components/Heroes/ModalHeroesGo/ModalHeroesGo.tsx
 'use client';
-
+import { ArmyTable } from '@/components/Heroes/ArmyTable/ArmyTable';
 import styles from './ModalHerosGo.module.css';
 import { useState, useEffect } from 'react';
 import { Hero } from '@/types/heroes';
@@ -25,7 +25,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
   const { state } = useUser();
   const [selectedHero, setSelectedHero] = useState<HeroWithTroops | null>(null);
   const [army, setArmy] = useState<Record<ArmyUnitType, number>>({
-    peasant: 0, sailor: 0, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
+    peasant: 0, sailor: 200, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
   });
 
   useEffect(() => {
@@ -68,36 +68,8 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
           onSelect={setSelectedHero}
         />
 
-        <div className={styles.army_table}>
-          {Object.entries(army).map(([unit, count]) => {
-            const unitType = unit as ArmyUnitType;
-            const config = ARMY_CONFIG.find(cfg => cfg.key === unitType)!;
-            const maxCount = state.army?.[unitType]?.count || 0;
+        <ArmyTable army={army} onChange={setArmy} />
 
-            return (
-              <div key={unit} className={styles.unit_row}>
-                <div className={styles.unit_img}>
-                  <img src={config.icon} alt={config.label} className={styles.unit_icon} />
-                </div>
-
-                <div className={styles.unit_info}>
-                  <span>{config.label}</span>
-                  <br />
-                  <span className={styles.unit_count}>{count}</span>
-                </div>
-
-                <input
-                  type="range"
-                  min={0}
-                  max={maxCount}
-                  value={count}
-                  onChange={e => handleUnitChange(unitType, parseInt(e.target.value) || 0)}
-                  className={styles.unit_slider}
-                />
-              </div>
-            );
-          })}
-        </div>
 
         <p className={styles.capacity_info}>
           Вместимость: {currentCapacity} / {maxCapacity}
