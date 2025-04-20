@@ -46,15 +46,32 @@
   margin-bottom: 2px;
 }
 
+.army_table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
 .unit_row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
   gap: 12px;
   background: #eee;
   border-radius: 6px;
-  padding: 0 2px;
+  padding: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.unit_row:hover {
+  background: #ddd;
+}
+
+.unit_row.active {
+  background-color: #bbb;
+  box-shadow: 0 0 0 2px #333 inset;
 }
 
 .unit_img {
@@ -63,46 +80,26 @@
   gap: 4px;
 }
 
-.unit_info {
-  min-width: 24px;
-  text-align: center;
-  font-weight: bold;
-  color: black;
-}
-
 .unit_icon {
   width: 32px;
   height: 32px;
   object-fit: contain;
 }
 
-.button {
-  padding: 10px 20px;
-  background-color: #254129;
-  color: white;
+.unit_info {
+  min-width: 60px;
   font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  margin-left: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
+  color: black;
 }
 
-.button:disabled {
-  background-color: gray;
-  cursor: not-allowed;
-}
-
-.capacity_info {
+.unit_count {
   font-size: 12px;
-  color: #201d1d;
-  margin-top: 6px;
-  margin-bottom: 12px;
+  color: #555;
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
+.unit_slider {
+  flex: 1;
+  margin-left: 12px;
 }
+
+

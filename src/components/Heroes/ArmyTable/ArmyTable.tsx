@@ -5,6 +5,7 @@ import styles from './ArmyTable.module.css';
 import { ARMY_CONFIG } from '@/config/armyConfig';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
 import { useUser } from '@/context/UserContext';
+import { useState } from 'react';
 
 interface Props {
   army: Record<ArmyUnitType, number>;
@@ -13,6 +14,7 @@ interface Props {
 
 export const ArmyTable = ({ army, onChange }: Props) => {
   const { state } = useUser();
+  const [selectedUnit, setSelectedUnit] = useState<ArmyUnitType | null>(null);
 
   const handleChange = (unit: ArmyUnitType, value: number) => {
     const updated = {
@@ -30,7 +32,11 @@ export const ArmyTable = ({ army, onChange }: Props) => {
         const maxCount = state.army?.[unitType]?.count || 0;
 
         return (
-          <div key={unit} className={styles.unit_row}>
+          <div
+            key={unit}
+            className={`${styles.unit_row} ${selectedUnit === unitType ? styles.active : ''}`}
+            onClick={() => setSelectedUnit(unitType)}
+          >
             <div className={styles.unit_img}>
               <img src={config.icon} alt={config.label} className={styles.unit_icon} />
             </div>
@@ -41,18 +47,19 @@ export const ArmyTable = ({ army, onChange }: Props) => {
               <span className={styles.unit_count}>{count}</span>
             </div>
 
-            <input
-              type="range"
-              min={0}
-              max={maxCount}
-              value={count}
-              onChange={e => handleChange(unitType, parseInt(e.target.value) || 0)}
-              className={styles.unit_slider}
-            />
+            {selectedUnit === unitType && (
+              <input
+                type="range"
+                min={0}
+                max={maxCount}
+                value={count}
+                onChange={e => handleChange(unitType, parseInt(e.target.value) || 0)}
+                className={styles.unit_slider}
+              />
+            )}
           </div>
         );
       })}
     </div>
   );
 };
-
