@@ -76,6 +76,8 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           remaining: node.remaining,
         },
         army,
+        heroId,
+        heroArmy: army,
       }),
     });
 

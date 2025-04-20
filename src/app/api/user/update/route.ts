@@ -48,6 +48,21 @@ export async function PUT(req: Request) {
       updateQuery.$inc = incFields;
     }
 
+    if (data.heroId && data.heroArmy) {
+      const hero = await UserModel.findOne({address, 'heroesid': data.heroId}, {'heroes.$': 1});
+
+      if (hero && hero.heroes.length > 0) {
+        const targetHero = hero.heroes[0];
+
+        targetHero.troops = data.heroArmy;
+
+        await UserModel.updateOne(
+          {address, 'heros.id': data.heroId},
+          {$set: {'heroes.$.troops': data.heroArmy}}
+        );
+      }
+    }
+
     const user = await UserModel.findOneAndUpdate(
       { address },
       updateQuery,

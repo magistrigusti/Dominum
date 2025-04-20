@@ -47,10 +47,14 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
   const handleUnitChange = (updated: Record<ArmyUnitType, number>) => {
     setArmy(updated);
   };
-  
 
   const handleConfirm = () => {
-    onConfirm(selectedHero.id, army);
+    // ❗️Фильтруем только те юниты, у которых count > 0
+    const filteredArmy = Object.fromEntries(
+      Object.entries(army).filter(([, count]) => count > 0)
+    ) as Record<ArmyUnitType, number>;
+
+    onConfirm(selectedHero.id, filteredArmy);
   };
 
   return (
