@@ -32,7 +32,7 @@ export default function ArmySlider({ value, max, onChange }: Props) {
         onChange={handleChange}
         className={styles.slider}
       />
-      <p>{sliderValue} / {max}</p>
+      <p className={styles.slider_value}>{sliderValue} / {max}</p>
     </div>
   );
 }

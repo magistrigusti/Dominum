@@ -1,4 +1,4 @@
-// ✅ src/app/api/user/update/route.ts (App Router version)
+// ✅ src/app/api/user/update/route.ts
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
