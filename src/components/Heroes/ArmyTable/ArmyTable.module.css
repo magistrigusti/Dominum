@@ -21,6 +21,7 @@
   gap: 12px;
   background: #eee;
   border-radius: 6px;
+  padding: 4px;
   cursor: pointer;
   transition: background 0.2s;
 }
