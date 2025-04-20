@@ -51,6 +51,14 @@ const userSchema = new mongoose.Schema({
       },
     ]
   },
+  army: {
+    type: Map,
+    of: {
+      level: Number,
+      count: Number,
+    },
+    default: {}
+  },
   resourceNodes: {
     type: [{
       id: { type: String, required: true },

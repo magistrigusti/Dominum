@@ -2,6 +2,7 @@
 'use client';
 import React, { createContext, useContext, useReducer } from "react";
 import type { Hero } from '@/types/heroes';
+import type { ArmyUnitType } from '@/config/armyCapacity';
 
 export interface UserState {
   address: string;
@@ -21,12 +22,11 @@ export interface UserState {
   allodium: number;
   questPanelOpen?: boolean;
   questShipRepaired?: boolean;
-
-  activeQuest?: {
-    id: string;
-    title: string;
-    description: string;
-    status: "active" | "complete";
+  army?: {
+    [key in ArmyUnitType]?: {
+      level: number;
+      count: number;
+    }
   };
 
   heroes: {
@@ -60,7 +60,12 @@ export interface UserState {
     };
     remaining: number;
   }
-
+  activeQuest?: {
+    id: string;
+    title: string;
+    description: string;
+    status: "active" | "complete";
+  };
 }
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
@@ -78,8 +83,8 @@ type UserAction =
     };
   }
   | { type: "TOGGLE_QUEST_PANEL"; payload: boolean }
-  | { type: "SET_HEROES"; payload: Hero[] }; 
-
+  | { type: "SET_HEROES"; payload: Hero[] }
+  | { type: "SET_ARMY"; payload: UserState["army"]}
 
 const initialState: UserState = {
   address: "",
@@ -108,29 +113,29 @@ function reducer(state: UserState, action: UserAction): UserState {
   switch (action.type) {
     case "SET_USER":
       return { ...state, ...action.payload };
-
     case 'SET_HEROES':
         return { ...state, heroes: action.payload };
-
+    case "SET_ARMY":
+      return {
+        ...state,
+        army: action.payload,
+      };
     case "ADD_RESOURCE":
       return {
         ...state,
         [action.resource]: (state[action.resource] as number) + action.amount,
       };
-
     case "SET_ACTIVE_QUEST":
       return {
         ...state,
         activeQuest: action.payload,
         questPanelOpen: true, // сразу открываем панель
       };
-
     case "TOGGLE_QUEST_PANEL":
       return {
         ...state,
         questPanelOpen: action.payload,
       };
-
     default:
       return state;
   }

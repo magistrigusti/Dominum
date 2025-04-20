@@ -61,6 +61,7 @@ export async function POST(req: Request) {
       activeMining: user.activeMining,
       activeQuest: user.activeQuest,
       heroes: user.heroes || [],
+      army: user.army || {},
       resourceNodes: user.resourceNodes || [],
     });
 

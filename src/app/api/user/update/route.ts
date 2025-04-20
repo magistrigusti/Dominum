@@ -18,7 +18,8 @@ export async function PUT(req: Request) {
       "name", "avatar", "food", "wood", "stone", "iron",
       "gold", "doubloon", "pearl", "allodium",
       "prestige", "levelPrestige", "prestigeProgress", "technologies",
-      "activeBonuses", "activeQuest", "questPanelOpen", "heroes" 
+      "activeBonuses", "activeQuest", "questPanelOpen", "heroes", 
+      "army" 
     ];
     
     
