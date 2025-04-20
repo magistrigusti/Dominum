@@ -27,11 +27,11 @@ export const HeroSelector = ({ heroes, selectedHero, onSelect }: HeroSelectorPro
   return (
     <div className={styles.selector_row} ref={containerRef}>
       {heroes.map((hero) => (
-        <div
+        <div 
           key={hero.id}
           ref={hero.id === selectedHero.id ? selectedRef : null}
         >
-          <HeroCard
+          <HeroCard 
             hero={hero}
             isSelected={hero.id === selectedHero.id}
             onClick={() => onSelect(hero)}

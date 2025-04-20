@@ -12,3 +12,7 @@
 .selector_row::-webkit-scrollbar {
   height: 6px;
 }
+
+.wrapper {
+  height: 1px;
+}

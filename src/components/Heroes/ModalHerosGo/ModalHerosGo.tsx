@@ -71,10 +71,17 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
 
             return (
               <div key={unit} className={styles.unit_row}>
-                <div className={styles.unit_info}>
+                <div className={styles.unit_img}>
                   <img src={config.icon} alt={config.label} className={styles.unit_icon} />
-                  <span>{config.label}</span>
+                  
                 </div>
+
+                <div className={styles.unit_info}>
+                  <span>{config.label}</span>
+                  <br />
+                  <span className={styles.unit_count}>{count}</span>
+                </div>
+
                 <input
                   type="range"
                   min={0}
@@ -83,7 +90,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes}: Props) => {
                   onChange={e => handleUnitChange(unitType, parseInt(e.target.value) || 0)}
                   className={styles.unit_slider}
                 />
-                <span className={styles.unit_count}>{count}</span>
+                
               </div>
             );
           })}
