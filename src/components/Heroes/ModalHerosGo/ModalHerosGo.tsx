@@ -16,12 +16,13 @@ type HeroWithTroops = Hero & {
 
 interface Props {
   onClose: () => void;
-  onConfirm: (heroId: string, army: Record<ArmyUnitType, number>) => void;
   heroes: HeroWithTroops[];
+  selectedResourceNodeId: string;
 }
 
-export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
-  const { state } = useUser();
+export const ModalHerosGo = ({ onClose, heroes, selectedResourceNodeId }: Props) => {
+
+  const { state, dispatch } = useUser();
   const [selectedHero, setSelectedHero] = useState<HeroWithTroops | null>(null);
   const [army, setArmy] = useState<Record<ArmyUnitType, number>>({
     peasant: 0, sailor: 0, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
@@ -48,14 +49,32 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
     setArmy(updated);
   };
 
-  const handleConfirm = () => {
-    // ❗️Фильтруем только те юниты, у которых count > 0
+  const handleSend = async () => {
     const filteredArmy = Object.fromEntries(
       Object.entries(army).filter(([, count]) => count > 0)
     ) as Record<ArmyUnitType, number>;
-
-    onConfirm(selectedHero.id, filteredArmy);
+  
+    try {
+      const response = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: state.address,
+          action: "start_mining",
+          heroId: selectedHero.id,
+          nodeId: selectedResourceNodeId, // <-- отсюда
+          army: filteredArmy,
+        }),
+      });
+  
+      const updatedUser = await response.json();
+      dispatch({ type: "SET_USER", payload: updatedUser });
+      onClose();
+    } catch (error) {
+      console.error("Ошибка отправки героя:", error);
+    }
   };
+  
 
   return (
     <div className={styles.modal_overlay}>
@@ -79,7 +98,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
           <button className={styles.button} onClick={onClose}>Назад</button>
           <button
             className={styles.button}
-            onClick={handleConfirm}
+            onClick={handleSend}
             disabled={currentCapacity <= 0 || currentCapacity > maxCapacity}
           >
             Отправить

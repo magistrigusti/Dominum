@@ -118,10 +118,11 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
       {isHeroModalOpen && (
         <ModalHerosGo
-          heroes={availableHeroes}
-          onClose={() => setHeroModalOpen(false)}
-          onConfirm={handleConfirm}
-        />
+        heroes={availableHeroes}
+        onClose={() => setHeroModalOpen(false)}
+        selectedResourceNodeId={selectedNodeId!}
+      />
+      
       )}
 
       <HeroesBar missions={activeMissions} />
