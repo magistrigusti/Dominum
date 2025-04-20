@@ -1,6 +1,8 @@
+
 // 📄 components/Islands/StartIsland/StartIsland.tsx
 'use client';
-import { useState } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 import styles from './StartIsland.module.css';
 import { RESOURCE_LEVEL } from '@/config/resourceLevel';
 import { RESOURCE_CONFIG } from '@/constants/resources';
@@ -30,6 +32,17 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const playerHeroes = state.heroes || [];
   const points = state.resourceNodes || [];
 
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = mapRef.current;
+    if (container) {
+      const scrollX = (container.scrollWidth - container.clientWidth) / 2;
+      const scrollY = (container.scrollHeight - container.clientHeight) / 2;
+      container.scrollTo({ left: scrollX, top: scrollY });
+    }
+  }, []);
+
   const handleCollectClick = () => {
     setHeroModalOpen(true);
     setSelectedNodeId(activeNode);
@@ -43,9 +56,9 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const handleConfirm = async (heroId: string, army: Record<ArmyUnitType, number>) => {
     const node = points.find(p => p.id === selectedNodeId);
     if (!node) return;
-  
+
     const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
-  
+
     const mission: Mission = {
       heroId,
       hero: playerHeroes.find(h => h.id === heroId)!,
@@ -55,9 +68,9 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       duration: 60,
       startTime: Date.now(),
     };
-  
+
     setActiveMissions(prev => [...prev, mission]);
-  
+
     await fetch('/api/user/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -74,16 +87,15 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
         army,
       }),
     });
-  
+
     setHeroModalOpen(false);
     setSelectedNodeId(null);
   };
-  
 
   return (
     <div className={styles.map_wrapper}>
       <IslandMapController>
-        <div className={styles.map_image}>
+        <div className={styles.map_image} ref={mapRef}>
           {points.map((node) => (
             <ResourcePoint
               key={node.id}
