@@ -1,56 +1,17 @@
 /* // 📄 src/components/Heroes/ModalHeroesGo/ModalHeroesGo.module.css */
-.modal_overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.modal_content {
-  width: 100%;
-  max-width: 500px;
-  background: #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
+.army_table {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.modal_hero_scale {
-  height: 240px;
-  transform: scale(0.65);
+  gap: 8px;
   margin-bottom: 12px;
 }
 
-.hero_selector_small {
-  transform: scale(0.9);
+.capacity_line {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #222;
   margin-bottom: 8px;
-}
-
-.army_table {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 2px;
-}
-
-.army_table {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
 }
 
 .unit_row {
@@ -70,8 +31,13 @@
 }
 
 .unit_row.active {
-  background-color: #bbb;
+  background-color: #ccc;
   box-shadow: 0 0 0 2px #333 inset;
+}
+
+.unit_row.exceeded {
+  background-color: #f8d2d2 !important;
+  border: 1px solid #ff0000;
 }
 
 .unit_img {
@@ -87,19 +53,31 @@
 }
 
 .unit_info {
-  min-width: 60px;
+  min-width: 64px;
   font-weight: bold;
   color: black;
 }
 
 .unit_count {
   font-size: 12px;
-  color: #555;
+  color: #444;
+}
+
+.unit_meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.unit_capacity {
+  font-size: 12px;
+  color: #222;
+  font-weight: 500;
 }
 
 .unit_slider {
-  flex: 1;
-  margin-left: 12px;
+  width: 100%;
+  margin-top: 4px;
 }
-
-
