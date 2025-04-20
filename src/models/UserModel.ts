@@ -11,6 +11,11 @@ const HeroSchema = new mongoose.Schema({
   expToNext: { type: Number, required: true},
 });
 
+const ArmyUnitSchema = new mongoose.Schema({
+  level: { type: Number, default: 1 },
+  count: { type: Number, default: 100 },
+}, { _id: false });
+
 const userSchema = new mongoose.Schema({
   address: { type: String, required: true, unique: true },
   avatar: { type: String, required: true },
@@ -28,6 +33,11 @@ const userSchema = new mongoose.Schema({
   pearl: { type: Number, default: 0 },
   allodium: { type: Number, default: 0 },
   questShipRepaired: { type: Boolean, default: false },
+  army: {
+    type: Map,
+    of: ArmyUnitSchema,
+    default: {}
+  },
   heroes: {
     type: [HeroSchema],
     default: () => [
@@ -50,14 +60,6 @@ const userSchema = new mongoose.Schema({
         expToNext: 1000,
       },
     ]
-  },
-  army: {
-    type: Map,
-    of: {
-      level: Number,
-      count: Number,
-    },
-    default: {}
   },
   resourceNodes: {
     type: [{

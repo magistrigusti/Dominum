@@ -69,6 +69,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           position: node.position,
           remaining: 100,
         },
+        army: state.army
       }),
     });
 
