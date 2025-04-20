@@ -1,6 +1,6 @@
 .card {
-  width: 60px;
-  height: 70px;
+  width: 54px;
+  height: 60px;
   margin: 0 6px;
   border: 2px solid #444;
   border-radius: 10px;
@@ -33,7 +33,7 @@
 }
 
 .card_img {
-  width: 100%;
+  width: 90%;
   height: auto;
   object-fit: contain;
 }

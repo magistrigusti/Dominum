@@ -8,7 +8,7 @@
 }
 
 .hero_image {
-  max-height: 100%;
+  max-height: 40vh;
   height: auto;
   width: auto;
   object-fit: contain;

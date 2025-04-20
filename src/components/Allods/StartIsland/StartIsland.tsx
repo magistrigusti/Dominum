@@ -1,16 +1,16 @@
 // 📄 components/Islands/StartIsland/StartIsland.tsx
 'use client';
-import { RESOURCE_LEVEL } from '@/config/resourceLevel';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styles from './StartIsland.module.css';
+import { RESOURCE_LEVEL } from '@/config/resourceLevel';
 import { RESOURCE_CONFIG } from '@/constants/resources';
+import { useUser } from '@/context/UserContext';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController/IslandMapController';
-import { HeroesBar } from '@/components/Map/HeroesBar/HeroesBar';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
-import { useUser } from '@/context/UserContext';
-import type { Mission } from '@/components/Map/HeroesBar/HeroesBar';
+import { HeroesBar, type Mission } from '@/components/Map/HeroesBar/HeroesBar';
+import type { ArmyUnitType } from '@/config/armyCapacity';
 
 const getFallbackAvatar = (resource: string): string => {
   return RESOURCE_CONFIG.find(r => r.key === resource)?.avatar || '/icons/resources/default.png';
@@ -40,10 +40,12 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     hero => !activeMissions.some(m => m.heroId === hero.id)
   );
 
-  const handleConfirm = async (heroId: string, armyCount: number) => {
+  const handleConfirm = async (heroId: string, army: Record<ArmyUnitType, number>) => {
     const node = points.find(p => p.id === selectedNodeId);
     if (!node) return;
-
+  
+    const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
+  
     const mission: Mission = {
       heroId,
       hero: playerHeroes.find(h => h.id === heroId)!,
@@ -53,29 +55,30 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       duration: 60,
       startTime: Date.now(),
     };
-
+  
     setActiveMissions(prev => [...prev, mission]);
-
+  
     await fetch('/api/user/update', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         address: state.address,
         activeMining: {
-          resource: mission.resource,
-          heroId: mission.heroId,
+          resource: node.resource,
+          heroId,
           startedAt: new Date(),
-          duration: mission.duration,
+          duration: 60,
           position: node.position,
-          remaining: 100,
+          remaining: node.remaining,
         },
-        army: state.army
+        army,
       }),
     });
-
+  
     setHeroModalOpen(false);
     setSelectedNodeId(null);
   };
+  
 
   return (
     <div className={styles.map_wrapper}>

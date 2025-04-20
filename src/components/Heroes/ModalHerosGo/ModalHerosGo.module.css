@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 110vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -24,12 +24,6 @@
   box-sizing: border-box;
 }
 
-.viewer_wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
-}
-
 .hero_selector_small {
   transform: scale(0.9);
 }
@@ -38,6 +32,31 @@
   height: 350px;
   transform: scale(0.5);
 }
+
+.army_table {
+  display: flex;
+  flex-direction: row; 
+  
+}
+
+.unit_row {
+  display: flex;
+  align-items: center;
+  flex-direction: row; 
+}
+
+.unit_icon {
+  width: 30%;
+  height: auto;
+  object-fit: contain;
+}
+
+.unit_slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 
 
 .button {
@@ -95,11 +114,7 @@
   align-items: center;
 }
 
-.army_slider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+
 
 .capacity_info {
   font-size: 12px;
@@ -110,3 +125,4 @@
   display: flex;
   gap: 10px;
 }
+
