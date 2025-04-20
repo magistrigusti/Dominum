@@ -1,29 +1,38 @@
+// 📄 Файл: components/Heroes/Armytable/ArmySlider.tsx
 'use client';
-import { useState } from 'react';
 import styles from './ArmyTable.module.css';
+import { useState, useEffect } from 'react';
 
-export default function WorkingSlider() {
-  const [sliderValue, setSliderValue] = useState(0);
+interface Props {
+  value: number;
+  max: number;
+  onChange: (value: number) => void;
+}
+
+export default function ArmySlider({ value, max, onChange }: Props) {
+  const [sliderValue, setSliderValue] = useState(value);
+
+  useEffect(() => {
+    setSliderValue(value);
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number(e.target.value);
+    setSliderValue(val);
+    onChange(val);
+  };
 
   return (
-    <div style={{
-      padding: '20px',
-      background: '#222',
-      color: '#fff',
-      borderRadius: '10px',
-      width: '300px',
-      margin: '40px auto',
-    }}>
-      <h2>🎚 Ползунок</h2>
+    <div className={styles.slider_container}>
       <input
         type="range"
         min={0}
-        max={100}
+        max={max}
         value={sliderValue}
-        onChange={(e) => setSliderValue(Number(e.target.value))}
-        style={{ width: '100%' }}
+        onChange={handleChange}
+        className={styles.slider}
       />
-      <p>: {sliderValue}</p>
+      <p>{sliderValue} / {max}</p>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+// app/page.tsx
 'use client';
         
 import { useTonWallet } from '@tonconnect/ui-react';

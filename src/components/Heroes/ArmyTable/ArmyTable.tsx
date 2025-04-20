@@ -1,5 +1,6 @@
-//  📁 components/Heroes/Armytable/Armytable.tsx
+// 📄 components/Heroes/Armytable/ArmyTable.tsx
 'use client';
+
 import styles from './ArmyTable.module.css';
 import { ARMY_CONFIG } from '@/config/armyConfig';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
@@ -15,12 +16,10 @@ interface Props {
 export const ArmyTable = ({ army, onChange }: Props) => {
   const { state } = useUser();
   const [selectedUnit, setSelectedUnit] = useState<ArmyUnitType | null>(null);
-
-  // ⬇️ локальный army, чтобы range двигался плавно
-  const [localArmy, setLocalArmy] = useState(army);
+  const [localArmy, setLocalArmy] = useState<Record<ArmyUnitType, number>>(army);
 
   useEffect(() => {
-    setLocalArmy(army); // синхронизация если изменилось извне
+    setLocalArmy(army);
   }, [army]);
 
   const maxCapacity = 1000;
@@ -36,31 +35,32 @@ export const ArmyTable = ({ army, onChange }: Props) => {
       ...localArmy,
       [unit]: Math.max(0, value),
     };
-    setLocalArmy(updated);        // ⬅️ обновляем локальный стейт
-    onChange(updated);            // ⬅️ уведомляем родителя
+    setLocalArmy(updated);
+    onChange(updated);
   };
+
+  const availableArmy = state.army || {};
 
   return (
     <div className={styles.army_table}>
-      {Object.entries(localArmy).map(([unit, count]) => {
+      {Object.entries(availableArmy).map(([unit, data]) => {
         const unitType = unit as ArmyUnitType;
-        const config = ARMY_CONFIG.find(cfg => cfg.key === unitType)!;
+        const config = ARMY_CONFIG.find(cfg => cfg.key === unitType);
+        const level = data?.level || 1;
+        const available = data?.count || 0;
+        const selected = localArmy[unitType] || 0;
 
-        const available = state.army?.[unitType]?.count || 0;
-        const level = state.army?.[unitType]?.level || 1;
-        const unitCapacity = ARMY_STATS[unitType][level]?.capacity || 0;
+        if (!config || !ARMY_STATS[unitType]?.[level]) return null;
 
-        const unitTotalCapacity = count * unitCapacity;
+        const unitCapacity = ARMY_STATS[unitType][level].capacity;
+        const unitTotalCapacity = selected * unitCapacity;
         const willExceed = totalCapacity > maxCapacity;
 
         return (
-          <div key={unit}
+          <div
+            key={unit}
             className={`${styles.unit_row} ${selectedUnit === unitType ? styles.active : ''} ${willExceed ? styles.exceeded : ''}`}
-            onClick={() => {
-              if (selectedUnit !== unitType) {
-                setSelectedUnit(unitType);
-              }
-            }}  
+            onClick={() => setSelectedUnit(unitType)}
           >
             <div className={styles.unit_img}>
               <img src={config.icon} alt={config.label} className={styles.unit_icon} />
@@ -70,14 +70,18 @@ export const ArmyTable = ({ army, onChange }: Props) => {
               <span>{config.label}</span>
               <br />
               <span className={styles.unit_count}>
-                {count} / {available}
+                {selected} / {available}
               </span>
             </div>
 
             <div className={styles.unit_meta}>
               <span className={styles.unit_capacity}>🎒 {unitTotalCapacity}</span>
               {selectedUnit === unitType && (
-                <ArmySlider />
+                <ArmySlider
+                  value={selected}
+                  max={available}
+                  onChange={(val) => handleChange(unitType, val)}
+                />
               )}
             </div>
           </div>

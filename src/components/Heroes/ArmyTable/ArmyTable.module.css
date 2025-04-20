@@ -6,14 +6,6 @@
   margin-bottom: 12px;
 }
 
-.capacity_line {
-  text-align: center;
-  font-weight: bold;
-  font-size: 14px;
-  color: #222;
-  margin-bottom: 8px;
-}
-
 .unit_row {
   display: flex;
   align-items: center;
@@ -77,7 +69,13 @@
   font-weight: 500;
 }
 
-.unit_slider {
+.slider_container {
+  padding: 5px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.slider {
   width: 100%;
-  margin-top: 4px;
 }

@@ -61,8 +61,13 @@ export async function POST(req: Request) {
       activeMining: user.activeMining,
       activeQuest: user.activeQuest,
       heroes: user.heroes || [],
-      army: Object.fromEntries(user.army || new Map()),
-
+      army: Object.fromEntries(
+        Object.entries(user.army?.toJSON?.() || {}).map(([key, value]) => {
+          const v = value as { level: number; count: number };
+          return [key, { level: v.level, count: v.count }];
+        })
+      ),
+      
       resourceNodes: user.resourceNodes || [],
     });
 

@@ -73,8 +73,7 @@ type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologi
 type UserAction =
   | { type: "SET_USER"; payload: UserState }
   | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
-  | {
-    type: "SET_ACTIVE_QUEST";
+  | { type: "SET_ACTIVE_QUEST";
       payload: {
       id: string;
       title: string;

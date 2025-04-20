@@ -9,19 +9,11 @@ const HeroSchema = new mongoose.Schema({
   level: { type: Number, required: true },
   exp: { type: Number, required: true },
   expToNext: { type: Number, required: true},
-  troops: {
-    type: Map,
-    of: new mongoose.Schema({
-      count: { type: Number, default: 0 },
-      level: { type: Number, default: 1 },
-    }),
-    default: {},
-  }
 });
 
 const ArmyUnitSchema = new mongoose.Schema({
   level: { type: Number, default: 1 },
-  count: { type: Number, default: 100 },
+  count: { type: Number, default: 200 },
 }, { _id: false });
 
 const userSchema = new mongoose.Schema({
@@ -44,8 +36,16 @@ const userSchema = new mongoose.Schema({
   army: {
     type: Map,
     of: ArmyUnitSchema,
-    default: {}
+    default: () => ({
+      peasant:  { level: 1, count: 0 },
+      sailor:   { level: 1, count: 200 }, // ← стартовое значение
+      axeman:   { level: 1, count: 0 },
+      spearman: { level: 1, count: 0 },
+      archer:   { level: 1, count: 0 },
+      cavalry:  { level: 1, count: 0 },
+    }),
   },
+  
   heroes: {
     type: [HeroSchema],
     default: () => [

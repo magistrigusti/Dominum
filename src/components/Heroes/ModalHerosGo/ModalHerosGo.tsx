@@ -9,7 +9,6 @@ import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
 import { useUser } from '@/context/UserContext';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
-import { ARMY_CONFIG } from '@/config/armyConfig';
 
 type HeroWithTroops = Hero & {
   troops?: Record<ArmyUnitType, { count: number; level: number }>;
@@ -25,7 +24,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
   const { state } = useUser();
   const [selectedHero, setSelectedHero] = useState<HeroWithTroops | null>(null);
   const [army, setArmy] = useState<Record<ArmyUnitType, number>>({
-    peasant: 0, sailor: 200, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
+    peasant: 0, sailor: 0, axeman: 0, spearman: 0, archer: 0, cavalry: 0,
   });
 
   useEffect(() => {
@@ -45,12 +44,10 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
     return sum + count * capacityPerUnit;
   }, 0);
 
-  const handleUnitChange = (unit: ArmyUnitType, value: number) => {
-    setArmy(prev => ({
-      ...prev,
-      [unit]: Math.max(0, value),
-    }));
+  const handleUnitChange = (updated: Record<ArmyUnitType, number>) => {
+    setArmy(updated);
   };
+  
 
   const handleConfirm = () => {
     onConfirm(selectedHero.id, army);
@@ -68,8 +65,7 @@ export const ModalHerosGo = ({ onClose, onConfirm, heroes }: Props) => {
           onSelect={setSelectedHero}
         />
 
-        <ArmyTable army={army} onChange={setArmy} />
-
+        <ArmyTable army={army} onChange={handleUnitChange} />
 
         <p className={styles.capacity_info}>
           Вместимость: {currentCapacity} / {maxCapacity}
