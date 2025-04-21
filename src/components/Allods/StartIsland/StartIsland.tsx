@@ -10,10 +10,11 @@ import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoin
 import { IslandMapController } from '@/components/Map/IslandMapController/IslandMapController';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
-import { HeroesBar, type Mission } from '@/components/Map/HeroesBar/HeroesBar';
+import { HeroesBar} from '@/components/Map/HeroesBar/HeroesBar';
+import type { Mission } from '@/types/missions'; // ✅ используем общий
 import type { ArmyUnitType } from '@/config/armyCapacity';
 import { ARMY_STATS } from '@/config/armyCapacity';
-
+import { RESOURCE_DIFFICULTY } from '@/constants/resources'; 
 
 const getFallbackAvatar = (resource: string): string => {
   return RESOURCE_CONFIG.find(r => r.key === resource)?.avatar || '/icons/resources/default.png';
@@ -80,8 +81,12 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       capacity += ARMY_STATS[unit as ArmyUnitType][unitLevel].capacity * count;
     }
 
-    const duration = Math.ceil(total * speed / capacity / 1000); // ⏱ в секундах
+    const difficulty = RESOURCE_DIFFICULTY[node.resource as keyof typeof RESOURCE_DIFFICULTY] || 1;
+    const duration = Math.ceil((total * difficulty) / capacity); // ⏱ в секундах
     const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
+    const filteredArmy = Object.fromEntries(
+      Object.entries(army).filter(([, count]) => count > 0)
+    ) as Record<ArmyUnitType, number>;
     const mission: Mission = {
       heroId,
       hero: playerHeroes.find(h => h.id === heroId)!,
@@ -90,6 +95,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       resource: node.resource,
       duration,
       startTime: Date.now(),
+      heroArmy: filteredArmy
     };
 
     try {
@@ -112,7 +118,8 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           },
           nodeId: selectedNodeId,
           army: filteredArmy,
-          newMission: mission
+          newMission: mission,
+          heroArmy: filteredArmy,
         }),
       });
 

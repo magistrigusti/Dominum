@@ -24,4 +24,16 @@ export const RESOURCE_CONFIG = [
   { key: "allodium", label: "Allodium", icon: "/icons/resources/allodium.png", avatar: "/icons/resources/gold-1.png", },
 ] as const;
 
+export const RESOURCE_DIFFICULTY: Record<ResourceType, number> = {
+  food: 1,
+  wood: 1.2,
+  stone: 1.5,
+  iron: 2,
+  gold: 3,
+  doubloon: 4.5,
+  pearl: 7,
+  allodium: 10, // исправлено с astralCristal
+};
+
+
 export type ResourceType = typeof RESOURCE_CONFIG[number]["key"];

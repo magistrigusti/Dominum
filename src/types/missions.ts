@@ -12,7 +12,8 @@ export interface Mission {
     exp: number;
     expToNext: number;
   };
-  army: Record<ArmyUnitType, number>;
+
+  heroArmy: Record<ArmyUnitType, number>;
   armyCount: number;
   nodeId: string;
   resource: string;

@@ -3,15 +3,8 @@
 import styles from './HeroesBar.module.css';
 import { Hero } from '@/types/heroes';
 import { formatSeconds } from '@/utils/formatTime';
-export interface Mission {
-  heroId: string;
-  hero: Hero;       // ✅ используем твой тип Hero
-  armyCount: number;
-  nodeId: string;
-  resource: string;
-  duration: number;
-  startTime: number;
-}
+import type { ArmyUnitType } from '@/config/armyCapacity';
+import type { Mission } from '@/types/missions'; // ✅ Используй глобальный
 
 interface HeroesBarProps {
   missions: Mission[];

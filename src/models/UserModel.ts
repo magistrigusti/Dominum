@@ -17,6 +17,11 @@ const MissionSchema = new mongoose.Schema({
     exp: { type: Number, required: true },
     expToNext: { type: Number, required: true },
   },
+  heroArmy: {
+    type: Map,
+    of: Number,
+    default: {}
+  },
 }, { _id: false });
 
 const HeroSchema = new mongoose.Schema({
@@ -63,6 +68,7 @@ const userSchema = new mongoose.Schema({
       cavalry:  { level: 1, count: 0 },
     }),
   },
+
   missions: {
     type: [MissionSchema],
     default: [],

@@ -39,6 +39,16 @@ export async function PUT(req: Request) {
       }
     }
 
+    if (data.cancelMissionHeroId && data.army) {
+      for (const unit in data.army) {
+        const count = data.army[unit];
+        if (typeof count === 'number') {
+          incFields[`army.${unit}.count`] = (incFields[`army.${unit}.count`] || 0) + count;
+        }
+      }
+    }
+    
+
     const updateQuery: any = {};
     if (Object.keys(setFields).length > 0) {
       updateQuery.$set = setFields;
