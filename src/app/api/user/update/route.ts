@@ -1,25 +1,41 @@
 // 📁 src/app/api/user/update/route.ts
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/dbConnect';
-import { UserModel } from '@/models/UserModel';
-import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/dbConnect";
+import { UserModel } from "@/models/UserModel";
+import { ARMY_STATS, ArmyUnitType } from "@/config/armyCapacity";
 
 export async function PUT(req: Request) {
   const { address, army, ...data } = await req.json();
 
   if (!address) {
-    return NextResponse.json({ error: 'Address is required' }, { status: 400 });
+    return NextResponse.json({ error: "Address is required" }, { status: 400 });
   }
 
   try {
     await dbConnect();
 
     const allowedFields = [
-      "name", "avatar", "food", "wood", "stone", "iron",
-      "gold", "doubloon", "pearl", "allodium",
-      "prestige", "levelPrestige", "prestigeProgress", "technologies",
-      "activeBonuses", "activeQuest", "questPanelOpen", "heroes", 
-      "army", "activeMining", "missions"
+      "name",
+      "avatar",
+      "food",
+      "wood",
+      "stone",
+      "iron",
+      "gold",
+      "doubloon",
+      "pearl",
+      "allodium",
+      "prestige",
+      "levelPrestige",
+      "prestigeProgress",
+      "technologies",
+      "activeBonuses",
+      "activeQuest",
+      "questPanelOpen",
+      "heroes",
+      "army",
+      "activeMining",
+      "missions",
     ];
 
     const setFields: any = {};
@@ -31,10 +47,10 @@ export async function PUT(req: Request) {
     const incFields: any = {};
 
     // ✅ уменьшаем количество войск при отправке
-    if (army && typeof army === 'object') {
+    if (army && typeof army === "object") {
       for (const unit in army) {
         const count = army[unit];
-        if (typeof count === 'number') {
+        if (typeof count === "number") {
           incFields[`army.${unit}.count`] = -count;
         }
       }
@@ -43,34 +59,51 @@ export async function PUT(req: Request) {
     // ✅ если отмена — вернём войска и начислим ресурсы
     if (data.cancelMissionHeroId) {
       const user = await UserModel.findOne({ address });
-      const mission = user?.missions.find((m: any) => m.heroId === data.cancelMissionHeroId);
+      const mission = user?.missions.find(
+        (m: any) => m.heroId === data.cancelMissionHeroId
+      );
 
       if (mission) {
         const now = Date.now();
-        const elapsed = Math.min(now - mission.startTime, mission.duration * 1000);
+        const elapsed = Math.min(
+          now - mission.startTime,
+          mission.duration * 1000
+        );
         const percent = elapsed / (mission.duration * 1000);
 
         const resourceType = mission.resource;
-        const minedAmount = Math.floor(
-          Object.entries(mission.heroArmy).reduce((sum: number, [unit, countRaw]) => {
-            const count = countRaw as number;
-            const safeUnit = unit as ArmyUnitType;
-            const level = user.army?.[safeUnit]?.level || 1;
-            const capacity = ARMY_STATS[safeUnit][level].capacity;
-            return sum + capacity * count;
-          }, 0) * percent
-        );
+        let totalCapacity = 0;
+
+        for (const [unit, countRaw] of Object.entries(mission.heroArmy)) {
+          const count = countRaw as number;
+          const safeUnit = unit as ArmyUnitType;
+          const level = user.army?.[safeUnit]?.level;
+
+          const statsTable = ARMY_STATS[safeUnit];
+          const unitStats = level && statsTable?.[level];
+
+          if (!unitStats) continue;
+
+          totalCapacity += unitStats.capacity * count;
+        }
+
+        const minedAmount = Math.floor(totalCapacity * percent);
 
         // ✅ вернуть войска
         for (const unit in mission.heroArmy) {
           const count = mission.heroArmy[unit];
-          incFields[`army.${unit}.count`] = (incFields[`army.${unit}.count`] || 0) + count;
+          incFields[`army.${unit}.count`] =
+            (incFields[`army.${unit}.count`] || 0) + count;
         }
 
         // ✅ начислить ресурсы
-        setFields[resourceType] = (user[resourceType] || 0) + minedAmount;
+        if (typeof user[resourceType] === "number") {
+          setFields[resourceType] = user[resourceType] + minedAmount;
+        } else {
+          setFields[resourceType] = minedAmount;
+        }
 
-        // ✅ уменьшить remaining на точке
+        // ✅ уменьшить remaining
         const updatedNodes = user.resourceNodes.map((node: any) => {
           if (node.id === mission.nodeId) {
             return {
@@ -81,13 +114,42 @@ export async function PUT(req: Request) {
           return node;
         });
         setFields.resourceNodes = updatedNodes;
-      }
 
-      // ✅ удалить миссию
-      await UserModel.updateOne(
-        { address },
-        { $pull: { missions: { heroId: data.cancelMissionHeroId } } }
-      );
+        // ✅ удалить миссию
+        user.missions = user.missions.filter(
+          (m: any) => m.heroId !== data.cancelMissionHeroId
+        );
+        setFields.missions = user.missions;
+
+        console.log("[CANCEL]", {
+          cancelHero: data.cancelMissionHeroId,
+          minedAmount,
+          oldMissions: user.missions,
+        });
+
+        // ✅ обнуляем troops у героя в объекте user
+        const updatedHeroes = user.heroes.map((h: any) => {
+          if (h.id === mission.heroId) {
+            return { ...h.toObject(), troops: {} };
+          }
+          return h;
+        });
+        setFields.heroes = updatedHeroes;
+
+        // ✅ СОХРАНЯЕМ ВСЁ СРАЗУ
+        await UserModel.updateOne(
+          { address, "heroes.id": mission.heroId },
+          { $set: { "heroes.$.troops": {} } },
+          {
+            ...(Object.keys(setFields).length > 0 && { $set: setFields }),
+            ...(Object.keys(incFields).length > 0 && { $inc: incFields }),
+          }
+        );
+
+        // ✅ возвращаем нового юзера
+        const updatedUser = await UserModel.findOne({ address });
+        return NextResponse.json(updatedUser);
+      }
     }
 
     const updateQuery: any = {};
@@ -99,12 +161,15 @@ export async function PUT(req: Request) {
     }
 
     if (data.heroId && data.heroArmy) {
-      const hero = await UserModel.findOne({ address, 'heroes.id': data.heroId }, { 'heroes.$': 1 });
+      const hero = await UserModel.findOne(
+        { address, "heroes.id": data.heroId },
+        { "heroes.$": 1 }
+      );
 
       if (hero && hero.heroes.length > 0) {
         await UserModel.updateOne(
-          { address, 'heroes.id': data.heroId },
-          { $set: { 'heroes.$.troops': data.heroArmy } }
+          { address, "heroes.id": data.heroId },
+          { $set: { "heroes.$.troops": data.heroArmy } }
         );
       }
     }
@@ -116,19 +181,20 @@ export async function PUT(req: Request) {
       );
     }
 
-    const user = await UserModel.findOneAndUpdate(
-      { address },
-      updateQuery,
-      { new: true }
-    );
+    const user = await UserModel.findOneAndUpdate({ address }, updateQuery, {
+      new: true,
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json(user);
   } catch (err) {
-    console.error('[api/user/update] ❌ Ошибка:', err);
-    return NextResponse.json({ error: 'Server error', details: err }, { status: 500 });
+    console.error("[api/user/update] ❌ Ошибка:", err);
+    return NextResponse.json(
+      { error: "Server error", details: err },
+      { status: 500 }
+    );
   }
 }

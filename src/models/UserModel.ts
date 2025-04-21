@@ -5,7 +5,10 @@ const MissionSchema = new mongoose.Schema({
   heroId: { type: String, required: true },
   armyCount: { type: Number, required: true },
   nodeId: { type: String, required: true },
-  resource: { type: String, required: true },
+  resource: { 
+    type: String, 
+    enum: ['food', 'wood', 'stone', 'iron', 'gold', 'doubloon', 'pearl', 'allodium'] 
+  },  
   duration: { type: Number, required: true },
   startTime: { type: Number, required: true },
   hero: {

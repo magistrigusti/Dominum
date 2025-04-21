@@ -144,33 +144,36 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const handleCancel = async (heroId: string) => {
     const missionToCancel = activeMissions.find(m => m.heroId === heroId);
     if (!missionToCancel) return;
-
+  
     try {
-      await fetch('/api/user/update', {
+      const response = await fetch('/api/user/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           address: state.address,
           cancelMissionHeroId: heroId,
-          army: {
-            // возвращаем обратно на сервер
-            [missionToCancel.resource]: missionToCancel.armyCount
-          }
+          heroArmy: missionToCancel.heroArmy, // ✅ ВОЗВРАЩАЕМ ИМЕННО ЮНИТОВ
         }),
       });
-
+      
+  
+      const updatedUser = await response.json();
+  
+      dispatch({ type: 'SET_USER', payload: updatedUser }); // ✅ обязательно
+  
       setActiveMissions(prev => prev.filter(m => m.heroId !== heroId));
-
+  
       setActiveHeroNodes(prev => {
-        const updated = {...prev};
+        const updated = { ...prev };
         delete updated[missionToCancel.nodeId];
         return updated;
       });
-
+  
     } catch (err) {
       console.error('Ошибка отмены миссии:', err);
     }
   };
+  
 
   return (
     <div className={styles.map_wrapper}>
@@ -230,3 +233,4 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     </div>
   );
 };
+
