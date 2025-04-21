@@ -27,6 +27,7 @@ export async function PUT(req: Request) {
         setFields[key] = data[key];
       }
     }
+
     const incFields: any = {};
 
     // ✅ уменьшаем количество войск, если отправлены
@@ -39,15 +40,15 @@ export async function PUT(req: Request) {
       }
     }
 
-    if (data.cancelMissionHeroId && data.army) {
-      for (const unit in data.army) {
-        const count = data.army[unit];
+    // ✅ возвращаем войска при отмене
+    if (data.cancelMissionHeroId && data.heroArmy) {
+      for (const unit in data.heroArmy) {
+        const count = data.heroArmy[unit];
         if (typeof count === 'number') {
           incFields[`army.${unit}.count`] = (incFields[`army.${unit}.count`] || 0) + count;
         }
       }
     }
-    
 
     const updateQuery: any = {};
     if (Object.keys(setFields).length > 0) {
@@ -57,32 +58,30 @@ export async function PUT(req: Request) {
       updateQuery.$inc = incFields;
     }
 
+    // ✅ сохраняем войска в героя
     if (data.heroId && data.heroArmy) {
-      const hero = await UserModel.findOne({address, 'heroes.id': data.heroId}, {'heroes.$': 1});
-
+      const hero = await UserModel.findOne({ address, 'heroes.id': data.heroId }, { 'heroes.$': 1 });
       if (hero && hero.heroes.length > 0) {
-        const targetHero = hero.heroes[0];
-
-        targetHero.troops = data.heroArmy;
-
         await UserModel.updateOne(
-          {address, 'heros.id': data.heroId},
-          {$set: {'heros.$.troops': data.heroArmy}}
+          { address, 'heroes.id': data.heroId },
+          { $set: { 'heroes.$.troops': data.heroArmy } }
         );
       }
     }
 
+    // ✅ добавляем миссию
     if (data.newMission) {
       await UserModel.updateOne(
         { address },
-        { $push: { missions: data.newMission }}
+        { $push: { missions: data.newMission } }
       );
     }
-    
+
+    // ✅ удаляем миссию
     if (data.cancelMissionHeroId) {
       await UserModel.updateOne(
         { address },
-        { $pull: { missions: { heroId: data.cancelMissionHeroId}}}
+        { $pull: { missions: { heroId: data.cancelMissionHeroId } } }
       );
     }
 
@@ -102,4 +101,3 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: 'Server error', details: err }, { status: 500 });
   }
 }
-
