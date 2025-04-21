@@ -1,7 +1,8 @@
-// ✅ src/app/api/user/update/route.ts
+// 📁 src/app/api/user/update/route.ts
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { UserModel } from '@/models/UserModel';
+import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
 
 export async function PUT(req: Request) {
   const { address, army, ...data } = await req.json();
@@ -27,10 +28,9 @@ export async function PUT(req: Request) {
         setFields[key] = data[key];
       }
     }
-
     const incFields: any = {};
 
-    // ✅ уменьшаем количество войск, если отправлены
+    // ✅ уменьшаем количество войск при отправке
     if (army && typeof army === 'object') {
       for (const unit in army) {
         const count = army[unit];
@@ -40,14 +40,54 @@ export async function PUT(req: Request) {
       }
     }
 
-    // ✅ возвращаем войска при отмене
-    if (data.cancelMissionHeroId && data.heroArmy) {
-      for (const unit in data.heroArmy) {
-        const count = data.heroArmy[unit];
-        if (typeof count === 'number') {
+    // ✅ если отмена — вернём войска и начислим ресурсы
+    if (data.cancelMissionHeroId) {
+      const user = await UserModel.findOne({ address });
+      const mission = user?.missions.find((m: any) => m.heroId === data.cancelMissionHeroId);
+
+      if (mission) {
+        const now = Date.now();
+        const elapsed = Math.min(now - mission.startTime, mission.duration * 1000);
+        const percent = elapsed / (mission.duration * 1000);
+
+        const resourceType = mission.resource;
+        const minedAmount = Math.floor(
+          Object.entries(mission.heroArmy).reduce((sum: number, [unit, countRaw]) => {
+            const count = countRaw as number;
+            const safeUnit = unit as ArmyUnitType;
+            const level = user.army?.[safeUnit]?.level || 1;
+            const capacity = ARMY_STATS[safeUnit][level].capacity;
+            return sum + capacity * count;
+          }, 0) * percent
+        );
+
+        // ✅ вернуть войска
+        for (const unit in mission.heroArmy) {
+          const count = mission.heroArmy[unit];
           incFields[`army.${unit}.count`] = (incFields[`army.${unit}.count`] || 0) + count;
         }
+
+        // ✅ начислить ресурсы
+        setFields[resourceType] = (user[resourceType] || 0) + minedAmount;
+
+        // ✅ уменьшить remaining на точке
+        const updatedNodes = user.resourceNodes.map((node: any) => {
+          if (node.id === mission.nodeId) {
+            return {
+              ...node.toObject(),
+              remaining: Math.max(0, (node.remaining || 0) - minedAmount),
+            };
+          }
+          return node;
+        });
+        setFields.resourceNodes = updatedNodes;
       }
+
+      // ✅ удалить миссию
+      await UserModel.updateOne(
+        { address },
+        { $pull: { missions: { heroId: data.cancelMissionHeroId } } }
+      );
     }
 
     const updateQuery: any = {};
@@ -58,9 +98,9 @@ export async function PUT(req: Request) {
       updateQuery.$inc = incFields;
     }
 
-    // ✅ сохраняем войска в героя
     if (data.heroId && data.heroArmy) {
       const hero = await UserModel.findOne({ address, 'heroes.id': data.heroId }, { 'heroes.$': 1 });
+
       if (hero && hero.heroes.length > 0) {
         await UserModel.updateOne(
           { address, 'heroes.id': data.heroId },
@@ -69,19 +109,10 @@ export async function PUT(req: Request) {
       }
     }
 
-    // ✅ добавляем миссию
     if (data.newMission) {
       await UserModel.updateOne(
         { address },
         { $push: { missions: data.newMission } }
-      );
-    }
-
-    // ✅ удаляем миссию
-    if (data.cancelMissionHeroId) {
-      await UserModel.updateOne(
-        { address },
-        { $pull: { missions: { heroId: data.cancelMissionHeroId } } }
       );
     }
 
