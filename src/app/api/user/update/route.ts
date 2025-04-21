@@ -127,10 +127,10 @@ export async function PUT(req: Request) {
           oldMissions: user.missions,
         });
 
-        // ✅ обнуляем troops у героя в объекте user
+        // ✅ возвращаем героя обратно
         const updatedHeroes = user.heroes.map((h: any) => {
           if (h.id === mission.heroId) {
-            return { ...h.toObject(), troops: {} };
+            return mission.hero;
           }
           return h;
         });
@@ -138,8 +138,7 @@ export async function PUT(req: Request) {
 
         // ✅ СОХРАНЯЕМ ВСЁ СРАЗУ
         await UserModel.updateOne(
-          { address, "heroes.id": mission.heroId },
-          { $set: { "heroes.$.troops": {} } },
+          { address },
           {
             ...(Object.keys(setFields).length > 0 && { $set: setFields }),
             ...(Object.keys(incFields).length > 0 && { $inc: incFields }),
@@ -158,20 +157,6 @@ export async function PUT(req: Request) {
     }
     if (Object.keys(incFields).length > 0) {
       updateQuery.$inc = incFields;
-    }
-
-    if (data.heroId && data.heroArmy) {
-      const hero = await UserModel.findOne(
-        { address, "heroes.id": data.heroId },
-        { "heroes.$": 1 }
-      );
-
-      if (hero && hero.heroes.length > 0) {
-        await UserModel.updateOne(
-          { address, "heroes.id": data.heroId },
-          { $set: { "heroes.$.troops": data.heroArmy } }
-        );
-      }
     }
 
     if (data.newMission) {

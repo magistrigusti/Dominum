@@ -50,7 +50,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       };
     }
     setActiveHeroNodes(updated);
-
     setActiveMissions(state.missions || [])
   }, [state.missions]);
 
