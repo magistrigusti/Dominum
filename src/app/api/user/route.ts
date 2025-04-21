@@ -38,6 +38,29 @@ export async function POST(req: Request) {
       }
     }
 
+    try {
+      if (user.activeMining) {
+        const now = Date.now() / 1000;
+        const start = new Date(user.activeMining.startedAt).getTime() / 1000;
+        const end = start + user.activeMining.duration;
+    
+        if (now >= end) {
+          const gained = user.activeMining.remaining || 0;
+          const resKey = user.activeMining.resource;
+    
+          if (typeof user[resKey] === 'number') {
+            user[resKey] += gained;
+          }
+    
+          user.missions = user.missions.filter((m: any) => m.heroId !== user.activeMining.heroId);
+          user.activeMining = null;
+        }
+      }
+    } catch (err) {
+      console.error('❌ [AutoFinishMining] Ошибка:', err);
+    }
+    
+
     await user.save();
 
     return NextResponse.json({
