@@ -18,7 +18,7 @@ export async function PUT(req: Request) {
       "gold", "doubloon", "pearl", "allodium",
       "prestige", "levelPrestige", "prestigeProgress", "technologies",
       "activeBonuses", "activeQuest", "questPanelOpen", "heroes", 
-      "army", "activeMining"
+      "army", "activeMining", "missions"
     ];
 
     const setFields: any = {};
@@ -27,7 +27,6 @@ export async function PUT(req: Request) {
         setFields[key] = data[key];
       }
     }
-
     const incFields: any = {};
 
     // ✅ уменьшаем количество войск, если отправлены
@@ -61,6 +60,20 @@ export async function PUT(req: Request) {
           {$set: {'heros.$.troops': data.heroArmy}}
         );
       }
+    }
+
+    if (data.newMission) {
+      await UserModel.updateOne(
+        { address },
+        { $push: { missions: data.newMission }}
+      );
+    }
+    
+    if (data.cancelMissionHeroId) {
+      await UserModel.updateOne(
+        { address },
+        { $pull: { missions: { heroId: data.cancelMissionHeroId}}}
+      );
     }
 
     const user = await UserModel.findOneAndUpdate(

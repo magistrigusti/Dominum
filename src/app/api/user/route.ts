@@ -67,7 +67,7 @@ export async function POST(req: Request) {
           return [key, { level: v.level, count: v.count }];
         })
       ),
-      
+      missions: user.missions || [],
       resourceNodes: user.resourceNodes || [],
     });
 
