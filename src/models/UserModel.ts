@@ -1,6 +1,24 @@
 // 📄 src/models/UserModel.ts
 import mongoose from "mongoose";
 
+const MissionSchema = new mongoose.Schema({
+  heroId: { type: String, required: true },
+  armyCount: { type: Number, required: true },
+  nodeId: { type: String, required: true },
+  resource: { type: String, required: true },
+  duration: { type: Number, required: true },
+  startTime: { type: Number, required: true },
+  hero: {
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    quality: { type: String, enum: ['normal', 'good', 'rare', 'epic', 'legendary'] },
+    level: { type: Number, required: true },
+    exp: { type: Number, required: true },
+    expToNext: { type: Number, required: true },
+  },
+}, { _id: false });
+
 const HeroSchema = new mongoose.Schema({
   id: { type: String, required: true },
   name: { type: String, required: true},
@@ -45,7 +63,10 @@ const userSchema = new mongoose.Schema({
       cavalry:  { level: 1, count: 0 },
     }),
   },
-  
+  missions: {
+    type: [MissionSchema],
+    default: [],
+  },
   heroes: {
     type: [HeroSchema],
     default: () => [
