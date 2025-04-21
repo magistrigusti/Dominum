@@ -1,7 +1,7 @@
 // src/components/Map/HeroesBar/HeroesBar.tsx
 'use client';
 import styles from './HeroesBar.module.css';
-import { Hero } from '@/types/heroes'; 
+import { Hero } from '@/types/heroes';
 import { formatSeconds } from '@/utils/formatTime';
 export interface Mission {
   heroId: string;
@@ -18,7 +18,7 @@ interface HeroesBarProps {
   onCancel: (heroId: string) => void;
 }
 
-export const HeroesBar = ({ missions }: HeroesBarProps) => {
+export const HeroesBar = ({ missions, onCancel }: HeroesBarProps) => {
   return (
     <div className={styles.heroes_bar}>
       {missions.map((mission) => (
@@ -31,6 +31,10 @@ export const HeroesBar = ({ missions }: HeroesBarProps) => {
             <p>⏳ Осталось: {
               formatSeconds(Math.ceil(mission.duration - (Date.now() - mission.startTime) / 1000))}
             </p>
+
+            <button onClick={() => {
+              onCancel(mission.heroId)
+            }}>Вернуть</button>
 
           </div>
         </div>

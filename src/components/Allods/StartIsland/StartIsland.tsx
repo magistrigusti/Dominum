@@ -80,7 +80,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       capacity += ARMY_STATS[unit as ArmyUnitType][unitLevel].capacity * count;
     }
 
-    const duration = Math.ceil(total / capacity * speed);
+    const duration = Math.ceil(total * speed / capacity / 1000); // ⏱ в секундах
     const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
     const mission: Mission = {
       heroId,
@@ -153,6 +153,13 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       });
 
       setActiveMissions(prev => prev.filter(m => m.heroId !== heroId));
+
+      setActiveHeroNodes(prev => {
+        const updated = {...prev};
+        delete updated[missionToCancel.nodeId];
+        return updated;
+      });
+
     } catch (err) {
       console.error('Ошибка отмены миссии:', err);
     }
