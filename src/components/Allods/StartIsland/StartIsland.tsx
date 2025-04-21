@@ -33,11 +33,9 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   if (state.missions?.length > 0) {
-  //     setActiveMissions(state.missions)
-  //   }
-  // }, [state.missions]);
+  useEffect(() => {
+    setActiveMissions(state.missions || [])
+  }, [state.missions]);
 
   const handleCollectClick = () => {
     setHeroModalOpen(true);

@@ -71,18 +71,19 @@ type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologi
 type UserAction =
   | { type: "SET_USER"; payload: UserState }
   | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
-  | {
-    type: "SET_ACTIVE_QUEST";
-    payload: {
-      id: string;
-      title: string;
-      description: string;
-      status: "active" | "complete";
-    };
-  }
+  | { type: "SET_ACTIVE_QUEST"; 
+      payload: {
+        id: string;
+        title: string;
+        description: string;
+        status: "active" | "complete";
+      };
+    }
   | { type: "TOGGLE_QUEST_PANEL"; payload: boolean }
   | { type: "SET_HEROES"; payload: Hero[] }
   | { type: "SET_ARMY"; payload: UserState["army"] }
+  | { type: "SET_MISSIONS"; payload: Mission[]}
+
 
 const initialState: UserState = {
   address: "",
@@ -122,6 +123,11 @@ function reducer(state: UserState, action: UserAction): UserState {
         ...state,
         [action.resource]: (state[action.resource] as number) + action.amount,
       };
+    case "SET_MISSIONS":
+      return {
+        ...state,
+        missions: action.payload,
+      }
     case "SET_ACTIVE_QUEST":
       return {
         ...state,

@@ -7,7 +7,7 @@ export interface Mission {
     id: string;
     name: string;
     image: string;
-    quality: string;
+    quality: 'normal' | 'good' | 'rare' | 'epic' | 'legendary';
     level: number;
     exp: number;
     expToNext: number;

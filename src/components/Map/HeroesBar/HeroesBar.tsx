@@ -29,7 +29,14 @@ export const HeroesBar = ({ missions }: HeroesBarProps) => {
             <p>{mission.hero.name}</p>
             <p>Войска: {mission.armyCount}</p>
             <p>Ресурс: {mission.resource}</p>
-            <p>⏳ Осталось: {Math.ceil(mission.duration - (Date.now() - mission.startTime) / 1000)} cек.</p>
+            <p>
+              ⏳ Осталось:{' '}
+              {Math.max(
+                0,
+                Math.ceil(mission.duration - (Date.now() / 1000 - mission.startTime))
+              )} сек.
+            </p>
+
           </div>
         </div>
       ))}
