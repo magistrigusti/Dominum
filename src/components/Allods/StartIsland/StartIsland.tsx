@@ -33,6 +33,12 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
 
   const mapRef = useRef<HTMLDivElement>(null);
 
+  // useEffect(() => {
+  //   if (state.missions?.length > 0) {
+  //     setActiveMissions(state.missions)
+  //   }
+  // }, [state.missions]);
+
   const handleCollectClick = () => {
     setHeroModalOpen(true);
     setSelectedNodeId(activeNode);
@@ -81,6 +87,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
           },
           nodeId: selectedNodeId,
           army: filteredArmy,
+          newMission: mission
         }),
       });
 
@@ -92,6 +99,30 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
       setSelectedNodeId(null);
     } catch (error) {
       console.error('Ошибка отправки героя:', error);
+    }
+  };
+
+  const handleCancel = async (heroId: string) => {
+    const missionToCancel = activeMissions.find(m => m.heroId === heroId);
+    if (!missionToCancel) return;
+
+    try {
+      await fetch('/api/user/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          address: state.address,
+          cancelMissionHeroId: heroId,
+          army: {
+            // возвращаем обратно на сервер
+            [missionToCancel.resource]: missionToCancel.armyCount
+          }
+        }),
+      });
+
+      setActiveMissions(prev => prev.filter(m => m.heroId !== heroId));
+    } catch (err) {
+      console.error('Ошибка отмены миссии:', err);
     }
   };
 
@@ -139,7 +170,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
         />
       )}
 
-      <HeroesBar missions={activeMissions} />
+      <HeroesBar missions={activeMissions} onCancel={handleCancel} />
     </div>
   );
 };

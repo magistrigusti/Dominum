@@ -16,6 +16,7 @@ export interface Mission {
 
 interface HeroesBarProps {
   missions: Mission[];
+  onCancel: (heroId: string) => void;
 }
 
 export const HeroesBar = ({ missions }: HeroesBarProps) => {

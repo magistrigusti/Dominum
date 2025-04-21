@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import type { Hero } from '@/types/heroes';
 import type { ArmyUnitType } from '@/config/armyCapacity';
-
+import type { Mission } from '@/types/missions';
 export interface UserState {
   address: string;
   avatar?: string;
@@ -28,7 +28,6 @@ export interface UserState {
       count: number;
     }
   };
-
   heroes: {
     id: string;
     name: string;
@@ -38,17 +37,15 @@ export interface UserState {
     exp: number;
     expToNext: number;
   }[];
-
   resourceNodes?: {
     id: string;
     resource: string;
-    level: number
+    level: number;
     position: { x: number; y: number };
     remaining: number;
     lastRestoredAt?: string;
     avatar?: string;
   }[];
-
   activeMining?: {
     resource: string;
     heroId: string;
@@ -66,6 +63,7 @@ export interface UserState {
     description: string;
     status: "active" | "complete";
   };
+  missions?: Mission[];
 }
 
 type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologies">;
@@ -73,8 +71,9 @@ type ResourceField = Exclude<keyof UserState, "address" | "avatar" | "technologi
 type UserAction =
   | { type: "SET_USER"; payload: UserState }
   | { type: "ADD_RESOURCE"; resource: ResourceField; amount: number }
-  | { type: "SET_ACTIVE_QUEST";
-      payload: {
+  | {
+    type: "SET_ACTIVE_QUEST";
+    payload: {
       id: string;
       title: string;
       description: string;
@@ -83,7 +82,7 @@ type UserAction =
   }
   | { type: "TOGGLE_QUEST_PANEL"; payload: boolean }
   | { type: "SET_HEROES"; payload: Hero[] }
-  | { type: "SET_ARMY"; payload: UserState["army"]}
+  | { type: "SET_ARMY"; payload: UserState["army"] }
 
 const initialState: UserState = {
   address: "",
@@ -104,16 +103,15 @@ const initialState: UserState = {
   questShipRepaired: false,
   heroes: [],
   activeMining: undefined,
-  
+  missions: []
 };
-
 
 function reducer(state: UserState, action: UserAction): UserState {
   switch (action.type) {
     case "SET_USER":
       return { ...state, ...action.payload };
     case 'SET_HEROES':
-        return { ...state, heroes: action.payload };
+      return { ...state, heroes: action.payload };
     case "SET_ARMY":
       return {
         ...state,
@@ -128,7 +126,7 @@ function reducer(state: UserState, action: UserAction): UserState {
       return {
         ...state,
         activeQuest: action.payload,
-        questPanelOpen: true, // сразу открываем панель
+        questPanelOpen: true,
       };
     case "TOGGLE_QUEST_PANEL":
       return {
@@ -139,7 +137,6 @@ function reducer(state: UserState, action: UserAction): UserState {
       return state;
   }
 }
-
 
 const UserContext = createContext<{
   state: UserState;
