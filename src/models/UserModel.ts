@@ -43,7 +43,7 @@ const HeroSchema = new mongoose.Schema({
 
 const ArmyUnitSchema = new mongoose.Schema({
   level: { type: Number, default: 1 },
-  count: { type: Number, default: 200 },
+  count: { type: Number, default: 0 },
 }, { _id: false });
 
 const userSchema = new mongoose.Schema({
@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema({
     of: ArmyUnitSchema,
     default: () => ({
       peasant:  { level: 1, count: 0 },
-      sailor:   { level: 1, count: 200 }, // ← стартовое значение
+      sailor:   { level: 1, count: 200 }, 
       axeman:   { level: 1, count: 0 },
       spearman: { level: 1, count: 0 },
       archer:   { level: 1, count: 0 },
