@@ -143,7 +143,12 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const handleCancel = async (heroId: string) => {
     const missionToCancel = activeMissions.find(m => m.heroId === heroId);
     if (!missionToCancel) return;
-  
+    console.log("🔍 army:", state.army);
+console.log("🔍 heroArmy:", missionToCancel.heroArmy);
+console.log("typeof army:", typeof state.army);
+console.log("army.constructor.name:", state.army?.constructor?.name);
+console.log("heroArmy.constructor.name:", missionToCancel.heroArmy?.constructor?.name);
+
     try {
       const response = await fetch('/api/user/update', {
         method: 'PUT',
@@ -151,7 +156,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
         body: JSON.stringify({
           address: state.address,
           cancelMissionHeroId: heroId,
-          heroArmy: missionToCancel.heroArmy,
+          heroArmy: Object.fromEntries(Object.entries(missionToCancel.heroArmy)),
           missions: state.missions,
           heroes: state.heroes,
           army: state.army,
@@ -167,9 +172,7 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
             allodium: state.allodium,
           }
         }),
-        
       });
-      
   
       const updatedUser = await response.json();
   

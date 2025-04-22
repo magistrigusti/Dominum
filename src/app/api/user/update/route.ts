@@ -96,6 +96,7 @@ export async function PUT(req: Request) {
 
         // ✅ вернуть войска
         const updatedArmy = {...user.army}
+        
         for (const unit in mission.heroArmy) {
           const returningCount = mission.heroArmy[unit];
           const current = updatedArmy[unit];
@@ -109,6 +110,7 @@ export async function PUT(req: Request) {
             count: (current?.count ?? 0) + returningCount
           };
         }
+        setFields.army = updatedArmy; 
 
         // ✅ начислить ресурсы
         const currentValue = user.resources?.[resourceType] || 0;
@@ -181,7 +183,6 @@ export async function PUT(req: Request) {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-
     return NextResponse.json(user);
   } catch (err) {
     console.error("[api/user/update] ❌ Ошибка:", err);

@@ -21,8 +21,7 @@ const MissionSchema = new mongoose.Schema({
     expToNext: { type: Number, required: true },
   },
   heroArmy: {
-    type: Map,
-    of: Number,
+    type: Object,
     default: {}
   },
 }, { _id: false });
@@ -65,7 +64,7 @@ const userSchema = new mongoose.Schema({
   allodium: { type: Number, default: 0 },
   questShipRepaired: { type: Boolean, default: false },
   army: {
-    type: Map,
+    type: Object,
     of: ArmyUnitSchema,
     default: () => ({
       peasant:  { level: 1, count: 0 },
