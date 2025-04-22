@@ -1,5 +1,4 @@
 // 📄 src/types/missions.ts
-import type { ArmyUnitType } from '@/config/armyCapacity';
 
 export interface Mission {
   heroId: string;
@@ -13,7 +12,16 @@ export interface Mission {
     expToNext: number;
   };
 
-  heroArmy: Record<ArmyUnitType, number>;
+  heroArmy: {
+    peasant?: { level: number; count: number };
+    sailor?: { level: number; count: number };
+    axeman?: { level: number; count: number };
+    spearman?: { level: number; count: number };
+    archer?: { level: number; count: number };
+    cavalry?: { level: number; count: number };
+  };
+  
+  
   armyCount: number;
   nodeId: string;
   resource: string;

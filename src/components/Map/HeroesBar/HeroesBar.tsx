@@ -20,6 +20,19 @@ export const HeroesBar = ({ missions, onCancel }: HeroesBarProps) => {
           <div className={styles.hero_info}>
             <p>{mission.hero.name}</p>
             <p>Войска: {mission.armyCount}</p>
+
+            <div className={styles.army_list}>
+              {Object.entries(mission.heroArmy).map(([unit, data]) => {
+                if (!data || data.count <= 0) return null;
+                return (
+                  <p key={unit}>
+                    {unit}: {data.count} ур.{data.level}
+                  </p>
+                );
+              })}
+            </div>
+
+
             <p>Ресурс: {mission.resource}</p>
             <p>⏳ Осталось: {
               formatSeconds(Math.ceil(mission.duration - (Date.now() - mission.startTime) / 1000))}

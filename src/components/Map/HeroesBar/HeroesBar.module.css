@@ -32,3 +32,10 @@
 .hero_info {
   text-align: center;
 }
+
+.army_list {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 1.2;
+}

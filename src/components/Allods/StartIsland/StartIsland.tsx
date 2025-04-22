@@ -29,7 +29,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
   const [isHeroModalOpen, setHeroModalOpen] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  // const [blockedNodes, setBlockedNodes] = useState<string[]>([]);
   const [activeHeroNodes, setActiveHeroNodes] = useState<{
     [nodeId: string]: { heroId: string; avatar: string };
   }>({});
@@ -37,7 +36,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
   const { state, dispatch } = useUser();
   const playerHeroes = state.heroes || [];
   const points = state.resourceNodes || [];
-
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -83,9 +81,35 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     const difficulty = RESOURCE_DIFFICULTY[node.resource as keyof typeof RESOURCE_DIFFICULTY] || 1;
     const duration = Math.ceil((total * difficulty) / capacity); // ⏱ в секундах
     const armyCount = Object.values(army).reduce((sum, val) => sum + val, 0);
-    const filteredArmy = Object.fromEntries(
-      Object.entries(army).filter(([, count]) => count > 0)
-    ) as Record<ArmyUnitType, number>;
+    
+    const filteredArmy = {
+      peasant: {
+        count: army.peasant,
+        level: state.army?.peasant?.level,
+      },
+      sailor: {
+        count: army.sailor,
+        level: state.army?.sailor?.level,
+      },
+      axeman: {
+        count: army.axeman,
+        level: state.army?.axeman?.level,
+      },
+      spearman: {
+        count: army.spearman,
+        level: state.army?.spearman?.level,
+      },
+      archer: {
+        count: army.archer,
+        level: state.army?.archer?.level,
+      },
+      cavalry: {
+        count: army.cavalry,
+        level: state.army?.cavalry?.level,
+      },
+    };
+    
+
     const mission: Mission = {
       heroId,
       hero: playerHeroes.find(h => h.id === heroId)!,
@@ -98,10 +122,6 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     };
 
     try {
-      const filteredArmy = Object.fromEntries(
-        Object.entries(army).filter(([, count]) => count > 0)
-      ) as Record<ArmyUnitType, number>;
-
       const response = await fetch('/api/user/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -144,10 +164,10 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     const missionToCancel = activeMissions.find(m => m.heroId === heroId);
     if (!missionToCancel) return;
     console.log("🔍 army:", state.army);
-console.log("🔍 heroArmy:", missionToCancel.heroArmy);
-console.log("typeof army:", typeof state.army);
-console.log("army.constructor.name:", state.army?.constructor?.name);
-console.log("heroArmy.constructor.name:", missionToCancel.heroArmy?.constructor?.name);
+    console.log("🔍 heroArmy:", missionToCancel.heroArmy);
+    console.log("typeof army:", typeof state.army);
+    console.log("army.constructor.name:", state.army?.constructor?.name);
+    console.log("heroArmy.constructor.name:", missionToCancel.heroArmy?.constructor?.name);
 
     try {
       const response = await fetch('/api/user/update', {
@@ -156,10 +176,10 @@ console.log("heroArmy.constructor.name:", missionToCancel.heroArmy?.constructor?
         body: JSON.stringify({
           address: state.address,
           cancelMissionHeroId: heroId,
-          heroArmy: Object.fromEntries(Object.entries(missionToCancel.heroArmy)),
+          heroArmy: missionToCancel.heroArmy,
           missions: state.missions,
           heroes: state.heroes,
-          army: state.army,
+          army: JSON.parse(JSON.stringify(state.army)),
           resourceNodes: state.resourceNodes,
           resources: {
             food: state.food,

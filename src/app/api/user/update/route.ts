@@ -39,7 +39,6 @@ export async function PUT(req: Request) {
       "missions",
       "resources", // ← если будет как объект
       "resourceNodes",
-
     ];
 
     const setFields: any = {};
@@ -80,7 +79,7 @@ export async function PUT(req: Request) {
 
         for (const unit in mission.heroArmy) {
           const count = mission.heroArmy[unit];
-        
+
           const safeUnit = unit as ArmyUnitType;
           const level = user.army?.[safeUnit]?.level;
 
@@ -93,24 +92,6 @@ export async function PUT(req: Request) {
         }
 
         const minedAmount = Math.floor(totalCapacity * percent);
-
-        // ✅ вернуть войска
-        const updatedArmy = {...user.army}
-        
-        for (const unit in mission.heroArmy) {
-          const returningCount = mission.heroArmy[unit];
-          const current = updatedArmy[unit];
-
-          const level = current?.level ?? (
-            user.army?.[unit as ArmyUnitType]?.level
-          );
-
-          updatedArmy[unit] = {
-            level,
-            count: (current?.count ?? 0) + returningCount
-          };
-        }
-        setFields.army = updatedArmy; 
 
         // ✅ начислить ресурсы
         const currentValue = user.resources?.[resourceType] || 0;
@@ -131,11 +112,7 @@ export async function PUT(req: Request) {
         });
         setFields.resourceNodes = updatedNodes;
 
-        // ✅ удалить миссию
-        user.missions = user.missions.filter(
-          (m: any) => m.heroId !== data.cancelMissionHeroId
-        );
-        setFields.missions = user.missions;
+        
 
         // ✅ возвращаем героя обратно
         const updatedHeroes = user.heroes.map((h: any) => {
@@ -146,6 +123,24 @@ export async function PUT(req: Request) {
         });
         setFields.heroes = updatedHeroes;
 
+        // ✅ вернуть войска
+        const updatedArmy = { ...user.army };
+
+        for (const unit in mission.heroArmy) {
+          const returningCount = mission.heroArmy[unit];
+          const current = updatedArmy[unit];
+
+          const level =
+            current?.level ?? user.army?.[unit as ArmyUnitType]?.level;
+
+          updatedArmy[unit] = {
+            level,
+            count: (current?.count ?? 0) + returningCount,
+          };
+        }
+        setFields.army = updatedArmy; // ⬅️ УДАЛИЛ — и Mongo ничего не получает!
+
+
         // ✅ СОХРАНЯЕМ ВСЁ СРАЗУ
         await UserModel.updateOne(
           { address },
@@ -154,6 +149,12 @@ export async function PUT(req: Request) {
             ...(Object.keys(incFields).length > 0 && { $inc: incFields }),
           }
         );
+
+        // ✅ удалить миссию
+        user.missions = user.missions.filter(
+          (m: any) => m.heroId !== data.cancelMissionHeroId
+        );
+        setFields.missions = user.missions;
 
         // ✅ возвращаем нового юзера
         const updatedUser = await UserModel.findOne({ address });
