@@ -5,7 +5,7 @@ import { UserModel } from "@/models/UserModel";
 import { ARMY_STATS, ArmyUnitType } from "@/config/armyCapacity";
 
 export async function PUT(req: Request) {
-  const { address, army, ...data } = await req.json();
+  const { address, heroArmy, army, ...data } = await req.json();
 
   if (!address) {
     return NextResponse.json({ error: "Address is required" }, { status: 400 });
@@ -78,8 +78,9 @@ export async function PUT(req: Request) {
         const resourceType = mission.resource;
         let totalCapacity = 0;
 
-        for (const [unit, countRaw] of Object.entries(mission.heroArmy)) {
-          const count = countRaw as number;
+        for (const unit in mission.heroArmy) {
+          const count = mission.heroArmy[unit];
+        
           const safeUnit = unit as ArmyUnitType;
           const level = user.army?.[safeUnit]?.level;
 
@@ -100,7 +101,7 @@ export async function PUT(req: Request) {
           const current = updatedArmy[unit];
 
           const level = current?.level ?? (
-            user.army?.[unit as ArmyUnitType]?.level ?? 1
+            user.army?.[unit as ArmyUnitType]?.level
           );
 
           updatedArmy[unit] = {
@@ -133,12 +134,6 @@ export async function PUT(req: Request) {
           (m: any) => m.heroId !== data.cancelMissionHeroId
         );
         setFields.missions = user.missions;
-
-        console.log("[CANCEL]", {
-          cancelHero: data.cancelMissionHeroId,
-          minedAmount,
-          oldMissions: user.missions,
-        });
 
         // ✅ возвращаем героя обратно
         const updatedHeroes = user.heroes.map((h: any) => {

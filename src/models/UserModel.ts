@@ -35,6 +35,11 @@ const HeroSchema = new mongoose.Schema({
   level: { type: Number, required: true },
   exp: { type: Number, required: true },
   expToNext: { type: Number, required: true},
+  heroArmy: {
+    type: Object,
+    default: {}
+  },
+  
 });
 
 const ArmyUnitSchema = new mongoose.Schema({
