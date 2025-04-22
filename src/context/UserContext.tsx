@@ -104,7 +104,15 @@ const initialState: UserState = {
   questShipRepaired: false,
   heroes: [],
   activeMining: undefined,
-  missions: []
+  missions: [],
+  army: {
+    peasant: { level: 1, count: 0 },
+    sailor: { level: 1, count: 200 },
+    axeman: { level: 1, count: 0 },
+    spearman: { level: 1, count: 0 },
+    archer: { level: 1, count: 0 },
+    cavalry: { level: 1, count: 0 },
+  }
 };
 
 function reducer(state: UserState, action: UserAction): UserState {

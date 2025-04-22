@@ -151,8 +151,23 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
         body: JSON.stringify({
           address: state.address,
           cancelMissionHeroId: heroId,
-          heroArmy: missionToCancel.heroArmy, // ✅ ВОЗВРАЩАЕМ ИМЕННО ЮНИТОВ
+          heroArmy: missionToCancel.heroArmy,
+          missions: state.missions,
+          heroes: state.heroes,
+          army: state.army,
+          resourceNodes: state.resourceNodes,
+          resources: {
+            food: state.food,
+            wood: state.wood,
+            stone: state.stone,
+            iron: state.iron,
+            gold: state.gold,
+            doubloon: state.doubloon,
+            pearl: state.pearl,
+            allodium: state.allodium,
+          }
         }),
+        
       });
       
   

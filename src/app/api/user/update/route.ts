@@ -33,9 +33,13 @@ export async function PUT(req: Request) {
       "activeQuest",
       "questPanelOpen",
       "heroes",
+      "heroArmy",
       "army",
       "activeMining",
       "missions",
+      "resources", // ← если будет как объект
+      "resourceNodes",
+
     ];
 
     const setFields: any = {};
@@ -90,24 +94,33 @@ export async function PUT(req: Request) {
         const minedAmount = Math.floor(totalCapacity * percent);
 
         // ✅ вернуть войска
+        const updatedArmy = {...user.army}
         for (const unit in mission.heroArmy) {
-          const count = mission.heroArmy[unit];
-          incFields[`army.${unit}.count`] =
-            (incFields[`army.${unit}.count`] || 0) + count;
+          const returningCount = mission.heroArmy[unit];
+          const current = updatedArmy[unit];
+
+          const level = current?.level ?? (
+            user.army?.[unit as ArmyUnitType]?.level ?? 1
+          );
+
+          updatedArmy[unit] = {
+            level,
+            count: (current?.count ?? 0) + returningCount
+          };
         }
 
         // ✅ начислить ресурсы
-        if (typeof user[resourceType] === "number") {
-          setFields[resourceType] = user[resourceType] + minedAmount;
-        } else {
-          setFields[resourceType] = minedAmount;
-        }
+        const currentValue = user.resources?.[resourceType] || 0;
+        setFields["resources"] = {
+          ...user.resources,
+          [resourceType]: currentValue + minedAmount,
+        };
 
         // ✅ уменьшить remaining
         const updatedNodes = user.resourceNodes.map((node: any) => {
           if (node.id === mission.nodeId) {
             return {
-              ...node.toObject(),
+              ...node,
               remaining: Math.max(0, (node.remaining || 0) - minedAmount),
             };
           }
