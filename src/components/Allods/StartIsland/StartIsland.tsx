@@ -85,27 +85,27 @@ export const StartIsland = ({ onOpenNode }: StartIslandProps) => {
     const filteredArmy = {
       peasant: {
         count: army.peasant,
-        level: state.army?.peasant?.level,
+        level: state.army!.peasant!.level,
       },
       sailor: {
         count: army.sailor,
-        level: state.army?.sailor?.level,
+        level: state.army!.sailor!.level,
       },
       axeman: {
         count: army.axeman,
-        level: state.army?.axeman?.level,
+        level: state.army!.axeman!.level,
       },
       spearman: {
         count: army.spearman,
-        level: state.army?.spearman?.level,
+        level: state.army!.spearman!.level,
       },
       archer: {
         count: army.archer,
-        level: state.army?.archer?.level,
+        level: state.army!.archer!.level,
       },
       cavalry: {
         count: army.cavalry,
-        level: state.army?.cavalry?.level,
+        level: state.army!.cavalry!.level,
       },
     };
     
