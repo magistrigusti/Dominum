@@ -18,19 +18,19 @@ export default function MenuPage() {
     if (wallet?.account?.address) {
       fetch('/api/user', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({address: wallet.account.address}),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address: wallet.account.address }),
       })
-      .then(res => res.json())
-      .then(data => {
-        if (!data.error) {
-          dispatch({type: "SET_USER", payload: data});
-          console.log('✅ Данные пользователя загружены на MenuPage', data);
-        } else {
-          console.error('❌ Ошибка ответа сервера:', data.error);
-        }
-      })
-      .catch(err => console.error('❌ Ошибка fetch на MenuPage:', err));
+        .then(res => res.json())
+        .then(data => {
+          if (!data.error) {
+            dispatch({ type: "SET_USER", payload: data });
+            console.log('✅ Данные пользователя загружены на MenuPage', data);
+          } else {
+            console.error('❌ Ошибка ответа сервера:', data.error);
+          }
+        })
+        .catch(err => console.error('❌ Ошибка fetch на MenuPage:', err));
     } else {
       router.push('/');
     }
@@ -42,7 +42,7 @@ export default function MenuPage() {
 
       <h2 className={styles.menu_title}>
         Welcome to the <br />
-        crypto space <br /> 
+        crypto space <br />
         Dominum <br />
       </h2>
 
@@ -55,10 +55,18 @@ export default function MenuPage() {
         </Link>
         <Link href="/magisterium">
           <img src="/icons/iconsMagisterium.png" alt="Magisterium" className={styles.icon} />
-        </Link>
-        <Link href="/portal">
+        </Link> */}
+        {/* <Link href="/portal">
           <img src="/icons/iconsPortale.png" alt="Portal" className={styles.icon} />
         </Link> */}
+        <a
+          href="https://portalnetwork.netlify.app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src="/icons/iconsPortale.png" alt="Portal" className={styles.icon} />
+        </a>
+
       </div>
     </div>
   );
