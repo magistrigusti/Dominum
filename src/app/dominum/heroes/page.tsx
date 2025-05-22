@@ -26,24 +26,24 @@ const allArmy = state.army || {};
 const activeMissions = state.missions || [];
 
 // Вычесть армию, занятую в миссиях
-const usedArmy: Partial<typeof allArmy> = {};
-for (const mission of activeMissions) {
-  for (const unit in mission.heroArmy) {
-    const { count } = mission.heroArmy[unit as keyof typeof mission.heroArmy]!;
-    if (!usedArmy[unit]) {
-      usedArmy[unit] = { level: allArmy[unit]?.level || 1, count: 0 };
-    }
-    usedArmy[unit]!.count += count;
-  }
-}
+// const usedArmy: Partial<typeof allArmy> = {};
+// for (const mission of activeMissions) {
+//   for (const unit in mission.heroArmy) {
+//     const { count } = mission.heroArmy[unit as keyof typeof mission.heroArmy]!;
+//     if (!userArmy[unit]) {
+//       usedArmy[unit] = { level: allArmy[unit]?.level || 1, count: 0 };
+//     }
+//     usedArmy[unit]!.count += count;
+//   }
+// }
 
-// Оставшаяся доступная армия
-const availableArmy = Object.fromEntries(
-  Object.entries(allArmy).map(([unit, { level, count }]) => {
-    const used = usedArmy[unit]?.count || 0;
-    return [unit, { level, count: count - used }];
-  })
-);
+// // Оставшаяся доступная армия
+// const availableArmy = Object.fromEntries(
+//   Object.entries(allArmy).map(([unit, { level, count }]) => {
+//     const used = usedArmy[unit]?.count || 0;
+//     return [unit, { level, count: count - used }];
+//   })
+// );
 
 
   useEffect(() => {
@@ -73,9 +73,10 @@ const availableArmy = Object.fromEntries(
           onSelect={setSelectedHero}
         />
 
-        <ArmyBar army={availableArmy} />
+        
       </div>
       <DOMFooter />
     </div>
   );
 }
+// <ArmyBar army={availableArmy} />
