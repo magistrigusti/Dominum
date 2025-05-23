@@ -48,7 +48,7 @@ export default function MenuPage() {
 
       <div className={styles.icon_grid}>
         <Link href="/dominum">
-          <img src="/icons/iconsDominum.png" alt="Dominum" className={styles.icon} />
+          <img src="/icons/dom-icons.png" alt="Dominum" className={styles.icon} />
         </Link>
         {/* <Link href="/mercatus">
           <img src="/icons/iconsMercatus.png" alt="Mercatus" className={styles.icon} />
@@ -64,7 +64,7 @@ export default function MenuPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/icons/iconsPortale.png" alt="Portal" className={styles.icon} />
+          <img src="/icons/portal-icons.png" alt="Portal" className={styles.icon} />
         </a>
 
       </div>
