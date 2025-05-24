@@ -1,51 +1,6 @@
 // 📄 src/models/UserModel.ts
 import mongoose from "mongoose";
 
-const MissionSchema = new mongoose.Schema({
-  heroId: { type: String, required: true },
-  armyCount: { type: Number, required: true },
-  nodeId: { type: String, required: true },
-  resource: { 
-    type: String, 
-    enum: ['food', 'wood', 'stone', 'iron', 'gold', 'doubloon', 'pearl', 'allodium'] 
-  },  
-  duration: { type: Number, required: true },
-  startTime: { type: Number, required: true },
-  hero: {
-    id: { type: String, required: true },
-    name: { type: String, required: true },
-    image: { type: String, required: true },
-    quality: { type: String, enum: ['normal', 'good', 'rare', 'epic', 'legendary'] },
-    level: { type: Number, required: true },
-    exp: { type: Number, required: true },
-    expToNext: { type: Number, required: true },
-  },
-  heroArmy: {
-    type: Object,
-    default: {}
-  },
-}, { _id: false });
-
-const HeroSchema = new mongoose.Schema({
-  id: { type: String, required: true },
-  name: { type: String, required: true},
-  image: { type: String, required: true},
-  quality: { type: String, enum: ['normal', 'good', 'rare', 'epic', 'legendary'] },
-  level: { type: Number, required: true },
-  exp: { type: Number, required: true },
-  expToNext: { type: Number, required: true},
-  heroArmy: {
-    type: Object,
-    default: {}
-  },
-  
-});
-
-const ArmyUnitSchema = new mongoose.Schema({
-  level: { type: Number, default: 1 },
-  count: { type: Number, default: 0 },
-}, { _id: false });
-
 const userSchema = new mongoose.Schema({
   address: { type: String, required: true, unique: true },
   avatar: { type: String, required: true },
@@ -65,7 +20,6 @@ const userSchema = new mongoose.Schema({
   questShipRepaired: { type: Boolean, default: false },
   army: {
     type: Object,
-    of: ArmyUnitSchema,
     default: () => ({
       peasant:  { level: 1, count: 0 },
       sailor:   { level: 1, count: 200 }, 
@@ -74,48 +28,6 @@ const userSchema = new mongoose.Schema({
       archer:   { level: 1, count: 0 },
       cavalry:  { level: 1, count: 0 },
     }),
-  },
-
-  missions: {
-    type: [MissionSchema],
-    default: [],
-  },
-  heroes: {
-    type: [HeroSchema],
-    default: () => [
-      {
-        id: '1',
-        name: 'Frenk',
-        image: '/dominum/heroes/hero-workin-grey.png',
-        quality: 'normal',
-        level: 1,
-        exp: 0,
-        expToNext: 1000,
-      },
-      {
-        id: '2',
-        name: 'Mary',
-        image: '/dominum/heroes/hero-workin-grey-2.png',
-        quality: 'normal',
-        level: 1,
-        exp: 0,
-        expToNext: 1000,
-      },
-    ]
-  },
-  resourceNodes: {
-    type: [{
-      id: { type: String, required: true },
-      resource: { type: String, required: true },
-      level: { type: Number, require: true },
-      position: {
-        x: Number,
-        y: Number
-      },
-      remaining: Number,
-      lastRestoedAt: String
-    }],
-    default: []
   },
   activeMining: {
     type: {
