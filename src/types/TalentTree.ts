@@ -1,7 +1,17 @@
 // 📄 src/types/TalentTree.ts
+export interface TalentNode {
+  id: string;
+  name: string;
+  description: string;
+  icon?: string;
+  level: number;
+  maxLevel: number;
+  parentId?: string;
+  cost: number;
+  requirements?: string[];
+  children?: TalentNode[];
+  unlocked?: boolean;
+  effect: string;
+}
 
-// Если у тебя появится строгая структура дерева — тут её и опишешь, пока можно так:
-export type TalentTree = Record<string, any>;
-// Пример строгой структуры:
-// export interface TalentNode { id: string; level: number; maxLevel: number; children?: TalentNode[] }
-// export type TalentTree = TalentNode[];
+export type TalentTree = TalentNode[];
