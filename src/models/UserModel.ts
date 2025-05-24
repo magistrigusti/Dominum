@@ -1,63 +1,34 @@
 // 📄 src/models/UserModel.ts
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+import ResourceSubSchema from './ResourceSubSchema';
+import ArmyUnitSchema from './ArmyModel';
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   address: { type: String, required: true, unique: true },
   avatar: { type: String, required: true },
   name: { type: String, default: 'Capitan' },
-  prestige: { type: Number, default: 100 },
+  prestige: { type: Number, default: 0 },
   levelPrestige: { type: Number, default: 0 },
-  prestigeProgress: { type: Number, default: 0 },
+  prestigeProgress: { type: Number, default: 1000 },
   technologies: { type: String, default: null },
-  food: { type: Number, default: 100 },
-  wood: { type: Number, default: 100 },
-  stone: { type: Number, default: 0 },
-  iron: { type: Number, default: 50 },
-  gold: { type: Number, default: 0 },
-  doubloon: { type: Number, default: 25 },
-  pearl: { type: Number, default: 0 },
-  allodium: { type: Number, default: 0 },
   questShipRepaired: { type: Boolean, default: false },
+  resources: { type: ResourceSubSchema, default: () => ({})},
   army: {
-    type: Object,
-    default: () => ({
-      peasant:  { level: 1, count: 0 },
-      sailor:   { level: 1, count: 200 }, 
-      axeman:   { level: 1, count: 0 },
-      spearman: { level: 1, count: 0 },
-      archer:   { level: 1, count: 0 },
-      cavalry:  { level: 1, count: 0 },
-    }),
+    type: [ArmyUnitSchema],
+    default: [
+      { unitType: 'peasant', level: 1, count: 0 },
+      { unitType: 'sailor', level: 1, count: 200 },
+      { unitType: 'axeman', level: 1, count: 0 },
+      { unitType: 'spearman', level: 1, count: 0 },
+      { unitType: 'archer', level: 1, count: 0 },
+      { unitType: 'cavalary', level: 1, count: 0}
+    ]
   },
-  activeMining: {
-    type: {
-      resource: { type: String, enum: ['food', 'wood', 'stone', 'iron', 'gold'] },
-      heroId: { type: String },
-      startedAt: { type: Date },
-      duration: { type: Number },
-      position: { type: {x: Number, y: Number }},
-      remaining: { type: Number },
-    },
-    default: null,
-  },
-  activeQuest: {
-    type: {
-      id: { type: String, required: true },
-      title: { type: String, required: true },
-      description: { type: String, required: true },
-      status: {
-        type: String,
-        enum: ['active', 'complete'],
-        default: 'active',
-      },
-    },
-    default: null,
-  },
-  questPanelOpen: {
-    type: Boolean,
-    default: false,
-  },
+  heroes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Hero' }],
+  missions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Mission' }],
+  ships: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ship' }],
+  resourceNodes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ResourceNode' }],
+  createdAt: { type: Date, default: Date.now }
+}, { timestamps: true }); 
 
-});
-
-export const UserModel = mongoose.models.User || mongoose.model("User", userSchema);
+export default mongoose.models.User || mongoose.model("User", UserSchema);

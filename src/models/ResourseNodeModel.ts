@@ -23,3 +23,4 @@ const ResourceNodeSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.ResourceNode || mongoose.model("ResourceNode", ResourceNodeSchema);
+                                      

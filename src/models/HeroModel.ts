@@ -1,12 +1,6 @@
 //models/HeroModel.ts
 import mongoose from "mongoose";
-
-// Схема одного юнита в армии героя
-const ArmyUnitSchema = new mongoose.Schema({
-  unitType: { type: String, required: true },   // Тип юнита
-  level: { type: Number, default: 1 },          // Уровень юнита
-  count: { type: Number, default: 0 },          // Кол-во юнитов
-}, { _id: false });
+import ArmyUnitSchema from './ArmyModel';
 
 // Модель героя
 const HeroSchema = new mongoose.Schema({
