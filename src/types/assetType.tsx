@@ -1,3 +1,4 @@
+// type/asserType.tsx
 export interface AssetType {
     token: string
     tokenLogo: string
