@@ -17,6 +17,12 @@ const UserSchema = new mongoose.Schema({
 
   // Все ресурсы теперь внутри объекта
   resources:    { type: ResourceSubSchema, default: () => ({}) },
+  reward: {
+    resources: { type: ResourceSubSchema, default: () => ({}) },
+    items: { type: Array, default: [] },
+    exp: { type: Number, default: 0 }
+  },
+
 
   // Армия — массив структурированных юнитов (можно сделать объект, если удобнее для фронта)
   army: {
