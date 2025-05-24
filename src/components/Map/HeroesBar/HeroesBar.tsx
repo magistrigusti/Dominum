@@ -1,10 +1,10 @@
 // src/components/Map/HeroesBar/HeroesBar.tsx
 'use client';
 import styles from './HeroesBar.module.css';
-import { Hero } from '@/types/heroes';
+import { Hero } from '@/types/Hero';
 import { formatSeconds } from '@/utils/formatTime';
 import type { ArmyUnitType } from '@/config/armyCapacity';
-import type { Mission } from '@/types/missions'; // ✅ Используй глобальный
+import type { Mission } from '@/types/Missions'; // ✅ Используй глобальный
 
 interface HeroesBarProps {
   missions: Mission[];

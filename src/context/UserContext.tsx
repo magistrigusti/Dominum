@@ -1,9 +1,9 @@
 // 📄 src/context/UserContext.tsx
 'use client';
 import React, { createContext, useContext, useReducer } from "react";
-import type { Hero } from '@/types/heroes';
+import type { Hero } from '@/types/Hero';
 import type { ArmyUnitType } from '@/config/armyCapacity';
-import type { Mission } from '@/types/missions';
+import type { Mission } from '@/types/Missions';
 export interface UserState {
   address: string;
   avatar?: string;

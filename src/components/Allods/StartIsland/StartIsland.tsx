@@ -11,7 +11,7 @@ import { IslandMapController } from '@/components/Map/IslandMapController/Island
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';
 import { ModalHerosGo } from '@/components/Heroes/ModalHerosGo/ModalHerosGo';
 import { HeroesBar} from '@/components/Map/HeroesBar/HeroesBar';
-import type { Mission } from '@/types/missions'; // ✅ используем общий
+import type { Mission } from '@/types/Missions'; // ✅ используем общий
 import type { ArmyUnitType } from '@/config/armyCapacity';
 import { ARMY_STATS } from '@/config/armyCapacity';
 import { RESOURCE_DIFFICULTY } from '@/constants/resources'; 

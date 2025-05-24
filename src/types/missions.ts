@@ -1,30 +1,38 @@
-// 📄 src/types/missions.ts
+// 📄 src/types/Mission.ts
+
+import { ArmyUnit } from './Army';
+import { Hero } from './Hero';
+import { ResourceSub } from './Resource';
+
+export type MissionStatus = 'active' | 'completed' | 'cancelled';
+
+export interface MissionReward {
+  resources: ResourceSub;
+  items: any[]; // Можно описать подробно, если будет структура предметов
+  exp: number;
+}
+
+export interface MissionLog {
+  // Любая структура лога (напр. событие, время, параметры)
+  event: string;
+  time: string;
+  [key: string]: any;
+}
 
 export interface Mission {
-  heroId: string;
-  hero: {
-    id: string;
-    name: string;
-    image: string;
-    quality: 'normal' | 'good' | 'rare' | 'epic' | 'legendary';
-    level: number;
-    exp: number;
-    expToNext: number;
-  };
-
-  heroArmy: {
-    peasant?: { level: number; count: number };
-    sailor?: { level: number; count: number };
-    axeman?: { level: number; count: number };
-    spearman?: { level: number; count: number };
-    archer?: { level: number; count: number };
-    cavalry?: { level: number; count: number };
-  };
-  
-  
-  armyCount: number;
-  nodeId: string;
-  resource: string;
-  duration: number;
-  startTime: number;
+  _id?: string;
+  type: string; // Тип миссии (resource, battle, scout, delivery)
+  hero: string | Hero;
+  army: ArmyUnit[];
+  resourceNode?: string;   // ObjectId точки
+  user: string;
+  startTime: string | Date;
+  endTime: string | Date;
+  status: MissionStatus;
+  reward: MissionReward;
+  missionProgress?: number;
+  isCollectable?: boolean;
+  logs?: MissionLog[];
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }

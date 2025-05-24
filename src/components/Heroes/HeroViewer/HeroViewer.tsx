@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './HeroViewer.module.css';
-import { Hero } from '@/types/heroes';
+import { Hero } from '@/types/Hero';
 
 export const HeroViewer = ({ hero, className = '' }: { hero: Hero; className?: string }) => {
   return (

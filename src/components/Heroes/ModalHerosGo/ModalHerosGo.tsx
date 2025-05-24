@@ -3,7 +3,7 @@
 import { ArmyTable } from '@/components/Heroes/ArmyTable/ArmyTable';
 import styles from './ModalHerosGo.module.css';
 import { useState, useEffect } from 'react';
-import { Hero } from '@/types/heroes';
+import { Hero } from '@/types/Hero';
 import { calculateHeroCapacity } from '@/utils/calculateHeroCapacity';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
