@@ -12,4 +12,4 @@ const ResourceSubSchema = new mongoose.Schema({
   allodium:{ type: Number, default: 0 }
 }, { _id: false });
 
-export default mongoose.models.ResourceSubSchema || mongoose.model("ResourceSubSchema", ResourceSubSchema);
+export default mongoose.models.ResourceSub || mongoose.model("ResourceSubS", ResourceSubSchema);
