@@ -4,7 +4,7 @@ import styles from './HeroesBar.module.css';
 import { Hero } from '@/types/Hero';
 import { formatSeconds } from '@/utils/formatTime';
 import type { ArmyUnitType } from '@/config/armyCapacity';
-import type { Mission } from '@/types/Missions'; // ✅ Используй глобальный
+import type { Mission } from '@/types/Mission'; // ✅ Используй глобальный
 
 interface HeroesBarProps {
   missions: Mission[];
