@@ -1,7 +1,8 @@
 // src/app/api/user/route.ts
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import { UserModel } from '@/models/UserModel';
+import { DEFAULT_SAILORS, DEFAULT_DOUBLOONS } from "@/constants/defaultValues";
+import  UserSchema  from "@/models/UserModel";
 import { updateResourceNodesIfNeeded } from '@/utils/updateResourceNodes';
 import { RESOURCE_CONFIG } from '@/constants/resources';
 
@@ -15,10 +16,10 @@ export async function POST(req: Request) {
 
     await dbConnect();
 
-    let user = await UserModel.findOne({ address });
+    let user = await UserSchema.findOne({ address });
 
     if (!user) {
-      user = await UserModel.create({
+      user = await UserSchema.create({
         address,
         avatar: '/icons/user-icon.png',
         heroes: [],

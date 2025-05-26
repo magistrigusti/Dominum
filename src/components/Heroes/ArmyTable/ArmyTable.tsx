@@ -2,7 +2,7 @@
 'use client';
 
 import styles from './ArmyTable.module.css';
-import { ARMY_CONFIG } from '@/config/armyConfig';
+import { ARMY_CONFIG } from '@/config/ARMY_CONFIG';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
 import { useUser } from '@/contexts/UserContext';
 import { useEffect, useState } from 'react';
