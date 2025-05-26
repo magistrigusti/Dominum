@@ -20,6 +20,9 @@ const ResourceNodeSchema = new mongoose.Schema({
   bonusMultiplier: { type: Number, default: 1 },   // Бонусы к сбору
   islandType: { type: String, default: "standard" }, // Тип острова
   createdAt: { type: Date, default: Date.now },    // Время генерации
+  lastMiningTime: { type: Number },
+  autoRestore: { type: Boolean, default: true },
+  restoreSpeed: { type: Number, default: 0 }
 }, { timestamps: true });
 
 export default mongoose.models.ResourceNode || mongoose.model("ResourceNode", ResourceNodeSchema);
