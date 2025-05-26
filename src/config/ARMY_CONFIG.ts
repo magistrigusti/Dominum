@@ -8,6 +8,8 @@ export interface ArmyUnitConfig {
   icon: string;
   description?: string;
   class?: string;
+  recruitLocation: string;
+  bonus: string;
 }
 
 export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
@@ -17,6 +19,8 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/peasant.png",
     description: "Базовый работник, может добывать и носить ресурсы.",
     class: "worker",
+    recruitLocation: "Замок",
+    bonus: "Могут заходить в здания, их защита x2 в своих строениях.",
   },
   sailor: {
     unitType: "sailor",
@@ -24,6 +28,8 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/sailor.png",
     description: "Опытный моряк, быстро перемещается по астралу.",
     class: "support",
+    recruitLocation: "Причал",
+    bonus: "Бонус +50% в бою в астрале.",
   },
   axeman: {
     unitType: "axeman",
@@ -31,6 +37,8 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/axeman.png",
     description: "Тяжёлый пехотинец, эффективен против построек.",
     class: "melee",
+    recruitLocation: "Казарма",
+    bonus: "Повышенные показатели брони.",
   },
   spearman: {
     unitType: "spearman",
@@ -38,6 +46,8 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/spearman.png",
     description: "Лучше всего против кавалерии и монстров.",
     class: "melee",
+    recruitLocation: "Казарма",
+    bonus: "Повышенный бонус к защите от кавалерии.",
   },
   archer: {
     unitType: "archer",
@@ -45,6 +55,8 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/archer.png",
     description: "Стреляет на дальние дистанции, эффективен против легкой пехоты.",
     class: "ranged",
+    recruitLocation: "Стрельбище",
+    bonus: "Преимущество в дальнем бою and в астрале.",
   },
   cavalry: {
     unitType: "cavalry",
@@ -52,5 +64,7 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     icon: "/icons/army/cavalry.png",
     description: "Быстрая атака и мобильность, уязвима для копейщиков.",
     class: "cavalry",
+    recruitLocation: "Конюшня",
+    bonus: "Бонус в бою на открытой местности.",
   },
 };

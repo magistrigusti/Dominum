@@ -3,6 +3,9 @@ import { ArmyUnit } from './Army';
 import { Item } from './Item';
 import { Skill } from './Skill';
 import { TalentTree } from './TalentTree';
+import { HeroQuality } from "@/config/heroes/HERO_QUALITIES";
+
+export type HeroStatus = 'idle' | 'in_mission' | 'wounded' | 'dead';
 
 export interface HeroBonus {
   attack?: number;
@@ -13,27 +16,33 @@ export interface HeroBonus {
   speed?: number;
 }
 
-export type HeroStatus = 'idle' | 'in_mission' | 'wounded' | 'dead';
+export interface HeroInventoryItem {
+  itemId: string;
+  name?: string;
+  type?: string;
+  bonuses?: HeroBonus;
+}
 
 export interface Hero {
   _id?: string;
   name: string;
   class: string;
+  race?: string;
+  quality: HeroQuality;
   level: number;
   exp: number;
-  skills?: Skill[];
-  talentTree?: TalentTree;
   heroArmy: ArmyUnit[];
   prestige: number;
   avatar?: string;
-  luck?: number;
+  skills?: string[];
+  talentTree?: Record<string, any>;
   currentMission?: string;
   user?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
   status: HeroStatus;
   isNFT?: boolean;
   nftTokenId?: string | null;
   bonuses?: HeroBonus;
-  inventory?: Item[];
+  inventory?: HeroInventoryItem[];
 }
