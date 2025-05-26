@@ -22,7 +22,7 @@ export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
     unitType: "sailor",
     label: "Моряк",
     icon: "/icons/army/sailor.png",
-    description: "Опытный моряк, быстро перемещается по воде.",
+    description: "Опытный моряк, быстро перемещается по астралу.",
     class: "support",
   },
   axeman: {

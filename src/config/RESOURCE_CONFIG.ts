@@ -47,13 +47,15 @@ export const RESOURCE_CONFIG: Record<ResourceType, ResourceConfig> = {
     color: "#F8F8FF"
   },
   astral_crystal: {
-    label: "Астральный кристал",
-    icon: '/icons/resources/astral_crystal',
-    color: "#violet"
+    label: "Астральный кристалл",
+    icon: "/assets/resources/astral_crystal.png",
+    color: "#5E49F7",
+    description: "Добывается только в астрале, используется для магии и апгрейдов."
   },
   allodium: {
     label: "Аллодиум",
-    icon: "/icons/resources/allodium.png",
-    color: "#00CED1"
+    icon: "/assets/resources/allodium.png",
+    color: "#00CED1",
+    description: "Редчайший минерал. Валюта и артефакт в астральном мире."
   }
 };
