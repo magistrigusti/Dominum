@@ -9,6 +9,7 @@ const ResourceSubSchema = new mongoose.Schema({
   gold:    { type: Number, default: 0 },
   doubloon:{ type: Number, default: 25 },
   pearl:   { type: Number, default: 0 },
+  astral_crystal: { type: Number, default: 0 },
   allodium:{ type: Number, default: 0 }
 }, { _id: false });
 

@@ -8,6 +8,7 @@ export interface ResourceSub {
   gold: number;
   doubloon: number;
   pearl: number;
+  astral_crystal: number;
   allodium: number;
 }
 
