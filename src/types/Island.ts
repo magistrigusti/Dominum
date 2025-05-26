@@ -1,5 +1,5 @@
 // 📄 src/types/Island.ts
-export type IslandType = 'standard' | 'special' | 'pirate' | 'event' | 'starter';
+export type IslandType = 'standard' | 'special' | 'pirate' | 'event' | 'starter' | "wild" | "faction" | "market" ;
 
 export interface Island {
   _id?: string;

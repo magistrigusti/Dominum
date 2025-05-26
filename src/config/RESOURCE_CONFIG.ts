@@ -47,6 +47,7 @@ export const RESOURCE_CONFIG: Record<ResourceType, ResourceConfig> = {
     icon: "/icons/resources/doubloon.png",
     color: "#D4AF37",
     autoRestore: false,
+    description: "Чеканиться только на монетном дворе. один раз в сутки можно сделать заказ на чеканку",
   },
   pearl: {
     label: "Жемчуг",

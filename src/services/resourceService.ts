@@ -1,52 +1,50 @@
 // 📄 src/services/resourceService.ts
-
-import { ResourceNode } from "@/types/ResourceNode";
+import { ResourceNode } from "@/types/Resource";
+import { RESOURCE_LEVEL } from "@/config/RESOURCE_LEVEL";
 import { RESOURCE_CONFIG } from "@/config/RESOURCE_CONFIG";
 
-// Интервал проверки, например, раз в 10 минут
-const AUTO_RESTORE_CHECK_INTERVAL = 10 * 60 * 1000; // 10 минут в ms
-// Минимальное время простоя для начала восстановления (например, 4 часа)
-const AUTO_RESTORE_IDLE_DELAY = 4 * 60 * 60 * 1000; // 4 часа в ms
+const AUTO_RESTORE_CHECK_INTERVAL = 10 * 60 * 1000; // 10 минут
+const AUTO_RESTORE_IDLE_DELAY = 4 * 60 * 60 * 1000; // 4 часа
 
-/**
- * Выполняет авто-восстановление ресурса, если точка поддерживает восстановление.
- * @param node — ресурсная точка из базы
- * @returns true, если что-то восстановлено
- */
 export function tryAutoRestoreResourceNode(node: ResourceNode): boolean {
-  const config = RESOURCE_CONFIG[node.resource as keyof typeof RESOURCE_CONFIG];
+  // 1. Проверяем возможность авто-восстановления через CONFIG (паспорт ресурса)
+  const resourceConfig = RESOURCE_CONFIG[node.resource as keyof typeof RESOURCE_CONFIG];
+  if (!resourceConfig?.autoRestore) return false;
 
-  if (!config?.autoRestore) return false; // только для обычных ресурсов
-
-  if (node.activeHero) return false; // нельзя восстанавливать, если кто-то добывает
-
-  // Если нет информации — не трогаем
+  if (node.activeHero) return false;
   if (!node.lastMiningTime) return false;
+
+  // 2. Берём уровень точки и параметры уровня
+  const levels = RESOURCE_LEVEL[node.resource as keyof typeof RESOURCE_LEVEL];
+  const level = node.level ?? 0;
+  const levelConfig = levels[level];
+  if (!levelConfig) return false;
 
   const now = Date.now();
   const idleTime = now - node.lastMiningTime;
 
-  if (idleTime < AUTO_RESTORE_IDLE_DELAY) return false; // недостаточно времени простоя
+  if (idleTime < AUTO_RESTORE_IDLE_DELAY) return false;
 
-  // restoreSpeed — в час, считаем сколько "tick'ов" прошло
-  const hoursIdle = idleTime / (60 * 60 * 1000);
-  const restoreSpeed = config.restoreSpeed || 0; // сколько единиц в час
+  // 3. Восстанавливаем по restoreTime
+  const { totalAmount, restoreTime } = levelConfig;
+  if (!restoreTime) return false;
 
-  const restored = Math.floor(hoursIdle * restoreSpeed);
-  if (restored <= 0) return false;
+  // Считаем сколько циклов восстановления прошло
+  const restoreCycles = Math.floor(idleTime / (restoreTime * 1000));
+  if (restoreCycles <= 0) return false;
 
-  // Обновляем currentAmount, не превышая totalAmount
-  const newAmount = Math.min(node.currentAmount + restored, node.totalAmount);
+  // За каждый цикл восстанавливаем 1/3 totalAmount (пример)
+  const restoreAmount = Math.floor((totalAmount / 3) * restoreCycles);
+  if (restoreAmount <= 0) return false;
 
-  // Можно добавить лог, сколько восстановили
-  // Если уже полный — не трогаем
+  const newAmount = Math.min(node.currentAmount + restoreAmount, totalAmount);
+
   if (newAmount === node.currentAmount) return false;
 
   node.currentAmount = newAmount;
-  node.lastMiningTime = now; // обновляем время, чтобы не "накапливать" восстановление
+  node.lastMiningTime = now;
 
-  // Если полностью восстановили — isDepleted = false
-  if (node.currentAmount >= node.totalAmount) {
+  if (node.currentAmount >= totalAmount) {
     node.isDepleted = false;
   }
 

@@ -21,7 +21,7 @@ export interface ResourceNodePosition {
 }
 
 export interface ResourceNode {
-  _id?: string;
+  _id: string;
   resource: string;
   level: number;
   position: ResourceNodePosition;
@@ -37,4 +37,6 @@ export interface ResourceNode {
   islandType?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  lastMiningTime: number;
+  autoRestore: boolean,
 }
