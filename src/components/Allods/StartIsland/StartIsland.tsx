@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './StartIsland.module.css';
 import { RESOURCE_LEVEL } from '@/config/resourceLevel';
 import { RESOURCE_CONFIG } from '@/constants/resources';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 import { ResourcePoint } from '@/components/Resources/ResourcePoint/ResourcePoint';
 import { IslandMapController } from '@/components/Map/IslandMapController/IslandMapController';
 import { ResourceNodeModal } from '@/components/Resources/ResourceNodeModal/ResourceNodeModal';

@@ -10,7 +10,7 @@ import { DOMHeader } from "@/components/Headers/DOMHeader";
 import { DOMFooter } from "@/components/DOMFooter/DOMFooter";
 import { ResourcesBar } from "@/components/Resources/ResourcesBar/ResourcesBar";
 import { QuestButton } from "@/components/Quests/QuestButton/QuestButton";
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 
 export default function DominumPage() {
   const [showModal, setShowModal] = useState(false);

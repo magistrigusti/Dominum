@@ -1,5 +1,5 @@
 // src/constants/resources.ts
-import { UserState } from "@/context/UserContext";
+import { UserState } from "@/contexts/UserContext";
 
 type ResourceKey = keyof Pick<
   UserState,

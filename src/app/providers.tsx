@@ -1,8 +1,13 @@
+// src/app/providers.tsx
 'use client';
-
 import { ReactNode, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { UserProvider } from '@/context/UserContext';
+import { UserProvider } from '@/contexts/UserContext';
+import { ArmyProvider } from '@/contexts/ArmyContext';
+import { HeroProvider } from '@/contexts/HeroContext';
+import { MissionProvider } from '@/contexts/MissionContext';
+import { ShipProvider } from '@/contexts/ShipContext';
+import { ResourceProvider } from '@/contexts/ResourceContext';
 
 // 📌 Оборачиваем UI-провайдер в dynamic
 const TonConnectUIProvider = dynamic(
@@ -32,8 +37,19 @@ export function Providers({ children }: { children: ReactNode }) {
       }}
     >
       <UserProvider>
-        {children}
+        <ArmyProvider>
+          <HeroProvider>
+            <MissionProvider>
+              <ShipProvider>
+                <ResourceProvider>
+                  {children}
+                </ResourceProvider>
+              </ShipProvider>
+            </MissionProvider>
+          </HeroProvider>
+        </ArmyProvider>
       </UserProvider>
+
     </TonConnectUIProvider>
   );
 }

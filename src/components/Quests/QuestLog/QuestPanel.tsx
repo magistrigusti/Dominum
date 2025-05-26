@@ -1,5 +1,5 @@
 'use client';
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { CompleteQuestButton } from '../CompliteQuestButton/CompleteQuestButton';
 import styles from './QuestPanel.module.css';
 

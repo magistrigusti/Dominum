@@ -1,7 +1,7 @@
 // /components/Ship/Ship.tsx
 'use client';
 import { QuestPanel } from "@/components/Quests/QuestLog/QuestPanel";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import React, { useState } from 'react';
 import styles from './Ship.module.css';
 import { SpeechBubble } from './SpeechBubble';

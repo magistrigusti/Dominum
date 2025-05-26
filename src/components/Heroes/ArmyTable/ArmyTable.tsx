@@ -4,7 +4,7 @@
 import styles from './ArmyTable.module.css';
 import { ARMY_CONFIG } from '@/config/armyConfig';
 import { ARMY_STATS, ArmyUnitType } from '@/config/armyCapacity';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 import { useEffect, useState } from 'react';
 import ArmySlider from './ArmySlider';
 

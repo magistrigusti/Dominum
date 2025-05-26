@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 import styles from './CompleteQuestButton.module.css';
 
 export const CompleteQuestButton = () => {

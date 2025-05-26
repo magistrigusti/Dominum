@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import styles from './InventoryPage.module.css';
 import { DOMHeader } from '@/components/Headers/DOMHeader';
 import { DOMFooter } from '@/components/DOMFooter/DOMFooter';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 
 interface InventoryItem {
   id: string;

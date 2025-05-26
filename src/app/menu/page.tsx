@@ -7,7 +7,7 @@ import { DOMHeader } from '../../components/Headers/DOMHeader';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useTonWallet } from '@tonconnect/ui-react';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 
 export default function MenuPage() {
   const router = useRouter();

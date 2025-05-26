@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import styles from './SpeechBubble.module.css';
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { CompleteQuestButton } from '@/components/Quests/CompliteQuestButton/CompleteQuestButton';
 
 

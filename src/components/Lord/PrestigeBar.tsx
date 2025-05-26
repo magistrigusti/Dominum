@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './PrestigeBar.module.css';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 
 export const PrestigeBar = () => {
   const { state } = useUser();

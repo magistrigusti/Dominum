@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/contexts/UserContext';
 import { Hero } from '@/types/Hero';
 import { HeroViewer } from '@/components/Heroes/HeroViewer/HeroViewer';
 import { HeroSelector } from '@/components/Heroes/HeroSelector/HeroSelector';
