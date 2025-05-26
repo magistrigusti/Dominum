@@ -43,5 +43,5 @@ export const RESOURCE_LEVEL: Record<ResourceType, ResourceLevelConfig[]> = {
   doubloon: genLevels(500, 0.5, 1 * 24 * 3600),
   pearl: genLevels(100, 0.1, 30 * 24 * 3600),
   astral_crystal: genLevels(1, 0.01, 1 * 24 * 3600),
-  allodium: genLevels(0.1, 0.001, 30 * 24 * 3600)
+  allodium: genLevels(0.1, 0.001, 1 * 24 * 3600)
 };
