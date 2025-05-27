@@ -1,11 +1,13 @@
-// 📁 src/app/api/user/update/route.ts
+// 📄 src/app/api/user/update/route.ts
+
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
-import { UserModel } from "@/models/UserModel";
-import { ARMY_STATS, ArmyUnitType } from "@/config/armyCapacity";
+import UserModel from "@/models/UserModel";
+import { ARMY_STATS, ArmyUnitType } from "@/config/army/ARMY_STATS"; // путь исправь если не совпадает
+import { Mission } from "@/types/Mission"; // если надо для типизации
 
 export async function PUT(req: Request) {
-  const { address, heroArmy, army, ...data } = await req.json();
+  const { address, army, heroArmy, missions, resources, cancelMissionId, updateHero, ...data } = await req.json();
 
   if (!address) {
     return NextResponse.json({ error: "Address is required" }, { status: 400 });
@@ -13,18 +15,95 @@ export async function PUT(req: Request) {
 
   try {
     await dbConnect();
+    const user = await UserModel.findOne({ address });
 
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Сборка апдейтов
+    const setFields: any = {};
+    const incFields: any = {};
+
+    // === 1. Армия (если надо уменьшить или увеличить — по массиву или объекту)
+    if (army) {
+      // Если у тебя army — объект: { peasant: { level, count }, ... }
+      setFields.army = army;
+      // Если массив — тут нужна другая логика (обнови если надо)
+    }
+
+    // === 2. heroArmy (если нужно обновить/сбросить у героя)
+    if (heroArmy && Array.isArray(heroArmy) && data.heroId) {
+      // Найти героя и обновить его heroArmy
+      const heroIndex = user.heroes.findIndex((h: any) => h._id == data.heroId);
+      if (heroIndex !== -1) {
+        user.heroes[heroIndex].heroArmy = heroArmy;
+        setFields.heroes = user.heroes;
+      }
+    }
+
+    // === 3. Миссии (добавить, удалить, обновить)
+    if (missions) {
+      setFields.missions = missions;
+    }
+
+    // === 4. Ресурсы (ResourceSub как объект)
+    if (resources) {
+      setFields.resources = { ...user.resources, ...resources };
+    }
+
+    // === 5. Отмена миссии (возврат армии/героя/ресурсов)
+    if (cancelMissionId) {
+      const mission = user.missions.find((m: any) => m._id == cancelMissionId);
+      if (mission) {
+        // Вернуть героя и армию (примерно — адаптируй под твой тип)
+        if (mission.hero && mission.heroArmy) {
+          // Вернуть героя в доступные (status = idle, убираем currentMission)
+          const heroIdx = user.heroes.findIndex((h: any) => h._id == mission.hero);
+          if (heroIdx !== -1) {
+            user.heroes[heroIdx].status = "idle";
+            user.heroes[heroIdx].currentMission = null;
+          }
+          setFields.heroes = user.heroes;
+
+          // Вернуть армию (увеличить user.army по типу)
+          for (const unit of mission.heroArmy) {
+            if (!user.army[unit.unitType]) user.army[unit.unitType] = { level: unit.level, count: 0 };
+            user.army[unit.unitType].count += unit.count;
+          }
+          setFields.army = user.army;
+        }
+
+        // Выдать ресурсы, если миссия частично выполнена
+        if (mission.reward && mission.reward.resources) {
+          for (const [res, value] of Object.entries(mission.reward.resources)) {
+            user.resources[res] = (user.resources[res] || 0) + (value as number);
+          }
+          setFields.resources = user.resources;
+        }
+
+        // Удалить миссию из списка
+        user.missions = user.missions.filter((m: any) => m._id != cancelMissionId);
+        setFields.missions = user.missions;
+      }
+    }
+
+    // === 6. Обновить героя (например, xp, level, статы)
+    if (updateHero && updateHero.heroId) {
+      const heroIdx = user.heroes.findIndex((h: any) => h._id == updateHero.heroId);
+      if (heroIdx !== -1) {
+        user.heroes[heroIdx] = {
+          ...user.heroes[heroIdx],
+          ...updateHero.fields
+        };
+        setFields.heroes = user.heroes;
+      }
+    }
+
+    // === 7. Любые дополнительные allowedFields
     const allowedFields = [
       "name",
       "avatar",
-      "food",
-      "wood",
-      "stone",
-      "iron",
-      "gold",
-      "doubloon",
-      "pearl",
-      "allodium",
       "prestige",
       "levelPrestige",
       "prestigeProgress",
@@ -32,164 +111,30 @@ export async function PUT(req: Request) {
       "activeBonuses",
       "activeQuest",
       "questPanelOpen",
-      "heroes",
-      "heroArmy",
-      "army",
       "activeMining",
-      "missions",
-      "resources", // ← если будет как объект
-      "resourceNodes",
+      "resourceNodes"
     ];
-
-    const setFields: any = {};
     for (const key of allowedFields) {
       if (data[key] !== undefined) {
         setFields[key] = data[key];
       }
     }
-    const incFields: any = {};
 
-    // ✅ уменьшаем количество войск при отправке
-    if (army && typeof army === "object") {
-      for (const unit in army) {
-        const count = army[unit];
-        if (typeof count === "number") {
-          incFields[`army.${unit}.count`] = -count;
-        }
+    // --- Сохраняем все изменения ---
+    await UserModel.updateOne(
+      { address },
+      {
+        ...(Object.keys(setFields).length > 0 && { $set: setFields }),
+        ...(Object.keys(incFields).length > 0 && { $inc: incFields }),
       }
-    }
+    );
 
-    // ✅ если отмена — вернём войска и начислим ресурсы
-    if (data.cancelMissionHeroId) {
-      const user = await UserModel.findOne({ address });
-      const mission = user?.missions.find(
-        (m: any) => m.heroId === data.cancelMissionHeroId
-      );
+    // --- Отдаём обновлённого пользователя ---
+    const updatedUser = await UserModel.findOne({ address });
+    return NextResponse.json(updatedUser);
 
-      if (mission) {
-        const now = Date.now();
-        const elapsed = Math.min(
-          now - mission.startTime,
-          mission.duration * 1000
-        );
-        const percent = elapsed / (mission.duration * 1000);
-
-        const resourceType = mission.resource;
-        let totalCapacity = 0;
-
-        for (const unit in mission.heroArmy) {
-          const count = mission.heroArmy[unit];
-
-          const safeUnit = unit as ArmyUnitType;
-          const level = user.army?.[safeUnit]?.level;
-
-          const statsTable = ARMY_STATS[safeUnit];
-          const unitStats = level && statsTable?.[level];
-
-          if (!unitStats) continue;
-
-          totalCapacity += unitStats.capacity * count;
-        }
-
-        const minedAmount = Math.floor(totalCapacity * percent);
-
-        // ✅ начислить ресурсы
-        const currentValue = user.resources?.[resourceType] || 0;
-        setFields["resources"] = {
-          ...user.resources,
-          [resourceType]: currentValue + minedAmount,
-        };
-
-        // ✅ уменьшить remaining
-        const updatedNodes = user.resourceNodes.map((node: any) => {
-          if (node.id === mission.nodeId) {
-            return {
-              ...node,
-              remaining: Math.max(0, (node.remaining || 0) - minedAmount),
-            };
-          }
-          return node;
-        });
-        setFields.resourceNodes = updatedNodes;
-
-        
-
-        // ✅ возвращаем героя обратно
-        const updatedHeroes = user.heroes.map((h: any) => {
-          if (h.id === mission.heroId) {
-            return mission.hero;
-          }
-          return h;
-        });
-        setFields.heroes = updatedHeroes;
-
-        // ✅ вернуть войска
-        const updatedArmy = { ...user.army };
-
-        for (const unit in mission.heroArmy) {
-          const returningCount = mission.heroArmy[unit];
-          const current = updatedArmy[unit];
-
-          const level =
-            current?.level ?? user.army?.[unit as ArmyUnitType]?.level;
-
-          updatedArmy[unit] = {
-            level,
-            count: (current?.count ?? 0) + returningCount,
-          };
-        }
-        setFields.army = updatedArmy; // ⬅️ УДАЛИЛ — и Mongo ничего не получает!
-
-
-        // ✅ СОХРАНЯЕМ ВСЁ СРАЗУ
-        await UserModel.updateOne(
-          { address },
-          {
-            ...(Object.keys(setFields).length > 0 && { $set: setFields }),
-            ...(Object.keys(incFields).length > 0 && { $inc: incFields }),
-          }
-        );
-
-        // ✅ удалить миссию
-        user.missions = user.missions.filter(
-          (m: any) => m.heroId !== data.cancelMissionHeroId
-        );
-        setFields.missions = user.missions;
-
-        // ✅ возвращаем нового юзера
-        const updatedUser = await UserModel.findOne({ address });
-        return NextResponse.json(updatedUser);
-      }
-    }
-
-    const updateQuery: any = {};
-    if (Object.keys(setFields).length > 0) {
-      updateQuery.$set = setFields;
-    }
-    if (Object.keys(incFields).length > 0) {
-      updateQuery.$inc = incFields;
-    }
-
-    if (data.newMission) {
-      await UserModel.updateOne(
-        { address },
-        { $push: { missions: data.newMission } }
-      );
-    }
-
-    const user = await UserModel.findOneAndUpdate({ address }, updateQuery, {
-      new: true,
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-    return NextResponse.json(user);
   } catch (err) {
     console.error("[api/user/update] ❌ Ошибка:", err);
-    return NextResponse.json(
-      { error: "Server error", details: err },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error", details: String(err) }, { status: 500 });
   }
 }

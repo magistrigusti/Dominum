@@ -21,6 +21,7 @@ export interface ResourceNodePosition {
 
 export interface ResourceNode {
   _id?: string;
+  islandId?: string; // ID острова
   resource: string;                  // Тип ресурса (food, wood, astral_crystal и т.д.)
   level: number;                     // Уровень точки
   position: ResourceNodePosition;    // Координаты
