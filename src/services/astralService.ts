@@ -1,5 +1,5 @@
 // 📄 src/services/astralService.ts
-import { AstralMap, AstralIsland } from "@/types/AstralMap";
+import  {AstralIsland } from "@/types/AstralMap";
 import { ResourceNode } from "@/types/Resource";
 
 // минимальная дистанция между кристаллами

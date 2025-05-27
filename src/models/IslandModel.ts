@@ -15,6 +15,7 @@ const IslandSchema = new mongoose.Schema({
   canTrade: { type: Boolean, default: false },
   canHire: { type: Boolean, default: false },
   pvpZone: { type: Boolean, default: false },
+  description: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 }, { timestamps: true } );

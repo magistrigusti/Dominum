@@ -2,6 +2,7 @@
 export type IslandType = 'standard' | 'special' | 'pirate' | 'event' | 'starter' | "wild" | "faction" | "market"  | "fortress";
 
 export interface AstralIsland {
+  islandId: string;  
   _id?: string;
   name: string;
   x: number;
@@ -17,4 +18,5 @@ export interface AstralIsland {
   pvpZone?: boolean;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  description?: string;
 }

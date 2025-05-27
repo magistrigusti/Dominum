@@ -1,11 +1,10 @@
 // src/app/api/astral/init/route.ts
-
 import { NextResponse } from "next/server";
-import { getAstralMap } from "@/services/astralService";
+import { getFullAstralMap } from "@/services/astralService";
 
 export async function GET() {
   try {
-    const map = await getAstralMap();
+    const map = await getFullAstralMap();
     return NextResponse.json(map);
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
