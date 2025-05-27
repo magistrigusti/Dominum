@@ -1,6 +1,6 @@
 'use client';
 import styles from './ArmyBar.module.css';
-import { ARMY_CONFIG } from '@/config/ARMY_CONFIG';
+import { ARMY_CONFIG } from '@/config/army/ARMY_CONFIG';
 import type { ArmyUnitType } from '@/config/armyCapacity';
 
 type ArmyData = {

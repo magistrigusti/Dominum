@@ -1,7 +1,7 @@
 // 📄 src/services/resourceService.ts
 import { ResourceNode } from "@/types/Resource";
-import { RESOURCE_LEVEL } from "@/config/RESOURCE_LEVEL";
-import { RESOURCE_CONFIG } from "@/config/RESOURCE_CONFIG";
+import { RESOURCE_LEVEL } from "@/config/resource/RESOURCE_LEVEL";
+import { RESOURCE_CONFIG } from "@/config/resource/RESOURCE_CONFIG";
 
 const AUTO_RESTORE_CHECK_INTERVAL = 10 * 60 * 1000; // 10 минут
 const AUTO_RESTORE_IDLE_DELAY = 4 * 60 * 60 * 1000; // 4 часа
