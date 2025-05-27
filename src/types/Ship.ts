@@ -26,4 +26,8 @@ export interface Ship {
   updatedAt?: string | Date;
   equipment?: ShipEquipment[];
   status: ShipStatus;
+  currentAstralIsland: string; // ObjectId острова, где корабль сейчас
+  // Можно добавить координаты, если нужна "реальная" карта
+  movingToIslandId?: string; // ID острова, если корабль в пути
+  arrivalTime?: string | Date; // когда прибудет
 }

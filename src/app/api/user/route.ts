@@ -1,10 +1,10 @@
-// src/app/api/user/route.ts
+// 📄 src/app/api/user/route.ts
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import { DEFAULT_SAILORS, DEFAULT_DOUBLOONS } from "@/constants/defaultValues";
-import  UserSchema  from "@/models/UserModel";
+import UserModel from '@/models/UserModel';
 import { updateResourceNodesIfNeeded } from '@/utils/updateResourceNodes';
-import { RESOURCE_CONFIG } from '@/constants/resources';
+import { RESOURCE_CONFIG } from '@/config/resource/RESOURCE_CONFIG';
+import { generateDefaultArmy } from '@/config/army/ARMY_CONFIG'; // если надо
 
 export async function POST(req: Request) {
   try {
@@ -16,51 +16,64 @@ export async function POST(req: Request) {
 
     await dbConnect();
 
-    let user = await UserSchema.findOne({ address });
+    let user = await UserModel.findOne({ address })
+      .populate('heroes')
+      .populate('missions')
+      .populate('ships')
+      .populate('resourceNodes');
 
     if (!user) {
-      user = await UserSchema.create({
+      // Создание нового пользователя со всеми нужными начальными параметрами!
+      user = await UserModel.create({
         address,
         avatar: '/icons/user-icon.png',
+        name: 'Капитан',
+        prestige: 100,
+        levelPrestige: 0,
+        prestigeProgress: 0,
+        technologies: null,
+        questShipRepaired: false,
+        resources: {
+          food: 0, wood: 0, stone: 0, iron: 0, gold: 0, doubloon: 0,
+          pearl: 0, astral_crystal: 0, allodium: 0,
+        },
+        army: generateDefaultArmy(), // функция возвращает дефолтный массив army
         heroes: [],
+        missions: [],
+        ships: [],
         resourceNodes: [],
       });
       console.log('✅ Создан новый пользователь:', user.address);
     }
 
-    // 🛠 Генерация точек, если надо
-    updateResourceNodesIfNeeded(user);
+    // ⚡️ Автоматически завершаем миссии (например, завершён сбор, герой ушёл, и т.д.)
+    if (user.activeMining) {
+      const now = Date.now();
+      const start = new Date(user.activeMining.startedAt).getTime();
+      const end = start + user.activeMining.duration * 1000;
+      if (now >= end) {
+        // Награда за добычу — добавить ресурсы пользователю!
+        const gained = user.activeMining.remaining || 0;
+        const resKey = user.activeMining.resource;
+        if (typeof user.resources[resKey] === 'number') {
+          user.resources[resKey] += gained;
+        }
+        // Убираем миссию из активных
+        user.missions = user.missions.filter((m: any) => m.heroId !== user.activeMining.heroId);
+        user.activeMining = null;
+      }
+    }
+
+    // 🛠 Генерация и обновление ресурсных точек если требуется
+    await updateResourceNodesIfNeeded(user);
 
     // 🖼 Добавляем avatar к каждой точке
-    if (user.resourceNodes) {
+    if (user.resourceNodes && Array.isArray(user.resourceNodes)) {
       for (const node of user.resourceNodes) {
         const meta = RESOURCE_CONFIG.find(r => r.key === node.resource);
         node.avatar = meta?.avatar || '/icons/resources/default.png';
       }
     }
-
-    try {
-      if (user.activeMining) {
-        const now = Date.now() / 1000;
-        const start = new Date(user.activeMining.startedAt).getTime() / 1000;
-        const end = start + user.activeMining.duration;
-    
-        if (now >= end) {
-          const gained = user.activeMining.remaining || 0;
-          const resKey = user.activeMining.resource;
-    
-          if (typeof user[resKey] === 'number') {
-            user[resKey] += gained;
-          }
-    
-          user.missions = user.missions.filter((m: any) => m.heroId !== user.activeMining.heroId);
-          user.activeMining = null;
-        }
-      }
-    } catch (err) {
-      console.error('❌ [AutoFinishMining] Ошибка:', err);
-    }
-    
 
     await user.save();
 
@@ -72,27 +85,18 @@ export async function POST(req: Request) {
       levelPrestige: user.levelPrestige,
       prestigeProgress: user.prestigeProgress,
       technologies: user.technologies,
-      food: user.food,
-      wood: user.wood,
-      stone: user.stone,
-      iron: user.iron,
-      gold: user.gold,
-      doubloon: user.doubloon,
-      pearl: user.pearl,
-      allodium: user.allodium,
       questShipRepaired: user.questShipRepaired,
-      questPanelOpen: user.questPanelOpen,
+      resources: user.resources,
+      reward: user.reward,
+      army: user.army,
+      heroes: user.heroes,
+      missions: user.missions,
+      ships: user.ships,
+      resourceNodes: user.resourceNodes,
       activeMining: user.activeMining,
       activeQuest: user.activeQuest,
-      heroes: user.heroes || [],
-      army: Object.fromEntries(
-        Object.entries(user.army?.toJSON?.() || {}).map(([key, value]) => {
-          const v = value as { level: number; count: number };
-          return [key, { level: v.level, count: v.count }];
-        })
-      ),
-      missions: user.missions || [],
-      resourceNodes: user.resourceNodes || [],
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     });
 
   } catch (err) {
