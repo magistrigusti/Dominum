@@ -12,7 +12,7 @@ export interface ArmyUnitConfig {
   bonus: string;
 }
 
-export const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
+export  const ARMY_CONFIG: Record<ArmyUnitType, ArmyUnitConfig> = {
   peasant: {
     unitType: "peasant",
     label: "Крестьянин",
