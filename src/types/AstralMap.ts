@@ -8,3 +8,5 @@ export interface AstralMap {
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }
+
+export type { AstralIsland };
