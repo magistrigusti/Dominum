@@ -1,9 +1,16 @@
 // 📄 src/app/api/buildings/create.ts
-import { NextRequest, NextResponse } from "next/server";
-import { createBuilding } from "@/services/buildingService";
+import { NextRequest, NextResponse } from 'next/server';
+import { createBuilding } from '@/services/buildingService';
 
 export async function POST(req: NextRequest) {
-  const { userId, type, position } = await req.json();
-  const building = await createBuilding(userId, type, position);
-  return NextResponse.json(building);
+  try {
+    const { wallet, buildingType } = await req.json();
+    if (!wallet || !buildingType) {
+      return NextResponse.json({ success: false, message: 'wallet and buildingType required.' }, { status: 400 });
+    }
+    const building = await createBuilding(wallet, buildingType);
+    return NextResponse.json({ success: true, data: building });
+  } catch (error) {
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+  }
 }

@@ -1,7 +1,7 @@
 // 📁 src/app/api/resource/init/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import {UserModel} from '@/models/UserModel';
+import UserModel from "@/models/UserModel";
 
 export async function POST(req: NextRequest) {
   await dbConnect();
