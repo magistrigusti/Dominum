@@ -5,9 +5,16 @@ import  UserModel  from '@/models/UserModel';
 import  HeroModel  from '@/models/HeroModel';
 import { calculateBattle } from "@/lib/calculateBattle";
 
-export async function startBattle(wallet: string, { enemyData, heroId, army }) {
+type StartBattleArgs = {
+  enemyData: any;
+  heroId: string;
+  army: any;
+};
+
+export async function startBattle(wallet: string, {enemyData, heroId, army }: StartBattleArgs) {
   const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
+
   const hero = await HeroModel.findOne({ _id: heroId, owner: user._id });
   if (!hero) throw new Error('Hero not found');
 
@@ -19,10 +26,10 @@ export async function startBattle(wallet: string, { enemyData, heroId, army }) {
     enemy: enemyData,
     army,
     result: battleResult,
-    cratedAt: new Date(),
+    createdAt: new Date(),
   });
   await battle.save();
-  return battle.toObject();
+  return battle.toobject();
 }
 
 export async function getBattleResult(wallet: string, battleId: string) {
