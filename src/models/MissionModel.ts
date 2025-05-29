@@ -5,6 +5,7 @@ import ResourceSubSchema from './ResourceSubSchema';
 
 // Модель миссии (например, сбор ресурса, бой, доставка)
 const MissionSchema = new mongoose.Schema({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   type: { type: String, required: true },             // Тип миссии (resource, battle, scout, delivery)
   hero: { type: mongoose.Schema.Types.ObjectId, ref: "Hero" }, // Герой, отправленный на миссию
   army: { type: [ArmyUnitSchema], default: [] },              // Состав армии на миссии
