@@ -11,7 +11,7 @@ type UpdateUserProfileArgs = {
 
 // Получить пользователя по кошельку
 export async function getUserByWallet(wallet: string) {
-  return await UserModel.findOne({ wallet });
+  return await UserModel.findOne({ address: wallet });
 }
 
 // Обновить профиль пользователя (имя, аватар, цитата)
@@ -26,7 +26,7 @@ export async function updateUserProfile({ wallet, name, avatar, quote }: UpdateU
 
 // Зарегистрировать нового пользователя (если не существует)
 export async function registerUserIfMissing(wallet: string) {
-  let user = await UserModel.findOne({ wallet });
+  let user = await UserModel.findOne({ address: wallet });
   if (!user) {
     user = new UserModel({ wallet, createdAt: new Date() });
     await user.save();

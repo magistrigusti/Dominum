@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 
 const ArmyUnitSchema = new mongoose.Schema({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   unitType: { type: String, required: true },
   level: { type: Number, default: 1 },
   count: { type: Number, default: 0 },

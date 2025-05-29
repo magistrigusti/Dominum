@@ -15,7 +15,7 @@ export async function getUserHeroes(wallet: string) {
 
 // Создать нового героя (например, за квест/приз)
 export async function createHero(wallet: string, heroData: any) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
 
   // 1. Проверить лимиты по количеству героев (например, максимум 10)
@@ -44,7 +44,7 @@ export async function createHero(wallet: string, heroData: any) {
 
 // Обновить героя (уровень, опыт, снаряжение и т.д.)
 export async function updateHero(wallet: string, heroId: string, updates: any) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
 
   const hero = await HeroModel.findOne({ _id: heroId, owner: user._id });

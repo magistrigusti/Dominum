@@ -9,6 +9,7 @@ const InventoryItemSchema = new mongoose.Schema({
 }, { _id: false });
 
 const InventorySchema = new mongoose.Schema({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Владелец инвентаря
   items: { type: [InventoryItemSchema], default: [] },
   createdAt: { type: Date, default: Date.now }

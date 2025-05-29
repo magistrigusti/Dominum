@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 // Модель ресурсной точки на острове
 const ResourceNodeSchema = new mongoose.Schema({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // 👈 обязательно!
   resource: { type: String, required: true },      // Тип ресурса (wood, stone и т.д.)
   level: { type: Number, default: 1 },             // Уровень точки
   position: {                                      // Координаты точки
@@ -26,4 +27,3 @@ const ResourceNodeSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.ResourceNode || mongoose.model("ResourceNode", ResourceNodeSchema);
-                                      

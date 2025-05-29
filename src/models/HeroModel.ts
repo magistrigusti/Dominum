@@ -4,6 +4,7 @@ import ArmyUnitSchema from "./ArmyUnitSchema";
 
 const HeroSchema = new mongoose.Schema(
   {
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true }, // Имя героя
     class: { type: String, required: true }, // Класс героя (warrior, mage и т.д.)
     level: { type: Number, default: 1 }, // Уровень

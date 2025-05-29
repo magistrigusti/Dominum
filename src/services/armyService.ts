@@ -6,14 +6,14 @@ import UserModel from '@/models/UserModel';
 
 // Получить всю армию пользователя
 export async function getUserArmy(wallet: string) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
   return await ArmyModel.find({ owner: user._id });
 }
 
 // Назначить юнитов герою
 export async function assignArmyToHero(wallet: string, heroId: string, units: any) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
   const hero = await HeroModel.findOne({ _id: heroId, owner: user._id });
   if (!hero) throw new Error('Hero not found');
@@ -39,7 +39,7 @@ export async function assignArmyToHero(wallet: string, heroId: string, units: an
 
 // Отозвать юнитов с героя обратно в availableArmy
 export async function unassignArmyFromHero(wallet: string, heroId: string) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
   const hero = await HeroModel.findOne({ _id: heroId, owner: user._id });
   if (!hero) throw new Error('Hero not found');

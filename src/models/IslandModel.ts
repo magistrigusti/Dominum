@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 
 const IslandSchema = new mongoose.Schema({
+  
   name: { type: String, required: true },
   x: { type: Number, required: true },
   y: { type: Number, required: true },
   type: { type: String, required: true, enum: [
     'standard', 'special', 'pirate', 'event', 'starter', "wild", "faction", "market", "fortress"
   ] },
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   resourceNodes: [{ type: mongoose.Schema.Types.ObjectId, ref: "ResourceNode"}],
   avatar: { type: String },
   background: { type: String },

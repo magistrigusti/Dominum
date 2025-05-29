@@ -4,7 +4,7 @@ import ArmyUnitSchema from "./ArmyUnitSchema";
 
 const ArmySchema = new mongoose.Schema({
   units: { type: [ArmyUnitSchema], default: [] },    // Массив юнитов
-  owner: { type: mongoose.Schema.Types.ObjectId, refPath: "ownerModel" }, // Владелец (User/Hero)
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Владелец (User/Hero)
   ownerModel: { type: String, required: true, enum: ["User", "Hero"] },
   // Можно добавить: общее состояние армии, баффы, резервы и т.д.
   extraBonuses: {                                    // Общие бонусы от героя, предметов, артефактов

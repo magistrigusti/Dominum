@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 
 const ShipSchema = new mongoose.Schema({
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   level: { type: Number, default: 1 },

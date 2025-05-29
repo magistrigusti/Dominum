@@ -1,7 +1,7 @@
 // 📄 src/services/resourceService.ts
 
 import  UserModel  from '@/models/UserModel';
-import { ResourceNodeModel } from '@/models/ResourceNodeModel';
+import  ResourceNodeModel  from '@/models/ResourceNodeModel';
 
 // Получить ресурсные точки пользователя
 export async function getResourceNodes(wallet: string) {

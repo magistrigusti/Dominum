@@ -14,7 +14,7 @@ export async function getUserMissions(wallet: string) {
 
 // Создать новую миссию (добыча, битва)
 export async function createMission(wallet: string, missionData: any) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
 
   // Можно добавить дополнительные проверки: есть ли свободный герой, нет ли у него уже миссии и т.д.
@@ -31,7 +31,7 @@ export async function createMission(wallet: string, missionData: any) {
 
 // Завершить миссию, начислить награду и вернуть героя/армию
 export async function completeMission(wallet: string, missionId: string) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
   const mission = await MissionModel.findOne({ _id: missionId, owner: user._id });
   if (!mission || mission.status !== 'active') throw new Error('Mission not active');
@@ -45,7 +45,7 @@ export async function completeMission(wallet: string, missionId: string) {
 
 // Отменить миссию — вернуть героя и армию (если применимо)
 export async function cancelMission(wallet: string, missionId: string) {
-  const user = await UserModel.findOne({ wallet });
+  const user = await UserModel.findOne({ address: wallet });
   if (!user) throw new Error('User not found');
   const mission = await MissionModel.findOne({ _id: missionId, owner: user._id });
   if (!mission || mission.status !== 'active') throw new Error('Mission not active');

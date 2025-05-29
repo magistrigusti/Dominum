@@ -13,7 +13,7 @@ const AstralIslandSchema = new mongoose.Schema({
   },
   x: { type: Number, required: true },
   y: { type: Number, required: true },
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   resourceNodes: [{ type: mongoose.Schema.Types.ObjectId, ref: "ResourceNode" }],
   avatar: { type: String },
   background: { type: String },
