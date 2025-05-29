@@ -1,9 +1,9 @@
 // 📄 src/services/missionService.ts
 
-import { MissionModel } from '@/models/MissionModel';
-import { UserModel } from '@/models/UserModel';
-import { HeroModel } from '@/models/HeroModel';
-import { ArmyModel } from '@/models/ArmyModel';
+import MissionModel from '@/models/MissionModel';
+import UserModel from '@/models/UserModel';
+import HeroModel from '@/models/HeroModel';
+import ArmyModel from '@/models/ArmyModel';
 
 // Получить все миссии игрока
 export async function getUserMissions(wallet: string) {

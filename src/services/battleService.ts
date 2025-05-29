@@ -11,7 +11,7 @@ export async function startBattle(wallet: string, { enemyData, heroId, army }) {
   const hero = await HeroModel.findOne({ _id: heroId, owner: user._id });
   if (!hero) throw new Error('Hero not found');
 
-  const battleResult = calculateBattle({ hero, army, enymData });
+  const battleResult = calculateBattle({ hero, army, enemyData });
 
   const battle = new BattleModel({
     owner: user._id,

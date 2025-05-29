@@ -1,9 +1,9 @@
 // 📄 src/services/heroService.ts
 
-import { HeroModel } from '@/models/HeroModel';
-import { UserModel } from '@/models/UserModel';
-import { getHeroBaseStats } from '@/config/HERO_BASE_STATS';
-import { getHeroQualityConfig } from '@/config/HERO_QUALITIES';
+import HeroModel from '@/models/HeroModel';
+import UserModel from '@/models/UserModel';
+import HeroBaseStats from '@/config/heroes/HERO_BASE_STATS';
+import HeroQualityConfig from '@/config/heroes/HERO_QUALITIES';
 import { Types } from 'mongoose';
 
 // Получить всех героев пользователя
@@ -23,8 +23,8 @@ export async function createHero(wallet: string, heroData: any) {
   if (heroCount >= 10) throw new Error('Maximum heroes reached');
 
   // 2. Получить базовые статы и качество
-  const baseStats = getHeroBaseStats(heroData.class, heroData.race, heroData.quality);
-  const qualityConfig = getHeroQualityConfig(heroData.quality);
+  const baseStats = HeroBaseStats(heroData.class, heroData.race, heroData.quality);
+  const qualityConfig = HeroQualityConfig(heroData.quality);
 
   // 3. Создать героя
   const hero = new HeroModel({

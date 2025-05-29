@@ -1,11 +1,27 @@
 // 📄 src/services/inventoryService.ts
-import InventoryModel from "@/models/InventoryModel";
-import { InventoryItem } from "@/types/Inventory";
 
-export const addItemToInventory = async (userId: string, item: InventoryItem) => {
-  let inventory = await InventoryModel.findOne({ user: userId });
+import InventoryModel from '@/models/InventoryModel';
+import UserModel from '@/models/UserModel';
+import { InventoryItem } from '@/types/Inventory';
+
+// Получить инвентарь пользователя (возвращает один документ на игрока)
+export async function getUserInventory(wallet: string) {
+  const user = await UserModel.findOne({ address: wallet });
+  if (!user) throw new Error('User not found');
+  let inventory = await InventoryModel.findOne({ owner: user._id });
   if (!inventory) {
-    inventory = await InventoryModel.create({ user: userId, items: [item] });
+    inventory = await InventoryModel.create({ owner: user._id, items: [] });
+  }
+  return inventory;
+}
+
+// Добавить предмет в инвентарь
+export async function addInventoryItem(wallet: string, item: InventoryItem) {
+  const user = await UserModel.findOne({ address: wallet });
+  if (!user) throw new Error('User not found');
+  let inventory = await InventoryModel.findOne({ owner: user._id });
+  if (!inventory) {
+    inventory = await InventoryModel.create({ owner: user._id, items: [item] });
   } else {
     const idx = inventory.items.findIndex((i: any) => i.itemId === item.itemId);
     if (idx !== -1) {
@@ -16,11 +32,14 @@ export const addItemToInventory = async (userId: string, item: InventoryItem) =>
     await inventory.save();
   }
   return inventory;
-};
+}
 
-export const removeItemFromInventory = async (userId: string, itemId: string, quantity: number = 1) => {
-  const inventory = await InventoryModel.findOne({ user: userId });
-  if (!inventory) throw new Error("Inventory not found");
+// Удалить предмет из инвентаря
+export async function removeInventoryItem(wallet: string, itemId: string, quantity: number = 1) {
+  const user = await UserModel.findOne({ address: wallet });
+  if (!user) throw new Error('User not found');
+  const inventory = await InventoryModel.findOne({ owner: user._id });
+  if (!inventory) throw new Error('Inventory not found');
   const idx = inventory.items.findIndex((i: any) => i.itemId === itemId);
   if (idx !== -1) {
     inventory.items[idx].quantity -= quantity;
@@ -28,8 +47,4 @@ export const removeItemFromInventory = async (userId: string, itemId: string, qu
     await inventory.save();
   }
   return inventory;
-};
-
-export const getUserInventory = async (userId: string) => {
-  return InventoryModel.findOne({ user: userId });
-};
+}

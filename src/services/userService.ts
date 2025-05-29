@@ -2,13 +2,20 @@
 
 import UserModel from '@/models/UserModel';
 
+type UpdateUserProfileArgs = {
+  wallet: string,
+  name?: string,
+  avatar?: string,
+  quote?: string
+};
+
 // Получить пользователя по кошельку
 export async function getUserByWallet(wallet: string) {
   return await UserModel.findOne({ wallet });
 }
 
 // Обновить профиль пользователя (имя, аватар, цитата)
-export async function updateUserProfile({ wallet, name, avatar, quote }) {
+export async function updateUserProfile({ wallet, name, avatar, quote }: UpdateUserProfileArgs) {
   const user = await UserModel.findOneAndUpdate(
     { wallet },
     { $set: { name, avatar, quote } },
