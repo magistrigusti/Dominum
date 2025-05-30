@@ -47,7 +47,7 @@ export default function MenuPage() {
       </h2>
 
       <div className={styles.icon_grid}>
-        <Link href="/dominum">
+        <Link href="/user">
           <img src="/icons/dom-icons.png" alt="Dominum" className={styles.icon} />
         </Link>
         {/* <Link href="/mercatus">
