@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
   prestigeProgress: { type: Number, default: 0 },               // Прогресс до след. уровня
   technologies: { type: String, default: null },                // Изученные технологии (можно потом заменить на массив)
   questShipRepaired: { type: Boolean, default: false },         // Квест: корабль починен
-
+  telegram_username: String,
   // Все ресурсы теперь внутри объекта
   resources:    { type: ResourceSubSchema, default: () => ({}) },
   reward: {
