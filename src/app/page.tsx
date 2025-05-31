@@ -17,36 +17,36 @@ export default function Home() {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      if (wallet?.account?.address) {
-        try {
-          const res = await fetch('/api/user/check', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ wallet: wallet.account.address }),
-          });
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     if (wallet?.account?.address) {
+  //       try {
+  //         const res = await fetch('/api/user', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify({ wallet: wallet.account.address }),
+  //         });
 
-          const data = await res.json();
+  //         const data = await res.json();
 
-          if (data?.exists) {
-            router.push('/menu');
-          } else {
-            router.push('/');
-          }
-        } catch (err) {
-          console.error('Ошибка при проверке пользователя:', err);
-          router.push('/');
-        } finally {
-          setChecked(true);
-        }
-      }
-    };
+  //         if (data?.exists) {
+  //           router.push('/menu');
+  //         } else {
+  //           router.push('/');
+  //         }
+  //       } catch (err) {
+  //         console.error('Ошибка при проверке пользователя:', err);
+  //         router.push('/');
+  //       } finally {
+  //         setChecked(true);
+  //       }
+  //     }
+  //   };
 
-    checkUser();
-  }, [wallet]);
+  //   checkUser();
+  // }, [wallet]);
 
   return (
     <div className={styles.login_bg_wrapper}>
